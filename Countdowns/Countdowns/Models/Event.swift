@@ -14,6 +14,7 @@ class Event: Codable {
     //var tags: [Tag]
     var note: String = ""
     var imageData: Data?
+    var postEventNote: String?
     
     var timeRemaining: DateInterval {
         return DateInterval(start: Date(), end: dateTime)
@@ -26,5 +27,11 @@ class Event: Codable {
         if let image = image, let imageData = image.jpegData(compressionQuality: 1.0) {
             self.imageData = imageData
         }
+    }
+}
+
+extension Event: Equatable {
+    static func == (lhs: Event, rhs: Event) -> Bool {
+        return lhs === rhs
     }
 }
