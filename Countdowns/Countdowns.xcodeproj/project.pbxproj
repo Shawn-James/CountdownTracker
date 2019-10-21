@@ -20,6 +20,8 @@
 		99EF7D0A235E13C10092F4AB /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D09235E13C10092F4AB /* SettingsViewController.swift */; };
 		99EF7D0C235E14690092F4AB /* SortFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D0B235E14690092F4AB /* SortFilterViewController.swift */; };
 		99EF7D0E235E14D90092F4AB /* AddEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D0D235E14D90092F4AB /* AddEventViewController.swift */; };
+		99EF7D12235E18DE0092F4AB /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D11235E18DE0092F4AB /* Event.swift */; };
+		99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D13235E18EA0092F4AB /* EventController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		99EF7D09235E13C10092F4AB /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		99EF7D0B235E14690092F4AB /* SortFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SortFilterViewController.swift; path = "Countdowns/View Controllers/SortFilterViewController.swift"; sourceTree = SOURCE_ROOT; };
 		99EF7D0D235E14D90092F4AB /* AddEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventViewController.swift; sourceTree = "<group>"; };
+		99EF7D11235E18DE0092F4AB /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		99EF7D13235E18EA0092F4AB /* EventController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +129,7 @@
 		99EF7D0F235E16A60092F4AB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				99EF7D11235E18DE0092F4AB /* Event.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -132,6 +137,7 @@
 		99EF7D10235E16AF0092F4AB /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				99EF7D13235E18EA0092F4AB /* EventController.swift */,
 			);
 			path = "Model Controllers";
 			sourceTree = "<group>";
@@ -209,9 +215,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				99EF7D08235E13990092F4AB /* EventDetailViewController.swift in Sources */,
+				99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */,
 				99251D42235E09400060D9FF /* AppDelegate.swift in Sources */,
 				99EF7D0A235E13C10092F4AB /* SettingsViewController.swift in Sources */,
 				9972B508235E0A2E0015E56B /* CountdownsTableViewController.swift in Sources */,
+				99EF7D12235E18DE0092F4AB /* Event.swift in Sources */,
 				9972B510235E0AA00015E56B /* StringExtensions.swift in Sources */,
 				99251D44235E09400060D9FF /* SceneDelegate.swift in Sources */,
 				99EF7D0C235E14690092F4AB /* SortFilterViewController.swift in Sources */,
