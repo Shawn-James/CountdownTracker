@@ -22,6 +22,7 @@
 		99EF7D0E235E14D90092F4AB /* AddEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D0D235E14D90092F4AB /* AddEventViewController.swift */; };
 		99EF7D12235E18DE0092F4AB /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D11235E18DE0092F4AB /* Event.swift */; };
 		99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D13235E18EA0092F4AB /* EventController.swift */; };
+		99EF7D16235E24E80092F4AB /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D15235E24E80092F4AB /* TestData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		99EF7D0D235E14D90092F4AB /* AddEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventViewController.swift; sourceTree = "<group>"; };
 		99EF7D11235E18DE0092F4AB /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		99EF7D13235E18EA0092F4AB /* EventController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
+		99EF7D15235E24E80092F4AB /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				9972B50F235E0AA00015E56B /* StringExtensions.swift */,
+				99EF7D15235E24E80092F4AB /* TestData.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				99EF7D08235E13990092F4AB /* EventDetailViewController.swift in Sources */,
 				99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */,
 				99251D42235E09400060D9FF /* AppDelegate.swift in Sources */,
+				99EF7D16235E24E80092F4AB /* TestData.swift in Sources */,
 				99EF7D0A235E13C10092F4AB /* SettingsViewController.swift in Sources */,
 				9972B508235E0A2E0015E56B /* CountdownsTableViewController.swift in Sources */,
 				99EF7D12235E18DE0092F4AB /* Event.swift in Sources */,
