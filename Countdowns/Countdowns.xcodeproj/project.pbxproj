@@ -13,6 +13,13 @@
 		99251D4B235E09420060D9FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99251D4A235E09420060D9FF /* Assets.xcassets */; };
 		99251D4E235E09420060D9FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99251D4C235E09420060D9FF /* LaunchScreen.storyboard */; };
 		9972B506235E09A30015E56B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9972B505235E09A30015E56B /* Default-568h@2x.png */; };
+		9972B508235E0A2E0015E56B /* CountdownsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972B507235E0A2E0015E56B /* CountdownsTableViewController.swift */; };
+		9972B50B235E0A480015E56B /* CountdownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972B50A235E0A480015E56B /* CountdownTableViewCell.swift */; };
+		9972B510235E0AA00015E56B /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972B50F235E0AA00015E56B /* StringExtensions.swift */; };
+		99EF7D08235E13990092F4AB /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D07235E13990092F4AB /* EventDetailViewController.swift */; };
+		99EF7D0A235E13C10092F4AB /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D09235E13C10092F4AB /* SettingsViewController.swift */; };
+		99EF7D0C235E14690092F4AB /* SortFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D0B235E14690092F4AB /* SortFilterViewController.swift */; };
+		99EF7D0E235E14D90092F4AB /* AddEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D0D235E14D90092F4AB /* AddEventViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +31,13 @@
 		99251D4D235E09420060D9FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		99251D4F235E09420060D9FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9972B505235E09A30015E56B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		9972B507235E0A2E0015E56B /* CountdownsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownsTableViewController.swift; sourceTree = "<group>"; };
+		9972B50A235E0A480015E56B /* CountdownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTableViewCell.swift; sourceTree = "<group>"; };
+		9972B50F235E0AA00015E56B /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		99EF7D07235E13990092F4AB /* EventDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
+		99EF7D09235E13C10092F4AB /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		99EF7D0B235E14690092F4AB /* SortFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SortFilterViewController.swift; path = "Countdowns/View Controllers/SortFilterViewController.swift"; sourceTree = SOURCE_ROOT; };
+		99EF7D0D235E14D90092F4AB /* AddEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,7 +54,6 @@
 		99251D35235E09400060D9FF = {
 			isa = PBXGroup;
 			children = (
-				9972B505235E09A30015E56B /* Default-568h@2x.png */,
 				99251D40235E09400060D9FF /* Countdowns */,
 				99251D3F235E09400060D9FF /* Products */,
 			);
@@ -57,6 +70,9 @@
 		99251D40235E09400060D9FF /* Countdowns */ = {
 			isa = PBXGroup;
 			children = (
+				9972B509235E0A320015E56B /* View Controllers */,
+				9972B50C235E0A4B0015E56B /* Views */,
+				9972B511235E0AD60015E56B /* Helpers */,
 				99251D55235E09580060D9FF /* Resources */,
 			);
 			path = Countdowns;
@@ -71,8 +87,37 @@
 				99251D4A235E09420060D9FF /* Assets.xcassets */,
 				99251D4C235E09420060D9FF /* LaunchScreen.storyboard */,
 				99251D4F235E09420060D9FF /* Info.plist */,
+				9972B505235E09A30015E56B /* Default-568h@2x.png */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		9972B509235E0A320015E56B /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				9972B507235E0A2E0015E56B /* CountdownsTableViewController.swift */,
+				99EF7D0D235E14D90092F4AB /* AddEventViewController.swift */,
+				99EF7D07235E13990092F4AB /* EventDetailViewController.swift */,
+				99EF7D09235E13C10092F4AB /* SettingsViewController.swift */,
+				99EF7D0B235E14690092F4AB /* SortFilterViewController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		9972B50C235E0A4B0015E56B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9972B50A235E0A480015E56B /* CountdownTableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9972B511235E0AD60015E56B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				9972B50F235E0AA00015E56B /* StringExtensions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,8 +192,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99EF7D08235E13990092F4AB /* EventDetailViewController.swift in Sources */,
 				99251D42235E09400060D9FF /* AppDelegate.swift in Sources */,
+				99EF7D0A235E13C10092F4AB /* SettingsViewController.swift in Sources */,
+				9972B508235E0A2E0015E56B /* CountdownsTableViewController.swift in Sources */,
+				9972B510235E0AA00015E56B /* StringExtensions.swift in Sources */,
 				99251D44235E09400060D9FF /* SceneDelegate.swift in Sources */,
+				99EF7D0C235E14690092F4AB /* SortFilterViewController.swift in Sources */,
+				99EF7D0E235E14D90092F4AB /* AddEventViewController.swift in Sources */,
+				9972B50B235E0A480015E56B /* CountdownTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

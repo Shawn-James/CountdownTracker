@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="6ei-dR-4k4">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Table View Controller-->
+        <!--Countdowns Table-->
         <scene sceneID="gIe-MN-viU">
             <objects>
-                <tableViewController id="Oe1-rr-SLr" sceneMemberID="viewController">
+                <tableViewController title="Countdowns Table" id="Oe1-rr-SLr" customClass="CountdownsTableViewController" customModule="Countdowns" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="DkJ-UJ-fob">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="MbF-Tr-cSK">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CountdownCell" id="MbF-Tr-cSK" customClass="CountdownTableViewCell" customModule="Countdowns" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MbF-Tr-cSK" id="adR-HM-cm7">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="c8l-jn-soS" kind="show" id="yt3-nW-ylh"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -29,10 +33,116 @@
                             <outlet property="delegate" destination="Oe1-rr-SLr" id="LFc-NW-ZWp"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Countdowns" id="2u1-n4-uja">
+                        <leftBarButtonItems>
+                            <barButtonItem title="Settings" image="gear" catalog="system" id="q0e-il-E6m">
+                                <connections>
+                                    <segue destination="yPV-1C-xKv" kind="show" id="U6T-jG-vV4"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Sort/Filter" image="arrow.up.arrow.down.square" catalog="system" id="SXq-Q7-m4x">
+                                <connections>
+                                    <segue destination="bFk-uD-UbQ" kind="presentation" id="2cr-2T-6M3"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="ig0-xE-DsF">
+                                <connections>
+                                    <segue destination="NEJ-Cn-Agq" kind="presentation" id="VuG-8E-PPl"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="edit" id="mMb-16-KuM"/>
+                        </rightBarButtonItems>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9ah-XT-2RH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="142" y="165"/>
+            <point key="canvasLocation" x="1050.7246376811595" y="164.73214285714286"/>
+        </scene>
+        <!--Sort/Filter-->
+        <scene sceneID="ZQc-St-Q6j">
+            <objects>
+                <viewController title="Sort/Filter" id="bFk-uD-UbQ" customClass="SortFilterViewController" customModule="Countdowns" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="JkJ-cd-KRM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="EfG-Lj-Hik"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xFt-y0-0dv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1051" y="-520"/>
+        </scene>
+        <!--Add Event-->
+        <scene sceneID="uFT-Hf-SYz">
+            <objects>
+                <viewController title="Add Event" id="NEJ-Cn-Agq" customClass="AddEventViewController" customModule="Countdowns" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZOy-O9-ifK">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="Xfo-JB-YNl"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2ZD-n4-1XG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1924" y="-280"/>
+        </scene>
+        <!--Event Detail-->
+        <scene sceneID="ze6-9N-8kh">
+            <objects>
+                <viewController title="Event Detail" id="c8l-jn-soS" customClass="EventDetailViewController" customModule="Countdowns" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kIB-U6-T1s">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="nYp-TB-onZ"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Event" id="gwH-jk-wg1"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9QV-Xt-xKH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1920" y="486"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="8wJ-OE-6hS">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6ei-dR-4k4" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="aeB-k8-loC">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Oe1-rr-SLr" kind="relationship" relationship="rootViewController" id="IZ0-qG-J8E"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HE7-T3-Qvt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="140.57971014492756" y="164.73214285714286"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="R9g-wK-Cc1">
+            <objects>
+                <viewController title="Settings" id="yPV-1C-xKv" customClass="SettingsViewController" customModule="Countdowns" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QDh-5i-euO">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="vIN-nR-bVb"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ZtN-Qr-Q2k"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zVh-f6-flD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1051" y="875"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="arrow.up.arrow.down.square" catalog="system" width="64" height="56"/>
+        <image name="gear" catalog="system" width="64" height="58"/>
+    </resources>
 </document>
