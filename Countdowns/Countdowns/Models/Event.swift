@@ -6,4 +6,25 @@
 //  Copyright © 2019 Jon Bash. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class Event: Codable {
+    var name: String
+    var dateTime: Date
+    //var tags: [Tag]
+    var note: String = ""
+    var imageData: Data?
+    
+    var timeRemaining: DateInterval {
+        return DateInterval(start: Date(), end: dateTime)
+    }
+    
+    init(name: String, dateTime: Date, note: String = "", image: UIImage? = nil) {
+        self.name = name
+        self.dateTime = dateTime
+        self.note = note
+        if let image = image, let imageData = image.jpegData(compressionQuality: 1.0) {
+            self.imageData = imageData
+        }
+    }
+}
