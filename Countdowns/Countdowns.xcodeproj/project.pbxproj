@@ -82,6 +82,7 @@
 				99EF7D10235E16AF0092F4AB /* Model Controllers */,
 				9972B511235E0AD60015E56B /* Helpers */,
 				99251D55235E09580060D9FF /* Resources */,
+				99251D4F235E09420060D9FF /* Info.plist */,
 			);
 			path = Countdowns;
 			sourceTree = "<group>";
@@ -94,7 +95,6 @@
 				99251D43235E09400060D9FF /* SceneDelegate.swift */,
 				99251D4A235E09420060D9FF /* Assets.xcassets */,
 				99251D4C235E09420060D9FF /* LaunchScreen.storyboard */,
-				99251D4F235E09420060D9FF /* Info.plist */,
 				9972B505235E09A30015E56B /* Default-568h@2x.png */,
 			);
 			path = Resources;
