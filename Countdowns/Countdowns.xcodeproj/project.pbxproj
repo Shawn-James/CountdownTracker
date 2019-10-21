@@ -44,6 +44,7 @@
 		99EF7D11235E18DE0092F4AB /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		99EF7D13235E18EA0092F4AB /* EventController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
 		99EF7D15235E24E80092F4AB /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
+		99EF7D1A235E3F550092F4AB /* jonElieEinstein.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jonElieEinstein.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +96,7 @@
 				99251D43235E09400060D9FF /* SceneDelegate.swift */,
 				99251D4A235E09420060D9FF /* Assets.xcassets */,
 				99251D4C235E09420060D9FF /* LaunchScreen.storyboard */,
-				9972B505235E09A30015E56B /* Default-568h@2x.png */,
+				99EF7D19235E3F550092F4AB /* img */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -106,8 +107,8 @@
 				9972B507235E0A2E0015E56B /* CountdownsTableViewController.swift */,
 				99EF7D0D235E14D90092F4AB /* AddEventViewController.swift */,
 				99EF7D07235E13990092F4AB /* EventDetailViewController.swift */,
-				99EF7D09235E13C10092F4AB /* SettingsViewController.swift */,
 				99EF7D0B235E14690092F4AB /* SortFilterViewController.swift */,
+				99EF7D09235E13C10092F4AB /* SettingsViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -143,6 +144,15 @@
 				99EF7D13235E18EA0092F4AB /* EventController.swift */,
 			);
 			path = "Model Controllers";
+			sourceTree = "<group>";
+		};
+		99EF7D19235E3F550092F4AB /* img */ = {
+			isa = PBXGroup;
+			children = (
+				9972B505235E09A30015E56B /* Default-568h@2x.png */,
+				99EF7D1A235E3F550092F4AB /* jonElieEinstein.jpg */,
+			);
+			path = img;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

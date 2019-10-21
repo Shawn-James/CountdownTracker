@@ -17,8 +17,19 @@ class Event: Codable {
     var postEventNote: String?
     var archived: Bool = false
     
+    var eventPassed: Bool {
+        return Date() > dateTime
+    }
     var timeRemaining: DateInterval {
-        return DateInterval(start: Date(), end: dateTime)
+        if !eventPassed {
+            return DateInterval(start: Date(), end: dateTime)
+        } else {
+            return DateInterval(start: dateTime, end: Date())
+        }
+    }
+    
+    var remainingText: String {
+        return "\(timeRemaining)"
     }
     
     init(name: String, dateTime: Date, note: String = "", image: UIImage? = nil) {

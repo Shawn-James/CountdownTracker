@@ -36,7 +36,7 @@ class EventController {
         if let testInstance = _testInstance {
             return testInstance
         } else {
-            _testInstance = EventController()
+            _testInstance = testInit()
             return _testInstance!
         }
     }
