@@ -9,6 +9,7 @@
 import UIKit
 
 class Event: Codable {
+    // MARK: - Properties
     var name: String
     var dateTime: Date
     //var tags: [Tag]
@@ -17,21 +18,25 @@ class Event: Codable {
     var postEventNote: String?
     var archived: Bool = false
     
+    // MARK: - Computed Properties
+    
     var eventPassed: Bool {
         return Date() > dateTime
     }
-    var timeRemaining: DateInterval {
-        if !eventPassed {
-            return DateInterval(start: Date(), end: dateTime)
-        } else {
-            return DateInterval(start: dateTime, end: Date())
-        }
+//    var dateInterval: DateInterval {
+//        let interval: DateInterval
+//        if !eventPassed {
+//            interval = DateInterval(start: Date(), end: dateTime)
+//        } else {
+//            interval = DateInterval(start: dateTime, end: Date())
+//        }
+//        return interval
+//    }
+    var timeInterval: TimeInterval {
+        return dateTime.timeIntervalSinceNow 
     }
     
-    var remainingText: String {
-        return "\(timeRemaining)"
-    }
-    
+    // MARK: - Init
     init(name: String, dateTime: Date, note: String = "", image: UIImage? = nil) {
         self.name = name
         self.dateTime = dateTime
@@ -41,6 +46,8 @@ class Event: Codable {
         }
     }
 }
+
+// MARK: Extensions
 
 extension Event: Equatable {
     static func == (lhs: Event, rhs: Event) -> Bool {

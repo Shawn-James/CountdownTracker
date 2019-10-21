@@ -9,6 +9,8 @@
 import Foundation
 
 class EventController {
+    // MARK: Properties
+    
     private(set) var events = [Event]()
     private(set) var archivedEvents = [Event]()
     private var allEvents: [Event] {
@@ -67,6 +69,20 @@ class EventController {
     
     func addTestEvents() {
         events.append(contentsOf: TestData.events)
+    }
+    
+    func formattedTimeRemaining(for event: Event) -> String {
+        let formatter = DateComponentsFormatter()
+        //if event.timeRemaining.duration > 31_536_000 {
+        formatter.calendar = .autoupdatingCurrent
+        formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
+        formatter.unitsStyle = .full
+        formatter.maximumUnitCount = 2
+        
+        guard let formattedTime = formatter.string(from: event.timeInterval)
+            else { return "" }
+            
+        return formattedTime
     }
     
     // MARK: CRUD methods
