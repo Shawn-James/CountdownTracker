@@ -23,6 +23,7 @@
 		99EF7D12235E18DE0092F4AB /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D11235E18DE0092F4AB /* Event.swift */; };
 		99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D13235E18EA0092F4AB /* EventController.swift */; };
 		99EF7D16235E24E80092F4AB /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D15235E24E80092F4AB /* TestData.swift */; };
+		99EF7D1B235E446E0092F4AB /* jonElieEinstein.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 99EF7D1A235E3F550092F4AB /* jonElieEinstein.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -214,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				99251D4E235E09420060D9FF /* LaunchScreen.storyboard in Resources */,
+				99EF7D1B235E446E0092F4AB /* jonElieEinstein.jpg in Resources */,
 				9972B506235E09A30015E56B /* Default-568h@2x.png in Resources */,
 				99251D4B235E09420060D9FF /* Assets.xcassets in Resources */,
 				99251D49235E09400060D9FF /* Main.storyboard in Resources */,

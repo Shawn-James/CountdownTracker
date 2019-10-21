@@ -30,7 +30,12 @@ class TestData {
         ]
         
         eventList[0].imageData = UIImage.checkmark.jpegData(compressionQuality: 1.0)
-        eventList[3].imageData = UIImage(contentsOfFile: "jonElieEinstein.jpg")?.jpegData(compressionQuality: 1.0)
+        if let jonElieImage = UIImage(named: "jonElieEinstein.jpg") {
+            eventList[3].imageData = jonElieImage.jpegData(compressionQuality: 1.0)
+        } else {
+            print("Error finding jonElieEinstein image!")
+        }
+        
         
         return eventList
     }
