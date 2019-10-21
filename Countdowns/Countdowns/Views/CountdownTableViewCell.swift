@@ -9,6 +9,24 @@
 import UIKit
 
 class CountdownTableViewCell: UITableViewCell {
+    
+    var event: Event? {
+        didSet {
+            titleLabel.text = event?.name
+            timeRemainingLabel.text = event?.remainingText
+            if let data = event?.imageData, let image = UIImage(data: data) {
+                eventImage.image = image
+            }
+        }
+    }
+    
+    // MARK: - Outlets
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var timeRemainingLabel: UILabel!
+    @IBOutlet weak var eventImage: UIImageView!
+    
+    // MARK: - View Lifecycle
 
     override func awakeFromNib() {
         super.awakeFromNib()

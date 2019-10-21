@@ -27,23 +27,23 @@
                                             <rect key="frame" x="20" y="8" width="386" height="64"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="K8H-rL-ewc">
-                                                    <rect key="frame" x="0.0" y="1.5" width="322" height="61.5"/>
+                                                    <rect key="frame" x="0.0" y="5" width="322" height="54"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M75-mt-eQW">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M75-mt-eQW">
                                                             <rect key="frame" x="0.0" y="0.0" width="84.5" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="127 days away" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaE-eO-ovc">
-                                                            <rect key="frame" x="0.0" y="20.5" width="215" height="41"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="127 days away" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CaE-eO-ovc">
+                                                            <rect key="frame" x="0.0" y="20.5" width="177.5" height="33.5"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
                                                 </stackView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NVX-sX-YB3">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="NVX-sX-YB3">
                                                     <rect key="frame" x="322" y="0.0" width="64" height="64"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="64" id="OaQ-Ra-LZb"/>
@@ -66,6 +66,9 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="eventImage" destination="NVX-sX-YB3" id="j3A-gb-gzo"/>
+                                    <outlet property="timeRemainingLabel" destination="CaE-eO-ovc" id="u8C-q3-SuO"/>
+                                    <outlet property="titleLabel" destination="M75-mt-eQW" id="eFg-bU-lh3"/>
                                     <segue destination="c8l-jn-soS" kind="show" id="yt3-nW-ylh"/>
                                 </connections>
                             </tableViewCell>
@@ -88,14 +91,11 @@
                                 </connections>
                             </barButtonItem>
                         </leftBarButtonItems>
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="add" id="ig0-xE-DsF">
-                                <connections>
-                                    <segue destination="NEJ-Cn-Agq" kind="presentation" id="VuG-8E-PPl"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="edit" id="mMb-16-KuM"/>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="ig0-xE-DsF">
+                            <connections>
+                                <segue destination="NEJ-Cn-Agq" kind="presentation" id="VuG-8E-PPl"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9ah-XT-2RH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
