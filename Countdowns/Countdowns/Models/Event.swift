@@ -15,6 +15,7 @@ class Event: Codable {
     var note: String = ""
     var imageData: Data?
     var postEventNote: String?
+    var archived: Bool = false
     
     var timeRemaining: DateInterval {
         return DateInterval(start: Date(), end: dateTime)
