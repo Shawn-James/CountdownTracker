@@ -72,6 +72,8 @@
 			children = (
 				9972B509235E0A320015E56B /* View Controllers */,
 				9972B50C235E0A4B0015E56B /* Views */,
+				99EF7D0F235E16A60092F4AB /* Models */,
+				99EF7D10235E16AF0092F4AB /* Model Controllers */,
 				9972B511235E0AD60015E56B /* Helpers */,
 				99251D55235E09580060D9FF /* Resources */,
 			);
@@ -118,6 +120,20 @@
 				9972B50F235E0AA00015E56B /* StringExtensions.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		99EF7D0F235E16A60092F4AB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		99EF7D10235E16AF0092F4AB /* Model Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Model Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
