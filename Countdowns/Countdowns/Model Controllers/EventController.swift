@@ -18,9 +18,58 @@ class EventController {
         return fullList
     }
     
+    // MARK: - Singletons
+    
+    private static var _shared: EventController?
+    private static var _testInstance: EventController?
+    
+    static var shared: EventController {
+        if let sharedInstance = _shared {
+            return sharedInstance
+        } else {
+            _shared = EventController()
+            return _shared!
+        }
+    }
+    
+    static var testInstance: EventController {
+        if let testInstance = _testInstance {
+            return testInstance
+        } else {
+            _testInstance = EventController()
+            return _testInstance!
+        }
+    }
+    
+    static func testInit() -> EventController {
+        let instance = EventController()
+        instance.addTestEvents()
+        return instance
+    }
+    
+    // MARK: Methods
+    
     //func sort(by:)
     
     //func filter(by:)
+    
+    static func newDate(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0) -> Date {
+        let components = DateComponents(
+            calendar: .current, timeZone: .current,
+            year: year, month: month, day: day, hour: hour, minute: minute
+        )
+        guard let date = components.date else {
+            print("Invalid date/time! Returning current date/time instead.")
+            return Date()
+        }
+        return date
+    }
+    
+    func addTestEvents() {
+        events.append(contentsOf: TestData.events)
+    }
+    
+    // MARK: CRUD methods
     
     func delete(_ event: Event) {
         guard let index = events.firstIndex(of: event) else {
@@ -80,7 +129,7 @@ class EventController {
         }
     }
     
-    // MARK: --- Archived Events Persistence
+    // MARK: -- Archive Persistence
     
     private var archivedEventsURL: URL? {
         let fm = FileManager.default
