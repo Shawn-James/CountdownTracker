@@ -99,7 +99,7 @@
                             </barButtonItem>
                             <barButtonItem title="Sort/Filter" image="arrow.up.arrow.down.square" catalog="system" id="SXq-Q7-m4x">
                                 <connections>
-                                    <segue destination="bFk-uD-UbQ" kind="presentation" id="2cr-2T-6M3"/>
+                                    <segue destination="bFk-uD-UbQ" kind="presentation" identifier="SortFilterSegue" id="2cr-2T-6M3"/>
                                 </connections>
                             </barButtonItem>
                         </leftBarButtonItems>

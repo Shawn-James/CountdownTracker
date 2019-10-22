@@ -15,6 +15,7 @@ extension String {
     static let addEventSegue = "AddEventSegue"
     static let eventDetailSegue = "EventDetailSegue"
     static let editEventSegue = "EditEventSegue"
+    static let sortFilterSegue = "SortFilterSegue"
     
     // MARK: - Methods
     func stripMultiSpace() -> String {

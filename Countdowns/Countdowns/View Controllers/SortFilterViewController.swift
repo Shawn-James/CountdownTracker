@@ -8,7 +8,14 @@
 
 import UIKit
 
+protocol SortFilterViewControllerDelegate {}
+
 class SortFilterViewController: UIViewController {
+    
+    var delegate: SortFilterViewControllerDelegate?
+    
+    var sortDelegate: SortPickerDelegate?
+    var filterDelegate: FilterPickerDelegate?
     
     @IBOutlet weak var sortPicker: UIPickerView!
     @IBOutlet weak var filterPicker: UIPickerView!
@@ -16,13 +23,11 @@ class SortFilterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let sortPickerDelegate = SortPickerDelegate()
-        let filterPickerDelegate = FilterPickerDelegate()
+        sortPicker.delegate = sortDelegate
+        filterPicker.delegate = filterDelegate
         
-        sortPicker.dataSource = sortPickerDelegate
-        sortPicker.delegate = sortPickerDelegate
-        filterPicker.dataSource = filterPickerDelegate
-        filterPicker.delegate = filterPickerDelegate
+        sortPicker.reloadAllComponents()
+        filterPicker.reloadAllComponents()
     }
 
 }

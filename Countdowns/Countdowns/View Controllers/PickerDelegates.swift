@@ -18,7 +18,7 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return EventController.SortingStyle.allCases[component].rawValue
+        return EventController.SortingStyle.allCases[row].rawValue
     }
 }
 
@@ -32,6 +32,6 @@ class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelega
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return EventController.FilterStyle.allCases[component].rawValue
+        return EventController.FilterStyle.allCases[row].rawValue
     }
 }

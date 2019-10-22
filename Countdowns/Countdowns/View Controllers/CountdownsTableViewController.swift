@@ -29,13 +29,10 @@ class CountdownsTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        
         return eventController.events.count
     }
 
@@ -47,19 +44,10 @@ class CountdownsTableViewController: UITableViewController {
             return UITableViewCell()
         }
 
-        // Configure the cell...
         cell.event = eventController.events[indexPath.row]
 
         return cell
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
     /*
     // Override to support editing the table view.
@@ -80,32 +68,35 @@ class CountdownsTableViewController: UITableViewController {
     }
     */
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
         if segue.identifier == .addEventSegue {
             guard let addEventVC = segue.destination as? AddEditEventViewController
                 else { return }
+            
             addEventVC.addEventDelegate = self
+            
         } else if segue.identifier == .eventDetailSegue {
             guard let eventDetailVC = segue.destination as? EventDetailViewController,
                 let eventCell = sender as? CountdownTableViewCell,
                 let event = eventCell.event else { return }
             
             eventDetailVC.event = event
+        
+        } else if segue.identifier == .sortFilterSegue {
+            guard let sortFilterVC = segue.destination as? SortFilterViewController
+                else { return }
+            
+            let sortDelegate = SortPickerDelegate()
+            let filterDelegate = FilterPickerDelegate()
+            
+            sortFilterVC.sortDelegate = sortDelegate
+            sortFilterVC.filterDelegate = filterDelegate
+            sortFilterVC.delegate = self
         }
     }
 }
 
 extension CountdownsTableViewController: AddEventViewControllerDelegate {}
+extension CountdownsTableViewController: SortFilterViewControllerDelegate {}

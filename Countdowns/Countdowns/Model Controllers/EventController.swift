@@ -207,6 +207,7 @@ class EventController {
     }
     
     enum FilterStyle: String, CaseIterable {
+        case none = "(none)"
         case noLaterThanDate = "Now → end date"
         case noSoonerThanDate = "End date → ∞"
         case tag = "Tag"
