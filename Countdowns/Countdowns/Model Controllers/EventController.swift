@@ -197,7 +197,7 @@ class EventController {
     
     // MARK: - Sort/Filter Styles
     
-    enum SortingStyle: String {
+    enum SortingStyle: String, CaseIterable {
         case soonToLate = "Sooner → Later"
         case lateToSoon = "Later →  Sooner"
         case creationDate = "Date created"
@@ -206,7 +206,7 @@ class EventController {
         case numberOfTagsReversed = "Number of tags ↑"
     }
     
-    enum FilterStyle: String {
+    enum FilterStyle: String, CaseIterable {
         case noLaterThanDate = "Now → end date"
         case noSoonerThanDate = "End date → ∞"
         case tag = "Tag"
