@@ -47,12 +47,13 @@ class EventController {
     
     //func filter(by:)
     
-    // MARK: CRUD methods
+    // MARK: - 'CRUD' methods
     
     func create(_ event: Event) {
         if !events.contains(event) {
             events.append(event)
         }
+        saveEventsToPersistenceStore()
     }
     
     func delete(_ event: Event) {
@@ -60,12 +61,15 @@ class EventController {
             fatalError("Event is not in EventController's `events` list.")
         }
         events.remove(at: index)
+        saveEventsToPersistenceStore()
     }
     
     func archive(_ event: Event) {
         delete(event)
         event.archived = true
         archivedEvents.append(event)
+        saveEventsToPersistenceStore()
+        saveArchivedEventsToPersistenceStore()
     }
     
     // MARK: - Persistence

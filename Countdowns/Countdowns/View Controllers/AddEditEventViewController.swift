@@ -137,7 +137,7 @@ class AddEditEventViewController: UIViewController {
         let hasNote = !notesTextView.text.isEmpty
         let note: String = hasNote ? notesTextView.text : ""
         
-        // add new event
+        // add new event (if adding)
         if event == nil {
             EventController.shared.create(Event(
                 name: eventName, dateTime: eventDate,
@@ -145,7 +145,7 @@ class AddEditEventViewController: UIViewController {
             ))
             
             addEventDelegate?.tableView.reloadData()
-        // edit event
+        // edit event (if editing)
         } else {
             event?.name = eventName
             event?.dateTime = eventDate
@@ -155,6 +155,7 @@ class AddEditEventViewController: UIViewController {
             
             editEventDelegate?.updateViews()
         }
+        
         dismiss(animated: true, completion: nil)
     }
     
