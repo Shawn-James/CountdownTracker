@@ -12,7 +12,7 @@ class Event: Codable {
     // MARK: - Properties
     var name: String
     var dateTime: Date
-    //var tags: [Tag]
+    var tags: [Tag]
     var note: String = ""
     var imageData: Data?
     var hasTime: Bool
@@ -30,10 +30,22 @@ class Event: Codable {
         return dateTime.timeIntervalSinceNow 
     }
     
+    var tagsText: String {
+        var tagsText = ""
+        for i in 0 ..< tags.count {
+            tagsText += "\(tags[i])"
+            if i != tags.count - 1 {
+                tagsText += ", "
+            }
+        }
+        return tagsText
+    }
+    
     // MARK: - Init
-    init(name: String, dateTime: Date, note: String = "", image: UIImage? = nil, hasTime: Bool = false) {
+    init(name: String, dateTime: Date, tags: [Tag] = [], note: String = "", image: UIImage? = nil, hasTime: Bool = false) {
         self.name = name
         self.dateTime = dateTime
+        self.tags = tags
         self.note = note
         self.hasTime = hasTime
         if let image = image, let imageData = image.jpegData(compressionQuality: 1.0) {
