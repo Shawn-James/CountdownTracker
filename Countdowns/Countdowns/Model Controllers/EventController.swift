@@ -6,7 +6,7 @@
 //  Copyright © 2019 Jon Bash. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class EventController {
     // MARK:- Properties
@@ -29,8 +29,10 @@ class EventController {
             return sharedInstance
         } else {
             // CHANGE THIS WHEN PERSISTENCE IS IMPLEMENTED
-            //_shared = EventController()
-            _shared = testInit()
+            //_shared = testInit()
+            _shared = EventController()
+            _shared?.loadEventsFromPersistenceStore()
+            
             return _shared!
         }
     }
