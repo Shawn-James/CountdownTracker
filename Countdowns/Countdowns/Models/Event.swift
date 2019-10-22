@@ -15,6 +15,8 @@ class Event: Codable {
     //var tags: [Tag]
     var note: String = ""
     var imageData: Data?
+    var hasTime: Bool
+    
     var postEventNote: String?
     var archived: Bool = false
     
@@ -23,24 +25,17 @@ class Event: Codable {
     var eventPassed: Bool {
         return Date() > dateTime
     }
-//    var dateInterval: DateInterval {
-//        let interval: DateInterval
-//        if !eventPassed {
-//            interval = DateInterval(start: Date(), end: dateTime)
-//        } else {
-//            interval = DateInterval(start: dateTime, end: Date())
-//        }
-//        return interval
-//    }
+
     var timeInterval: TimeInterval {
         return dateTime.timeIntervalSinceNow 
     }
     
     // MARK: - Init
-    init(name: String, dateTime: Date, note: String = "", image: UIImage? = nil) {
+    init(name: String, dateTime: Date, note: String = "", image: UIImage? = nil, hasTime: Bool = false) {
         self.name = name
         self.dateTime = dateTime
         self.note = note
+        self.hasTime = hasTime
         if let image = image, let imageData = image.jpegData(compressionQuality: 1.0) {
             self.imageData = imageData
         }

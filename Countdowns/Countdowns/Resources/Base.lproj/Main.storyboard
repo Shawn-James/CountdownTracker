@@ -80,7 +80,7 @@
                                     <outlet property="eventImage" destination="NVX-sX-YB3" id="j3A-gb-gzo"/>
                                     <outlet property="timeRemainingLabel" destination="CaE-eO-ovc" id="u8C-q3-SuO"/>
                                     <outlet property="titleLabel" destination="M75-mt-eQW" id="eFg-bU-lh3"/>
-                                    <segue destination="c8l-jn-soS" kind="show" id="yt3-nW-ylh"/>
+                                    <segue destination="c8l-jn-soS" kind="show" identifier="EventDetailSegue" id="yt3-nW-ylh"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -261,14 +261,95 @@
                     <view key="view" contentMode="scaleToFill" id="kIB-U6-T1s">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Event Name]" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XMn-DY-fr8">
+                                <rect key="frame" x="20" y="88" width="165" height="34"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2UA-fC-gUc">
+                                <rect key="frame" x="20" y="130" width="45" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jan 28, 2019  07:30pm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hgz-fT-1qh">
+                                <rect key="frame" x="81" y="130" width="313" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tags:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c2c-iG-Hgw">
+                                <rect key="frame" x="20" y="159" width="45" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Tags]" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oZB-Lr-vrO">
+                                <rect key="frame" x="81" y="159" width="313" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zPe-Gm-eDf">
+                                <rect key="frame" x="20" y="188" width="53" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="M2y-Um-uae">
+                                <rect key="frame" x="81" y="188" width="313" height="474"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="2UA-fC-gUc" firstAttribute="top" secondItem="XMn-DY-fr8" secondAttribute="bottom" constant="8" id="45h-05-0Dc"/>
+                            <constraint firstItem="c2c-iG-Hgw" firstAttribute="top" secondItem="2UA-fC-gUc" secondAttribute="bottom" constant="8.5" id="6AO-l1-tJj"/>
+                            <constraint firstItem="oZB-Lr-vrO" firstAttribute="leading" secondItem="hgz-fT-1qh" secondAttribute="leading" id="A1x-Ad-WnH"/>
+                            <constraint firstItem="hgz-fT-1qh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2UA-fC-gUc" secondAttribute="trailing" constant="8" id="B9a-RS-HGI"/>
+                            <constraint firstItem="M2y-Um-uae" firstAttribute="top" secondItem="zPe-Gm-eDf" secondAttribute="top" id="CX3-lm-Ec3"/>
+                            <constraint firstItem="zPe-Gm-eDf" firstAttribute="top" secondItem="c2c-iG-Hgw" secondAttribute="bottom" constant="8.5" id="F9r-H1-rMO"/>
+                            <constraint firstItem="oZB-Lr-vrO" firstAttribute="leading" relation="lessThanOrEqual" secondItem="c2c-iG-Hgw" secondAttribute="trailing" constant="16" id="JwQ-Ba-7Ec"/>
+                            <constraint firstItem="nYp-TB-onZ" firstAttribute="trailing" secondItem="M2y-Um-uae" secondAttribute="trailing" constant="20" id="Lj8-TD-Adb"/>
+                            <constraint firstItem="M2y-Um-uae" firstAttribute="leading" relation="lessThanOrEqual" secondItem="zPe-Gm-eDf" secondAttribute="trailing" constant="16" id="ODp-Xh-UrZ"/>
+                            <constraint firstItem="oZB-Lr-vrO" firstAttribute="trailing" secondItem="M2y-Um-uae" secondAttribute="trailing" id="QyO-af-1Ur"/>
+                            <constraint firstItem="2UA-fC-gUc" firstAttribute="leading" secondItem="nYp-TB-onZ" secondAttribute="leading" constant="20" id="Rkk-Z2-6co"/>
+                            <constraint firstItem="hgz-fT-1qh" firstAttribute="trailing" secondItem="M2y-Um-uae" secondAttribute="trailing" id="TCN-Xb-0nJ"/>
+                            <constraint firstItem="nYp-TB-onZ" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="XMn-DY-fr8" secondAttribute="trailing" constant="8" id="VX8-IJ-laE"/>
+                            <constraint firstItem="c2c-iG-Hgw" firstAttribute="leading" secondItem="2UA-fC-gUc" secondAttribute="leading" id="Vdx-bn-eO2"/>
+                            <constraint firstItem="M2y-Um-uae" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zPe-Gm-eDf" secondAttribute="trailing" constant="8" id="Xen-BY-2H1"/>
+                            <constraint firstItem="nYp-TB-onZ" firstAttribute="bottom" secondItem="M2y-Um-uae" secondAttribute="bottom" priority="750" constant="200" id="Xp7-HL-ZO2"/>
+                            <constraint firstItem="oZB-Lr-vrO" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="c2c-iG-Hgw" secondAttribute="trailing" constant="8" id="gY6-Xu-ETt"/>
+                            <constraint firstItem="oZB-Lr-vrO" firstAttribute="top" secondItem="c2c-iG-Hgw" secondAttribute="top" id="gcz-ki-IwV"/>
+                            <constraint firstItem="XMn-DY-fr8" firstAttribute="leading" secondItem="nYp-TB-onZ" secondAttribute="leading" constant="20" id="kW0-Fx-5xY"/>
+                            <constraint firstItem="hgz-fT-1qh" firstAttribute="leading" relation="lessThanOrEqual" secondItem="2UA-fC-gUc" secondAttribute="trailing" constant="16" id="krI-kY-JEv"/>
+                            <constraint firstItem="nYp-TB-onZ" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="M2y-Um-uae" secondAttribute="bottom" constant="8" id="l05-mZ-jiS"/>
+                            <constraint firstItem="zPe-Gm-eDf" firstAttribute="leading" secondItem="2UA-fC-gUc" secondAttribute="leading" id="lkE-mT-tF3"/>
+                            <constraint firstItem="M2y-Um-uae" firstAttribute="leading" secondItem="hgz-fT-1qh" secondAttribute="leading" id="qkY-pr-Bwi"/>
+                            <constraint firstItem="XMn-DY-fr8" firstAttribute="top" secondItem="nYp-TB-onZ" secondAttribute="top" id="rlL-3e-bH9"/>
+                            <constraint firstItem="M2y-Um-uae" firstAttribute="leading" secondItem="zPe-Gm-eDf" secondAttribute="trailing" priority="750" constant="8" id="tb3-fY-cbJ"/>
+                            <constraint firstItem="hgz-fT-1qh" firstAttribute="top" secondItem="2UA-fC-gUc" secondAttribute="top" id="vvO-zm-0Zj"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="nYp-TB-onZ"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Event" id="gwH-jk-wg1"/>
+                    <navigationItem key="navigationItem" title="Event" id="gwH-jk-wg1">
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="hUs-NX-fDd"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="dateLabel" destination="hgz-fT-1qh" id="6Bb-mv-3vA"/>
+                        <outlet property="nameLabel" destination="XMn-DY-fr8" id="9Pb-py-Jc1"/>
+                        <outlet property="noteView" destination="M2y-Um-uae" id="Itr-Kt-5Gy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9QV-Xt-xKH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1920" y="486"/>
+            <point key="canvasLocation" x="1918.840579710145" y="485.49107142857139"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8wJ-OE-6hS">

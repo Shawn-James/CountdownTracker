@@ -23,7 +23,6 @@ class EventController {
     // MARK: - Singletons
     
     private static var _shared: EventController?
-    private static var _testInstance: EventController?
     
     static var shared: EventController {
         if let sharedInstance = _shared {
@@ -34,20 +33,10 @@ class EventController {
         }
     }
     
-    static var testInstance: EventController {
-        if let testInstance = _testInstance {
-            return testInstance
-        } else {
-            _testInstance = testInit()
-            _shared = _testInstance
-            return _testInstance!
-        }
-    }
-    
-    static func testInit() -> EventController {
+    static func testInit() {
         let instance = EventController()
-        instance.addTestEvents()
-        return instance
+        instance.events.append(contentsOf: TestData.events)
+        _shared = instance
     }
     
     // MARK: Methods
@@ -66,24 +55,6 @@ class EventController {
             return Date()
         }
         return date
-    }
-    
-    private func addTestEvents() {
-        events.append(contentsOf: TestData.events)
-    }
-    
-    func formattedTimeRemaining(for event: Event) -> String {
-        let formatter = DateComponentsFormatter()
-        //if event.timeRemaining.duration > 31_536_000 {
-        formatter.calendar = .autoupdatingCurrent
-        formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
-        formatter.unitsStyle = .full
-        formatter.maximumUnitCount = 2
-        
-        guard let formattedTime = formatter.string(from: event.timeInterval)
-            else { return "" }
-            
-        return formattedTime
     }
     
     // MARK: CRUD methods

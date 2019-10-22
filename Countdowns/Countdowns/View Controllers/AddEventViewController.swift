@@ -90,8 +90,10 @@ class AddEventViewController: UIViewController {
         guard let eventName = eventNameField.text, !eventName.isEmpty
             else { return }
         
+        let hasCustomTime = customTimeSwitch.isOn
+        
         let eventDate: Date
-        if !customTimeSwitch.isOn {
+        if !hasCustomTime {
             eventDate = datePicker.date
         } else {
             let date = Calendar.autoupdatingCurrent.dateComponents(
@@ -115,9 +117,9 @@ class AddEventViewController: UIViewController {
         
         let event: Event
         if let note = notesTextView.text, !note.isEmpty {
-            event = Event(name: eventName, dateTime: eventDate, note: note)
+            event = Event(name: eventName, dateTime: eventDate, note: note, hasTime: hasCustomTime)
         } else {
-            event = Event(name: eventName, dateTime: eventDate)
+            event = Event(name: eventName, dateTime: eventDate, hasTime: hasCustomTime)
         }
         
         EventController.shared.create(event)

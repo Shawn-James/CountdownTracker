@@ -12,17 +12,16 @@ class CountdownsTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    var eventController = EventController.testInstance
+    var eventController = EventController.shared
     
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // TESTING ONLY; load test data; remove when persistence implemented
+        EventController.testInit()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem)
     }
     

@@ -9,14 +9,12 @@
 import UIKit
 
 class CountdownTableViewCell: UITableViewCell {
-    let eventController = EventController.testInstance
-    
     var event: Event? {
         didSet {
             guard let event = event else { return }
             
             titleLabel.text = event.name
-            timeRemainingLabel.text = eventController.formattedTimeRemaining(for: event)
+            timeRemainingLabel.text = DateFormatter.formattedTimeRemaining(for: event)
             if let data = event.imageData, let image = UIImage(data: data) {
                 eventImage.image = image
             }
