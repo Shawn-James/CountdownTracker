@@ -47,18 +47,6 @@ class EventController {
     
     //func filter(by:)
     
-    static func newDate(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0) -> Date {
-        let components = DateComponents(
-            calendar: .current, timeZone: .current,
-            year: year, month: month, day: day, hour: hour, minute: minute
-        )
-        guard let date = components.date else {
-            print("Invalid date/time! Returning current date/time instead.")
-            return Date()
-        }
-        return date
-    }
-    
     // MARK: CRUD methods
     
     func create(_ event: Event) {

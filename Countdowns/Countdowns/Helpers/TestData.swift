@@ -14,23 +14,23 @@ class TestData {
         let eventList = [
             Event(
                 name: "My birthday",
-                dateTime: EventController.newDate(year: 2019, month: 12, day: 06),
+                dateTime: newDate(year: 2019, month: 12, day: 06),
                 tags: ["birthdays"]
             ),
             Event(
                 name: "Elie's/Mom's birthday",
-                dateTime: EventController.newDate(year: 2019, month: 12, day: 27),
+                dateTime: newDate(year: 2019, month: 12, day: 27),
                 tags: ["birthdays", "Elie"]
             ),
             Event(
                 name: "Projected Lambda School \"graduation\"",
-                dateTime: EventController.newDate(year: 2020, month: 07, day: 31, hour: 17),
+                dateTime: newDate(year: 2020, month: 07, day: 31, hour: 17),
                 note: "I'm so excited to graduate!",
                 hasTime: true
             ),
             Event(
                 name: "10-year anniversary",
-                dateTime: EventController.newDate(year: 2023, month: 06, day: 29),
+                dateTime: newDate(year: 2023, month: 06, day: 29),
                 tags: ["Elie"]
             )
         ]
@@ -42,7 +42,18 @@ class TestData {
             print("Error finding jonElieEinstein image!")
         }
         
-        
         return eventList
+    }
+    
+    static func newDate(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0) -> Date {
+        let components = DateComponents(
+            calendar: .autoupdatingCurrent, timeZone: .autoupdatingCurrent,
+            year: year, month: month, day: day, hour: hour, minute: minute
+        )
+        guard let date = components.date else {
+            print("Invalid date/time! Returning current date/time instead.")
+            return Date()
+        }
+        return date
     }
 }
