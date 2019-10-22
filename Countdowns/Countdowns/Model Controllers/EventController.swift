@@ -45,7 +45,22 @@ class EventController {
     
     // MARK: Methods
     
-    //func sort(by:)
+    func sort(by style: EventController.SortingStyle) {
+        switch style {
+        case .soonToLate:
+            events.sort(by: { $0.dateTime > $1.dateTime })
+        case .lateToSoon:
+            events.sort(by: { $0.dateTime <= $1.dateTime })
+        case .numberOfTags:
+            events.sort(by: { $0.tags.count > $1.tags.count })
+        case .numberOfTagsReversed:
+            events.sort(by: { $0.tags.count <= $1.tags.count })
+        case .creationDate:
+            events.sort(by: { $0.creationDate > $1.creationDate })
+        case .modifiedDate:
+            events.sort(by: { $0.modifiedDate > $1.modifiedDate })
+        }
+    }
     
     //func filter(by:)
     
@@ -178,5 +193,22 @@ class EventController {
         } catch {
             print("Error loading items list data: \(error)")
         }
+    }
+    
+    // MARK: - Sort/Filter Styles
+    
+    enum SortingStyle: String {
+        case soonToLate = "Sooner → Later"
+        case lateToSoon = "Later →  Sooner"
+        case creationDate = "Date created"
+        case modifiedDate = "Date modified"
+        case numberOfTags = "Number of tags ↓"
+        case numberOfTagsReversed = "Number of tags ↑"
+    }
+    
+    enum FilterStyle: String {
+        case noLaterThanDate = "Now → end date"
+        case noSoonerThanDate = "End date → ∞"
+        case tag = "Tag"
     }
 }
