@@ -30,6 +30,8 @@ class AddEditEventViewController: UIViewController {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var customTimeSwitch: UISwitch!
     @IBOutlet weak var timePicker: UIDatePicker!
+    @IBOutlet weak var tagsLabel: UILabel!
+    @IBOutlet weak var tagsField: UITextField!
     @IBOutlet weak var notesLabel: UILabel!
     @IBOutlet weak var notesTextView: UITextView!
     @IBOutlet weak var saveButton: UIButton!
@@ -58,6 +60,8 @@ class AddEditEventViewController: UIViewController {
             timePicker.isHidden = !customTimeSwitch.isOn
             customTimeSwitch.isHidden = false
             
+            tagsLabel.isHidden = true
+            tagsField.isHidden = true
             notesLabel.isHidden = true
             notesTextView.isHidden = true
             
@@ -71,6 +75,8 @@ class AddEditEventViewController: UIViewController {
             timePicker.isHidden = true
             customTimeSwitch.isHidden = true
             
+            tagsLabel.isHidden = false
+            tagsField.isHidden = false
             notesLabel.isHidden = false
             notesTextView.isHidden = false
         default:
@@ -93,6 +99,7 @@ class AddEditEventViewController: UIViewController {
         
         let hasCustomTime = customTimeSwitch.isOn
         
+        // get date from pickers
         let eventDate: Date
         if !hasCustomTime {
             eventDate = datePicker.date
@@ -116,26 +123,34 @@ class AddEditEventViewController: UIViewController {
             eventDate = dateFromComponents
         }
         
-        if event == nil {
-            let event: Event
-            if let note = notesTextView.text, !note.isEmpty {
-                event = Event(name: eventName, dateTime: eventDate, note: note, hasTime: hasCustomTime)
-            } else {
-                event = Event(name: eventName, dateTime: eventDate, hasTime: hasCustomTime)
+        // get tags from text field
+        var tags = [Tag]()
+        
+        if let tagsText = tagsField.text, !tagsText.isEmpty {
+            let subTags = tagsText.split(separator: .tagSeparator, omittingEmptySubsequences: true)
+            for subTag in subTags {
+                tags.append(String(subTag))
             }
+        }
+        
+        // get note
+        let hasNote = !notesTextView.text.isEmpty
+        let note: String = hasNote ? notesTextView.text : ""
+        
+        // add new event
+        if event == nil {
+            let event = Event(name: eventName, dateTime: eventDate, note: note, hasTime: hasCustomTime)
             
             EventController.shared.create(event)
             
             addEventDelegate?.tableView.reloadData()
+        // edit event
         } else {
             event?.name = eventName
             event?.dateTime = eventDate
             event?.hasTime = hasCustomTime
-            if let note = notesTextView.text, !note.isEmpty {
-                event?.note = note
-            } else {
-                event?.note = ""
-            }
+            event?.note = note
+            event?.tags = tags
             
             editEventDelegate?.updateViews()
         }

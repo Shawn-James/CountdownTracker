@@ -16,3 +16,7 @@ extension String {
     static let eventDetailSegue = "EventDetailSegue"
     static let editEventSegue = "EditEventSegue"
 }
+
+extension Character {
+    static let tagSeparator = Character(",")
+}
