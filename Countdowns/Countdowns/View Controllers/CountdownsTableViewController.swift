@@ -12,18 +12,12 @@ class CountdownsTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    var eventController: EventController {
-        EventController.testInit()
-        return EventController.shared
-    }
+    var eventController = EventController.shared
     
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // TESTING ONLY; load test data; remove when persistence implemented
-        EventController.testInit()
 
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem)
     }
@@ -103,7 +97,7 @@ class CountdownsTableViewController: UITableViewController {
         if segue.identifier == .addEventSegue {
             guard let addEventVC = segue.destination as? AddEditEventViewController
                 else { return }
-            addEventVC.delegate = self
+            addEventVC.addEventDelegate = self
         } else if segue.identifier == .eventDetailSegue {
             guard let eventDetailVC = segue.destination as? EventDetailViewController,
                 let eventCell = sender as? CountdownTableViewCell,

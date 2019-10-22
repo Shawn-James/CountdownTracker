@@ -49,6 +49,9 @@ class EventDetailViewController: UIViewController {
             else { return}
         
         editEventVC.event = event
+        editEventVC.editEventDelegate = self
     }
 
 }
+
+extension EventDetailViewController: EditEventViewControllerDelegate {}

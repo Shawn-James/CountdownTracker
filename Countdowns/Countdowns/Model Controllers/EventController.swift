@@ -28,15 +28,17 @@ class EventController {
         if let sharedInstance = _shared {
             return sharedInstance
         } else {
-            _shared = EventController()
+            // CHANGE THIS WHEN PERSISTENCE IS IMPLEMENTED
+            //_shared = EventController()
+            _shared = testInit()
             return _shared!
         }
     }
     
-    static func testInit() {
+    static func testInit() -> EventController {
         let instance = EventController()
         instance.events.append(contentsOf: TestData.events)
-        _shared = instance
+        return instance
     }
     
     // MARK: Methods

@@ -10,10 +10,15 @@ import UIKit
 
 protocol AddEventViewControllerDelegate: UITableViewController {}
 
+protocol EditEventViewControllerDelegate {
+    func updateViews()
+}
+
 class AddEditEventViewController: UIViewController {
     // MARK: - Properties
     
-    var delegate: AddEventViewControllerDelegate?
+    var addEventDelegate: AddEventViewControllerDelegate?
+    var editEventDelegate: EditEventViewControllerDelegate?
     var event: Event?
     
     // MARK: - Outlets
@@ -42,18 +47,7 @@ class AddEditEventViewController: UIViewController {
         super.touchesBegan(touches, with: event)
     }
     
-    func resetViewForEditingEvent() {
-        guard let event = event else { return }
-        
-        sceneTitleLabel.text = "Edit event"
-        eventNameField.text = event.name
-        datePicker.date = event.dateTime
-        timePicker.date = event.dateTime
-        customTimeSwitch.isOn = event.hasTime
-        notesTextView.text = event.note
-    }
-    
-    // MARK: - IB Actions
+    // MARK: - Action Methods
     
     @IBAction func viewSegmentControlChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
@@ -122,16 +116,42 @@ class AddEditEventViewController: UIViewController {
             eventDate = dateFromComponents
         }
         
-        let event: Event
-        if let note = notesTextView.text, !note.isEmpty {
-            event = Event(name: eventName, dateTime: eventDate, note: note, hasTime: hasCustomTime)
-        } else {
-            event = Event(name: eventName, dateTime: eventDate, hasTime: hasCustomTime)
-        }
-        
-        EventController.shared.create(event)
+        if event == nil {
+            let event: Event
+            if let note = notesTextView.text, !note.isEmpty {
+                event = Event(name: eventName, dateTime: eventDate, note: note, hasTime: hasCustomTime)
+            } else {
+                event = Event(name: eventName, dateTime: eventDate, hasTime: hasCustomTime)
+            }
             
-        delegate?.tableView.reloadData()
+            EventController.shared.create(event)
+            
+            addEventDelegate?.tableView.reloadData()
+        } else {
+            event?.name = eventName
+            event?.dateTime = eventDate
+            event?.hasTime = hasCustomTime
+            if let note = notesTextView.text, !note.isEmpty {
+                event?.note = note
+            } else {
+                event?.note = ""
+            }
+            
+            editEventDelegate?.updateViews()
+        }
         dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - Private Methods
+    
+    private func resetViewForEditingEvent() {
+        guard let event = event else { return }
+        
+        sceneTitleLabel.text = "Edit event"
+        eventNameField.text = event.name
+        datePicker.date = event.dateTime
+        timePicker.date = event.dateTime
+        customTimeSwitch.isOn = event.hasTime
+        notesTextView.text = event.note
     }
 }
