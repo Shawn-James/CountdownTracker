@@ -14,11 +14,13 @@ class TestData {
         let eventList = [
             Event(
                 name: "My birthday",
-                dateTime: EventController.newDate(year: 2019, month: 12, day: 06)
+                dateTime: EventController.newDate(year: 2019, month: 12, day: 06),
+                tags: ["birthdays"]
             ),
             Event(
                 name: "Elie's/Mom's birthday",
-                dateTime: EventController.newDate(year: 2019, month: 12, day: 27)
+                dateTime: EventController.newDate(year: 2019, month: 12, day: 27),
+                tags: ["birthdays", "Elie"]
             ),
             Event(
                 name: "Projected Lambda School \"graduation\"",
@@ -28,7 +30,8 @@ class TestData {
             ),
             Event(
                 name: "10-year anniversary",
-                dateTime: EventController.newDate(year: 2023, month: 06, day: 29)
+                dateTime: EventController.newDate(year: 2023, month: 06, day: 29),
+                tags: ["Elie"]
             )
         ]
         

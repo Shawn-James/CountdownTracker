@@ -16,6 +16,7 @@ class EventDetailViewController: UIViewController {
     // MARK: - Outlets
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var tagsLabel: UILabel!
     @IBOutlet weak var noteView: UITextView!
     @IBOutlet weak var imageView: UIImageView!
     
@@ -28,6 +29,7 @@ class EventDetailViewController: UIViewController {
     func updateViews() {
         guard let event = event else { return }
         nameLabel.text = event.name
+        tagsLabel.text = event.tagsText
         noteView.text = event.note
         
         if let imageData = event.imageData, let image = UIImage(data: imageData) {

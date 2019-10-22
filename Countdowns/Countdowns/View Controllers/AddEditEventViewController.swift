@@ -139,9 +139,10 @@ class AddEditEventViewController: UIViewController {
         
         // add new event
         if event == nil {
-            let event = Event(name: eventName, dateTime: eventDate, note: note, hasTime: hasCustomTime)
-            
-            EventController.shared.create(event)
+            EventController.shared.create(Event(
+                name: eventName, dateTime: eventDate,
+                tags: tags, note: note, hasTime: hasCustomTime
+            ))
             
             addEventDelegate?.tableView.reloadData()
         // edit event
