@@ -9,7 +9,7 @@
 import Foundation
 
 class EventController {
-    // MARK: Properties
+    // MARK:- Properties
     
     private(set) var events = [Event]()
     private(set) var archivedEvents = [Event]()
@@ -62,7 +62,9 @@ class EventController {
     // MARK: CRUD methods
     
     func create(_ event: Event) {
-        events.append(event)
+        if !events.contains(event) {
+            events.append(event)
+        }
     }
     
     func delete(_ event: Event) {
