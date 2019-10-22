@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SortFilterViewControllerDelegate {}
+protocol SortFilterViewControllerDelegate: UITableViewController {}
 
 class SortFilterViewController: UIViewController {
     
@@ -23,11 +23,39 @@ class SortFilterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // set picker delegates & reload data
         sortPicker.delegate = sortDelegate
         filterPicker.delegate = filterDelegate
-        
         sortPicker.reloadAllComponents()
         filterPicker.reloadAllComponents()
+        
+        // set current picker selections from current saved setting
+        let sortStyle = EventController.shared.currentSortingStyle
+        guard let sortStyleIndex = EventController.SortingStyle.allCases.firstIndex(of: sortStyle) else { return }
+        let filterStyle = EventController.shared.currentFilterStyle
+        guard let filterStyleIndex = EventController.FilterStyle.allCases.firstIndex(of: filterStyle) else { return }
+        
+        sortPicker.selectRow(sortStyleIndex, inComponent: 0, animated: false)
+        filterPicker.selectRow(filterStyleIndex, inComponent: 0, animated: false)
     }
 
+    @IBAction func cancelTapped(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func saveTapped(_ sender: UIBarButtonItem) {
+        let sortChoiceIndex = sortPicker.selectedRow(inComponent: 0)
+        let sortChoice = EventController.SortingStyle.allCases[sortChoiceIndex]
+        let filterChoiceIndex = filterPicker.selectedRow(inComponent: 0)
+        let filterChoice = EventController.FilterStyle.allCases[filterChoiceIndex]
+        
+        EventController.shared.sort(by: sortChoice)
+        // filter method here
+        EventController.shared.currentSortingStyle = sortChoice
+        EventController.shared.currentFilterStyle = filterChoice
+        
+        delegate?.tableView.reloadData()
+        dismiss(animated: true, completion: nil)
+    }
+    
 }

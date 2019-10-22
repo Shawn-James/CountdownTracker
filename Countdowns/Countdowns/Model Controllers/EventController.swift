@@ -12,6 +12,9 @@ class EventController {
     // MARK:- Properties
     
     private(set) var events = [Event]()
+    private(set) var filteredEvents: [Event] {
+        return filteredEvents(by: currentFilterStyle)
+    }
     private(set) var archivedEvents = [Event]()
     private var allEvents: [Event] {
         var fullList = [Event]()
@@ -19,6 +22,9 @@ class EventController {
         fullList.append(contentsOf: archivedEvents)
         return fullList
     }
+    
+    var currentSortingStyle: SortingStyle = .soonToLate
+    var currentFilterStyle: FilterStyle = .none
     
     // MARK: - Singletons
     
@@ -48,21 +54,26 @@ class EventController {
     func sort(by style: EventController.SortingStyle) {
         switch style {
         case .soonToLate:
-            events.sort(by: { $0.dateTime > $1.dateTime })
+            events.sort(by: { $0.dateTime < $1.dateTime })
         case .lateToSoon:
-            events.sort(by: { $0.dateTime <= $1.dateTime })
+            events.sort(by: { $0.dateTime > $1.dateTime })
         case .numberOfTags:
-            events.sort(by: { $0.tags.count > $1.tags.count })
+            events.sort(by: { $0.tags.count < $1.tags.count })
         case .numberOfTagsReversed:
-            events.sort(by: { $0.tags.count <= $1.tags.count })
+            events.sort(by: { $0.tags.count > $1.tags.count })
         case .creationDate:
             events.sort(by: { $0.creationDate > $1.creationDate })
         case .modifiedDate:
             events.sort(by: { $0.modifiedDate > $1.modifiedDate })
         }
+        
+        saveEventsToPersistenceStore()
     }
     
-    //func filter(by:)
+    func filteredEvents(by style: EventController.FilterStyle) -> [Event] {
+        var filteredEvents = events
+        return filteredEvents
+    }
     
     // MARK: - 'CRUD' methods
     
@@ -198,10 +209,10 @@ class EventController {
     // MARK: - Sort/Filter Styles
     
     enum SortingStyle: String, CaseIterable {
-        case soonToLate = "Sooner → Later"
-        case lateToSoon = "Later →  Sooner"
-        case creationDate = "Date created"
-        case modifiedDate = "Date modified"
+        case soonToLate = "End date ↓"
+        case lateToSoon = "End date ↑"
+        case creationDate = "Date created ↓"
+        case modifiedDate = "Date modified ↓"
         case numberOfTags = "Number of tags ↓"
         case numberOfTagsReversed = "Number of tags ↑"
     }

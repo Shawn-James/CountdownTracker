@@ -18,6 +18,8 @@ class CountdownTableViewCell: UITableViewCell {
             tagsLabel.text = event.tagsText
             if let data = event.imageData, let image = UIImage(data: data) {
                 eventImage.image = image
+            } else {
+                eventImage.image = nil
             }
         }
     }
