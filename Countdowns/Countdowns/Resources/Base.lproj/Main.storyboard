@@ -128,31 +128,34 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="J5n-76-gfO">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="216"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sort" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rc-E4-h1f">
-                                                <rect key="frame" x="0.0" y="0.0" width="34.5" height="216"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Sort by:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rc-E4-h1f">
+                                                <rect key="frame" x="0.0" y="0.0" width="63.5" height="216"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qpW-Oc-KGc">
-                                                <rect key="frame" x="40.5" y="0.0" width="333.5" height="216"/>
+                                                <rect key="frame" x="69.5" y="0.0" width="304.5" height="216"/>
                                             </pickerView>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ldZ-PD-cVm">
                                         <rect key="frame" x="0.0" y="216" width="374" height="216"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cnr-ED-bNV">
-                                                <rect key="frame" x="0.0" y="0.0" width="41" height="216"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Filter by:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cnr-ED-bNV">
+                                                <rect key="frame" x="0.0" y="0.0" width="70" height="216"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PdV-jd-3iX">
-                                                <rect key="frame" x="49" y="0.0" width="325" height="216"/>
+                                                <rect key="frame" x="78" y="0.0" width="296" height="216"/>
                                             </pickerView>
                                         </subviews>
                                     </stackView>
+                                    <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w6b-8k-E0N">
+                                        <rect key="frame" x="0.0" y="432" width="374" height="0.0"/>
+                                    </pickerView>
                                 </subviews>
                             </stackView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="91e-Qt-oEf">
@@ -188,6 +191,7 @@
                     <connections>
                         <outlet property="filterPicker" destination="PdV-jd-3iX" id="0kd-ko-VR5"/>
                         <outlet property="sortPicker" destination="qpW-Oc-KGc" id="26Z-vw-01e"/>
+                        <outlet property="tagPicker" destination="w6b-8k-E0N" id="D5B-Jd-ht6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFt-y0-0dv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -9,13 +9,37 @@
 import UIKit
 
 class EventController {
-    // MARK:- Properties
+    // MARK: - Properties
     
     private(set) var events = [Event]()
-    private(set) var filteredEvents: [Event] {
-        return filteredEvents(by: currentFilterStyle)
-    }
+    
     private(set) var archivedEvents = [Event]()
+    
+    var currentSortStyle: SortStyle = .soonToLate
+    var currentFilterStyle: FilterStyle = .none
+    var currentFilterDate: Date = Date()
+    var currentFilterTag: Tag = ""
+    
+    // MARK: - Computed Properties
+    
+    var filteredEvents: [Event] {
+        var filteredEvents = events
+        
+        switch currentFilterStyle {
+        case .none:
+            break
+        case .noLaterThanDate:
+            filteredEvents = filteredEvents.filter { $0.dateTime < currentFilterDate }
+        case .noSoonerThanDate:
+            filteredEvents = filteredEvents.filter { $0.dateTime > currentFilterDate }
+        case .tag:
+            filteredEvents = filteredEvents.filter { $0.tags.contains(currentFilterTag) }
+        }
+        
+        return filteredEvents
+    }
+    
+    // active + archived events
     private var allEvents: [Event] {
         var fullList = [Event]()
         fullList.append(contentsOf: events)
@@ -23,10 +47,22 @@ class EventController {
         return fullList
     }
     
-    var currentSortingStyle: SortingStyle = .soonToLate
-    var currentFilterStyle: FilterStyle = .none
+    // all tags for all (active) events
+    var tags: [Tag] {
+        var tags = [Tag]()
+        
+        for event in events {
+            for tag in event.tags {
+                if !tags.contains(tag) {
+                    tags.append(tag)
+                }
+            }
+        }
+        
+        return tags
+    }
     
-    // MARK: - Singletons
+    // MARK: - Singleton
     
     private static var _shared: EventController?
     
@@ -43,15 +79,17 @@ class EventController {
         }
     }
     
+    /*
     static func testInit() -> EventController {
         let instance = EventController()
         instance.events.append(contentsOf: TestData.events)
         return instance
     }
+    */
     
-    // MARK: Methods
+    // MARK: - Methods
     
-    func sort(by style: EventController.SortingStyle) {
+    func sort(by style: EventController.SortStyle) {
         switch style {
         case .soonToLate:
             events.sort(by: { $0.dateTime < $1.dateTime })
@@ -70,17 +108,11 @@ class EventController {
         saveEventsToPersistenceStore()
     }
     
-    func filteredEvents(by style: EventController.FilterStyle) -> [Event] {
-        var filteredEvents = events
-        return filteredEvents
-    }
-    
-    // MARK: - 'CRUD' methods
-    
     func create(_ event: Event) {
         if !events.contains(event) {
             events.append(event)
         }
+        
         saveEventsToPersistenceStore()
     }
     
@@ -97,6 +129,7 @@ class EventController {
         }
         event.hasTime = hasTime
         event.modifiedDate = Date()
+        
         saveEventsToPersistenceStore()
     }
     
@@ -105,6 +138,7 @@ class EventController {
             fatalError("Event is not in EventController's `events` list.")
         }
         events.remove(at: index)
+        
         saveEventsToPersistenceStore()
     }
     
@@ -112,6 +146,7 @@ class EventController {
         delete(event)
         event.archived = true
         archivedEvents.append(event)
+        
         saveEventsToPersistenceStore()
         saveArchivedEventsToPersistenceStore()
     }
@@ -208,7 +243,7 @@ class EventController {
     
     // MARK: - Sort/Filter Styles
     
-    enum SortingStyle: String, CaseIterable {
+    enum SortStyle: String, CaseIterable {
         case soonToLate = "End date ↓"
         case lateToSoon = "End date ↑"
         case creationDate = "Date created ↓"

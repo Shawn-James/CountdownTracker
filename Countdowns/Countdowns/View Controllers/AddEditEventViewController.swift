@@ -168,6 +168,7 @@ class AddEditEventViewController: UIViewController {
         datePicker.date = event.dateTime
         timePicker.date = event.dateTime
         customTimeSwitch.isOn = event.hasTime
+        tagsField.text = event.tagsText
         notesTextView.text = event.note
     }
 }

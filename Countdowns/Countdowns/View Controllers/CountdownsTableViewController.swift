@@ -33,7 +33,7 @@ class CountdownsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return eventController.events.count
+        return eventController.filteredEvents.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -44,7 +44,7 @@ class CountdownsTableViewController: UITableViewController {
             return UITableViewCell()
         }
 
-        cell.event = eventController.events[indexPath.row]
+        cell.event = eventController.filteredEvents[indexPath.row]
 
         return cell
     }
@@ -89,10 +89,13 @@ class CountdownsTableViewController: UITableViewController {
                 else { return }
             
             let sortDelegate = SortPickerDelegate()
-            let filterDelegate = FilterPickerDelegate()
+            let filterDelegate = FilterPickerDelegate(delegate: sortFilterVC)
+            let tagDelegate = TagFilterPickerDelegate()
             
             sortFilterVC.sortDelegate = sortDelegate
             sortFilterVC.filterDelegate = filterDelegate
+            sortFilterVC.tagDelegate = tagDelegate
+            
             sortFilterVC.delegate = self
         }
     }
