@@ -11,10 +11,10 @@ import UIKit
 protocol AddEventViewControllerDelegate: UITableViewController {}
 
 class AddEditEventViewController: UIViewController {
-    
     // MARK: - Properties
     
     var delegate: AddEventViewControllerDelegate?
+    var event: Event?
     
     // MARK: - Outlets
     @IBOutlet weak var sceneTitleLabel: UILabel!
@@ -31,6 +31,10 @@ class AddEditEventViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if event != nil {
+            resetViewForEditingEvent()
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -38,16 +42,19 @@ class AddEditEventViewController: UIViewController {
         super.touchesBegan(touches, with: event)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func resetViewForEditingEvent() {
+        guard let event = event else { return }
+        
+        sceneTitleLabel.text = "Edit event"
+        eventNameField.text = event.name
+        datePicker.date = event.dateTime
+        timePicker.date = event.dateTime
+        customTimeSwitch.isOn = event.hasTime
+        notesTextView.text = event.note
     }
-    */
+    
+    // MARK: - IB Actions
+    
     @IBAction func viewSegmentControlChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:

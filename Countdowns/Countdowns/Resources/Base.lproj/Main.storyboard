@@ -346,7 +346,11 @@
                         <viewLayoutGuide key="safeArea" id="nYp-TB-onZ"/>
                     </view>
                     <navigationItem key="navigationItem" title="Event" id="gwH-jk-wg1">
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="hUs-NX-fDd"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="hUs-NX-fDd">
+                            <connections>
+                                <segue destination="NEJ-Cn-Agq" kind="presentation" identifier="EditEventSegue" id="NXY-25-GDQ"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="dateLabel" destination="hgz-fT-1qh" id="6Bb-mv-3vA"/>
@@ -398,4 +402,7 @@
         <image name="arrow.up.arrow.down.square" catalog="system" width="64" height="56"/>
         <image name="gear" catalog="system" width="64" height="58"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="NXY-25-GDQ"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -14,4 +14,5 @@ extension String {
     // MARK: - Segue Identifiers
     static let addEventSegue = "AddEventSegue"
     static let eventDetailSegue = "EventDetailSegue"
+    static let editEventSegue = "EditEventSegue"
 }
