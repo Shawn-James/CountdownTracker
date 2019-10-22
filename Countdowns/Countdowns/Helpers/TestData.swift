@@ -22,7 +22,7 @@ class TestData {
             ),
             Event(
                 name: "Projected Lambda School \"graduation\"",
-                dateTime: EventController.newDate(year: 2020, month: 07, day: 31, hour: 5),
+                dateTime: EventController.newDate(year: 2020, month: 07, day: 31, hour: 17),
                 note: "I'm so excited to graduate!",
                 hasTime: true
             ),

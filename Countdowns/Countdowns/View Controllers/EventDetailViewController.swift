@@ -9,11 +9,35 @@
 import UIKit
 
 class EventDetailViewController: UIViewController {
-
+    
+    // MARK: - Properties
+    var event: Event?
+    
+    // MARK: - Outlets
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var noteView: UITextView!
+    @IBOutlet weak var imageView: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        updateViews()
+    }
+    
+    func updateViews() {
+        guard let event = event else { return }
+        nameLabel.text = event.name
+        noteView.text = event.note
+        
+        if let imageData = event.imageData, let image = UIImage(data: imageData) {
+            imageView.image = image
+        }
+        
+        let formatter = DateFormatter.eventDateFormatter
+        if !event.hasTime { formatter.timeStyle = .none }
+        
+        dateLabel.text = formatter.string(from: event.dateTime)
     }
     
 

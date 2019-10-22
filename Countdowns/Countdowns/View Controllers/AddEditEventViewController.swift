@@ -1,5 +1,5 @@
 //
-//  AddEventViewController.swift
+//  AddEditEventViewController.swift
 //  Countdowns
 //
 //  Created by Jon Bash on 2019-10-21.
@@ -10,7 +10,7 @@ import UIKit
 
 protocol AddEventViewControllerDelegate: UITableViewController {}
 
-class AddEventViewController: UIViewController {
+class AddEditEventViewController: UIViewController {
     
     // MARK: - Properties
     

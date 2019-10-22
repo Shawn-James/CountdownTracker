@@ -12,7 +12,10 @@ class CountdownsTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    var eventController = EventController.shared
+    var eventController: EventController {
+        EventController.testInit()
+        return EventController.shared
+    }
     
     // MARK: - View Lifecycle
 
@@ -98,9 +101,15 @@ class CountdownsTableViewController: UITableViewController {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if segue.identifier == .addEventSegue {
-            guard let addEventVC = segue.destination as? AddEventViewController
+            guard let addEventVC = segue.destination as? AddEditEventViewController
                 else { return }
             addEventVC.delegate = self
+        } else if segue.identifier == .eventDetailSegue {
+            guard let eventDetailVC = segue.destination as? EventDetailViewController,
+                let eventCell = sender as? CountdownTableViewCell,
+                let event = eventCell.event else { return }
+            
+            eventDetailVC.event = event
         }
     }
 }
