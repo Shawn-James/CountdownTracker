@@ -39,6 +39,7 @@ class EventController {
             return testInstance
         } else {
             _testInstance = testInit()
+            _shared = _testInstance
             return _testInstance!
         }
     }
@@ -67,7 +68,7 @@ class EventController {
         return date
     }
     
-    func addTestEvents() {
+    private func addTestEvents() {
         events.append(contentsOf: TestData.events)
     }
     
@@ -86,6 +87,10 @@ class EventController {
     }
     
     // MARK: CRUD methods
+    
+    func create(_ event: Event) {
+        events.append(event)
+    }
     
     func delete(_ event: Event) {
         guard let index = events.firstIndex(of: event) else {

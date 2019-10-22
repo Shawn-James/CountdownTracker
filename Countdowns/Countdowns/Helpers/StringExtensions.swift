@@ -10,4 +10,5 @@ import Foundation
 
 extension String {
     static let countdownCellReuseID = "CountdownCell"
+    static let addEventSegue = "AddEventSegue"
 }
