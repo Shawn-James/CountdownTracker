@@ -16,6 +16,8 @@ class Event: Codable {
     var note: String = ""
     var imageData: Data?
     var hasTime: Bool
+    var creationDate: Date
+    var modifiedDate: Date
     
     var postEventNote: String?
     var archived: Bool = false
@@ -51,6 +53,8 @@ class Event: Codable {
         if let image = image, let imageData = image.jpegData(compressionQuality: 1.0) {
             self.imageData = imageData
         }
+        self.creationDate = Date()
+        self.modifiedDate = creationDate
     }
 }
 

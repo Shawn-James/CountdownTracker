@@ -56,6 +56,22 @@ class EventController {
         saveEventsToPersistenceStore()
     }
     
+    func update(_ event: Event,
+                with name: String, dateTime: Date, tags: [Tag],
+                note: String, image: UIImage? = nil, hasTime: Bool
+    ) {
+        event.name = name
+        event.dateTime = dateTime
+        event.tags = tags
+        event.note = note
+        if let imageData = image?.jpegData(compressionQuality: 1.0) {
+            event.imageData = imageData
+        }
+        event.hasTime = hasTime
+        event.modifiedDate = Date()
+        saveEventsToPersistenceStore()
+    }
+    
     func delete(_ event: Event) {
         guard let index = events.firstIndex(of: event) else {
             fatalError("Event is not in EventController's `events` list.")
