@@ -15,6 +15,23 @@ extension String {
     static let addEventSegue = "AddEventSegue"
     static let eventDetailSegue = "EventDetailSegue"
     static let editEventSegue = "EditEventSegue"
+    
+    // MARK: - Methods
+    func stripMultiSpace() -> String {
+        var string = self
+        
+        while string.contains("  ") {
+            string = string.replacingOccurrences(of: "  ", with: " ")
+        }
+        while string.last == " " {
+            string.removeLast()
+        }
+        while string.first == " " {
+            string.removeFirst()
+        }
+        
+        return string
+    }
 }
 
 extension Character {

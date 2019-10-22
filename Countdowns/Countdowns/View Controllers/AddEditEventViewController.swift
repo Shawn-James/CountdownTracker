@@ -129,7 +129,7 @@ class AddEditEventViewController: UIViewController {
         if let tagsText = tagsField.text, !tagsText.isEmpty {
             let subTags = tagsText.split(separator: .tagSeparator, omittingEmptySubsequences: true)
             for subTag in subTags {
-                tags.append(String(subTag))
+                tags.append(String(subTag).stripMultiSpace())
             }
         }
         
