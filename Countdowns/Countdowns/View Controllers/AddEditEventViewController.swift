@@ -38,6 +38,7 @@ class AddEditEventViewController: UIViewController {
     @IBOutlet weak var notesTextView: UITextView!
     @IBOutlet weak var saveButton: UIButton!
     
+    // MARK: - Overridden Super-Funcs
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -93,6 +94,8 @@ class AddEditEventViewController: UIViewController {
         case false:
             timePicker.isHidden = true
         }
+        
+        updatePickersMinMax()
     }
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
@@ -164,6 +167,10 @@ class AddEditEventViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func datePickerChanged(_ sender: UIDatePicker) {
+        updatePickersMinMax()
+    }
+    
     // MARK: - Private Methods
     
     private func resetViewForEditingEvent() {
@@ -176,5 +183,17 @@ class AddEditEventViewController: UIViewController {
         customTimeSwitch.isOn = event.hasTime
         tagsField.text = event.tagsText
         notesTextView.text = event.note
+        
+        updatePickersMinMax()
+    }
+    
+    private func updatePickersMinMax() {
+        datePicker.minimumDate = Date()
+        if Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: datePicker.date) ==
+            Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: Date()) {
+            timePicker.minimumDate = Date()
+        } else {
+            timePicker.minimumDate = nil
+        }
     }
 }

@@ -24,16 +24,15 @@ class CountdownsTableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-    }
-    
     func reloadViews() {
         tableView.reloadData()
         if eventController.currentFilterStyle != .none {
             sortButton.tintColor = .systemRed
         } else {
             sortButton.tintColor = .systemBlue
+        }
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: true)
         }
     }
 

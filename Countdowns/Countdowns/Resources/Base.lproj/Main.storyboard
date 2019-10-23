@@ -270,6 +270,9 @@
                                             <constraint firstAttribute="height" priority="999" constant="216" id="6Hu-Lb-cAW"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="WLI-SE-fMm"/>
                                         </constraints>
+                                        <connections>
+                                            <action selector="datePickerChanged:" destination="NEJ-Cn-Agq" eventType="valueChanged" id="nyR-7A-esP"/>
+                                        </connections>
                                     </datePicker>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="GnW-wE-8ts">
                                         <rect key="frame" x="0.0" y="375" width="374" height="31"/>

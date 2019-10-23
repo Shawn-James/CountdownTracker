@@ -56,6 +56,7 @@ class SortFilterViewController: UIViewController {
         if EventController.shared.currentFilterDate < Date() {
             EventController.shared.currentFilterDate = Date()
         }
+        datePicker.minimumDate = Date()
         
         sortPicker.selectRow(sortStyleIndex, inComponent: 0, animated: false)
         filterPicker.selectRow(filterStyleIndex, inComponent: 0, animated: false)
