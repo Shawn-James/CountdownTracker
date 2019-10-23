@@ -118,7 +118,6 @@
 				99EF7D07235E13990092F4AB /* EventDetailViewController.swift */,
 				99EF7D0B235E14690092F4AB /* SortFilterViewController.swift */,
 				99EF7D09235E13C10092F4AB /* SettingsViewController.swift */,
-				99480AE0235FA13300DC1D48 /* PickerDelegates.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -127,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				9972B50A235E0A480015E56B /* CountdownTableViewCell.swift */,
+				99480AE0235FA13300DC1D48 /* PickerDelegates.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

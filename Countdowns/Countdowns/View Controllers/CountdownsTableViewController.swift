@@ -69,10 +69,7 @@ class CountdownsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let event = eventController.filteredEvents[indexPath.row]
-            if Alerts.didConfirmDeletion(of: event, with: self) {
-                eventController.delete(event)
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
+            confirmDeletion(for: event, at: indexPath)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -113,6 +110,27 @@ class CountdownsTableViewController: UITableViewController {
             
             sortFilterVC.delegate = self
         }
+    }
+    
+    // MARK: - Private
+    
+    private func confirmDeletion(for event: Event, at indexPath: IndexPath) {
+        let alert = UIAlertController(
+            title: "Delete event?",
+            message: "Are you sure you want to delete event \"\(event.name)\"?",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(
+            title: "Delete",
+            style: .destructive,
+            handler: { action in
+                self.eventController.delete(event)
+                self.tableView.deleteRows(at: [indexPath], with: .fade)
+        }))
+        
+        present(alert, animated: true, completion: nil)
     }
 }
 
