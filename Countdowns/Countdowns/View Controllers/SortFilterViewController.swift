@@ -48,19 +48,26 @@ class SortFilterViewController: UIViewController {
     // set current picker selections from current saved setting
     func resetPickerSelections() {
         let sortStyle = EventController.shared.currentSortStyle
-        guard let sortStyleIndex = EventController.SortStyle.allCases.firstIndex(of: sortStyle) else { return }
+        if let sortStyleIndex = EventController.SortStyle.allCases.firstIndex(of: sortStyle) {
+            sortPicker.selectRow(sortStyleIndex, inComponent: 0, animated: false)
+        }
+        
         let filterStyle = EventController.shared.currentFilterStyle
-        guard let filterStyleIndex = EventController.FilterStyle.allCases.firstIndex(of: filterStyle) else { return }
-        let currentTag = EventController.shared.currentFilterTag
-        guard let currentTagIndex = EventController.shared.tags.firstIndex(of: currentTag) else { return }
+        if let filterStyleIndex = EventController.FilterStyle.allCases.firstIndex(of: filterStyle) {
+            filterPicker.selectRow(filterStyleIndex, inComponent: 0, animated: false)
+        }
+        
+        if let currentTag = EventController.shared.currentFilterTag,
+            let currentTagIndex = EventController.shared.tags.firstIndex(of: currentTag) {
+            tagPicker.selectRow(currentTagIndex, inComponent: 0, animated: false)
+        } else {
+            tagPicker.selectRow(0, inComponent: 0, animated: false)
+        }
+        
         if EventController.shared.currentFilterDate < Date() {
             EventController.shared.currentFilterDate = Date()
         }
         datePicker.minimumDate = Date()
-        
-        sortPicker.selectRow(sortStyleIndex, inComponent: 0, animated: false)
-        filterPicker.selectRow(filterStyleIndex, inComponent: 0, animated: false)
-        tagPicker.selectRow(currentTagIndex, inComponent: 0, animated: false)
         datePicker.setDate(EventController.shared.currentFilterDate, animated: false)
     }
     

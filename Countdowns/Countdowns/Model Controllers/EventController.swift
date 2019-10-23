@@ -15,10 +15,61 @@ class EventController {
     
     private(set) var archivedEvents = [Event]()
     
-    var currentSortStyle: SortStyle = .soonToLate
-    var currentFilterStyle: FilterStyle = .none
-    var currentFilterDate: Date = Date()
-    var currentFilterTag: Tag = ""
+    // MARK: - User Defaults
+    
+    var currentSortStyle: SortStyle {
+        get {
+            if let sortStyleRaw = UserDefaults.standard.string(forKey: .currentSortStyle),
+                let sortStyle = SortStyle(rawValue: sortStyleRaw) {
+                return sortStyle
+            } else {
+                return .soonToLate
+            }
+        }
+        set(newSortStyle) {
+            UserDefaults.standard.set(newSortStyle.rawValue, forKey: .currentSortStyle)
+        }
+    }
+    
+    var currentFilterStyle: FilterStyle {
+        get {
+            if let filterStyleRaw = UserDefaults.standard.string(forKey: .currentFilterStyle),
+                let filterStyle = FilterStyle(rawValue: filterStyleRaw) {
+                return filterStyle
+            } else {
+                return .none
+            }
+        }
+        set(newFilterStyle) {
+            UserDefaults.standard.set(newFilterStyle.rawValue, forKey: .currentFilterStyle)
+        }
+    }
+    
+    var currentFilterDate: Date {
+        get {
+            if let filterDate = UserDefaults.standard.object(forKey: .currentFilterDate) as? Date {
+                return filterDate
+            } else {
+                return Date()
+            }
+        }
+        set(newDate) {
+            UserDefaults.standard.set(newDate, forKey: .currentFilterDate)
+        }
+    }
+    
+    var currentFilterTag: Tag? {
+        get {
+            if let filterTag = UserDefaults.standard.string(forKey: .currentFilterTag) {
+                return filterTag
+            } else {
+                return nil
+            }
+        }
+        set(newTag) {
+            UserDefaults.standard.set(newTag, forKey: .currentFilterTag)
+        }
+    }
     
     // MARK: - Computed Properties
     
@@ -33,7 +84,9 @@ class EventController {
         case .noSoonerThanDate:
             filteredEvents = filteredEvents.filter { $0.dateTime > currentFilterDate }
         case .tag:
-            filteredEvents = filteredEvents.filter { $0.tags.contains(currentFilterTag) }
+            if let existingFilterTag = currentFilterTag {
+                filteredEvents = filteredEvents.filter { $0.tags.contains(existingFilterTag) }
+            }
         }
         
         return filteredEvents

@@ -22,6 +22,7 @@ class CountdownsTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem)
+        reloadViews()
     }
     
     func reloadViews() {

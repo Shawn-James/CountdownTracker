@@ -21,6 +21,12 @@ extension String {
     static let cellBackgroundColor = "cellBackgroundColor"
     static let secondaryCellBackgroundColor = "secondaryCellBackgroundColor"
     
+    // MARK: - User Defaults
+    static let currentSortStyle = "currentSortStyle"
+    static let currentFilterStyle = "currentFilterStyle"
+    static let currentFilterTag = "currentFilterTag"
+    static let currentFilterDate = "currentFilterDate"
+    
     // MARK: - Methods
     func stripMultiSpace() -> String {
         var string = self
