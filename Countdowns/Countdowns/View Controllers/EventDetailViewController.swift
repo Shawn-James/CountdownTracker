@@ -9,7 +9,6 @@
 import UIKit
 
 class EventDetailViewController: UIViewController {
-    
     // MARK: - Properties
     var event: Event?
     
@@ -20,6 +19,7 @@ class EventDetailViewController: UIViewController {
     @IBOutlet weak var noteView: UITextView!
     @IBOutlet weak var imageView: UIImageView!
     
+    // MARK: - View Lifecyle
     override func viewDidLoad() {
         super.viewDidLoad()
 

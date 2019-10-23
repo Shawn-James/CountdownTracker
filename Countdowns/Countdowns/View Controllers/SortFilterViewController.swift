@@ -11,17 +11,19 @@ import UIKit
 protocol SortFilterViewControllerDelegate: UITableViewController {}
 
 class SortFilterViewController: UIViewController {
-    
+    // MARK: - Properties
     var delegate: SortFilterViewControllerDelegate?
     
     var sortDelegate: SortPickerDelegate?
     var filterDelegate: FilterPickerDelegate?
     var tagDelegate: TagFilterPickerDelegate?
     
+    // MARK: - Outlets
     @IBOutlet weak var sortPicker: UIPickerView!
     @IBOutlet weak var filterPicker: UIPickerView!
     @IBOutlet weak var tagPicker: UIPickerView!
     
+    // MARK: - View Lifecyle
     override func viewDidLoad() {
         super.viewDidLoad()
         

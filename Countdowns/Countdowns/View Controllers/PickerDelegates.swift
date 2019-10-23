@@ -8,6 +8,7 @@
 
 import UIKit
 
+// MARK: - Sort
 class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -22,8 +23,13 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
     }
 }
 
+// MARK: - Filter
 class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
     let delegate: SortFilterViewController
+    
+    init(delegate: SortFilterViewController) {
+        self.delegate = delegate
+    }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -41,12 +47,9 @@ class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelega
         let filterStyle = EventController.FilterStyle.allCases[row]
         delegate.showHideFilterComponents(for: filterStyle)
     }
-    
-    init(delegate: SortFilterViewController) {
-        self.delegate = delegate
-    }
 }
 
+// MARK: - Filter by Tag
 class TagFilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1

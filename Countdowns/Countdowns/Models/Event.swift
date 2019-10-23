@@ -58,7 +58,7 @@ class Event: Codable {
     }
 }
 
-// MARK: Extensions
+// MARK: - Extensions
 
 extension Event: Equatable {
     static func == (lhs: Event, rhs: Event) -> Bool {
