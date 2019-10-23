@@ -143,13 +143,13 @@ class EventController {
         case .numberOfTagsReversed:
             events.sort(by: { $0.tags.count > $1.tags.count })
         case .creationDate:
-            events.sort(by: { $0.creationDate > $1.creationDate })
-        case .creationDateReversed:
             events.sort(by: { $0.creationDate < $1.creationDate })
+        case .creationDateReversed:
+            events.sort(by: { $0.creationDate > $1.creationDate })
         case .modifiedDate:
-            events.sort(by: { $0.modifiedDate > $1.modifiedDate })
-        case .modifiedDateReversed:
             events.sort(by: { $0.modifiedDate < $1.modifiedDate })
+        case .modifiedDateReversed:
+            events.sort(by: { $0.modifiedDate > $1.modifiedDate })
         }
         saveEventsToPersistenceStore()
     }
