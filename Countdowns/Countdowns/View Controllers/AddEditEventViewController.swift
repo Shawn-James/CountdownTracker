@@ -158,6 +158,10 @@ class AddEditEventViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func cancelTapped(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     // MARK: - Private Methods
     
     private func resetViewForEditingEvent() {
