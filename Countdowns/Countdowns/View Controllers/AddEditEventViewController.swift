@@ -17,6 +17,7 @@ protocol EditEventViewControllerDelegate {
 }
 
 class AddEditEventViewController: UIViewController {
+    
     // MARK: - Properties
     
     var addEventDelegate: AddEventViewControllerDelegate?
@@ -24,6 +25,7 @@ class AddEditEventViewController: UIViewController {
     var event: Event?
     
     // MARK: - Outlets
+    
     @IBOutlet weak var sceneTitleLabel: UILabel!
     @IBOutlet weak var viewSegmentedControl: UISegmentedControl!
     @IBOutlet weak var eventNameField: UITextField!
@@ -39,6 +41,7 @@ class AddEditEventViewController: UIViewController {
     @IBOutlet weak var saveButton: UIButton!
     
     // MARK: - Overridden Super-Funcs
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
