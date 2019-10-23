@@ -26,6 +26,7 @@ extension String {
     static let currentFilterStyle = "currentFilterStyle"
     static let currentFilterTag = "currentFilterTag"
     static let currentFilterDate = "currentFilterDate"
+    static let notificationsAllowed = "notificationsAllowed"
     
     // MARK: - Methods
     func stripMultiSpace() -> String {

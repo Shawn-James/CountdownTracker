@@ -10,6 +10,7 @@ import UIKit
 
 class Event: Codable {
     // MARK: - Properties
+    var uuid: String
     var name: String
     var dateTime: Date
     var tags: [Tag]
@@ -55,6 +56,7 @@ class Event: Codable {
         }
         self.creationDate = Date()
         self.modifiedDate = creationDate
+        self.uuid = UUID().uuidString
     }
 }
 

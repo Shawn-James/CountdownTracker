@@ -159,6 +159,8 @@ class EventController {
             events.append(event)
         }
         
+        NotificationsHelper.shared.setNotification(for: event)
+        
         saveEventsToPersistenceStore()
     }
     
