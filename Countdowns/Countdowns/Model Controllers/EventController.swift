@@ -140,7 +140,7 @@ class EventController {
     }
     */
     
-    // MARK: - Methods
+    // MARK: - Public Methods
     
     func sort(by style: EventController.SortStyle) {
         switch style {
@@ -187,6 +187,15 @@ class EventController {
         event.modifiedDate = Date()
         
         saveEventsToPersistenceStore()
+    }
+    
+    func move(_ event: Event, to newIndex: Int) {
+        guard let oldIndex = events.firstIndex(of: event) else {
+            print("ERROR: Cannot move event; not in list.")
+            return
+        }
+        events.remove(at: oldIndex)
+        events.insert(event, at: newIndex)
     }
     
     func delete(_ event: Event) {

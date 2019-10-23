@@ -46,7 +46,7 @@ class CountdownsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return eventController.filteredEvents.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: .countdownCellReuseID,
@@ -55,12 +55,7 @@ class CountdownsTableViewController: UITableViewController {
             return UITableViewCell()
         }
 
-        cell.event = eventController.filteredEvents[indexPath.row]
-        if indexPath.row % 2 == 0 {
-            cell.backgroundColor = UIColor(named: .secondaryCellBackgroundColor)
-        } else {
-            cell.backgroundColor = UIColor(named: .cellBackgroundColor)
-        }
+        updateCellColor(for: cell, at: indexPath.row)
 
         return cell
     }
@@ -77,7 +72,15 @@ class CountdownsTableViewController: UITableViewController {
 
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        updateViews()
+        let event = eventController.filteredEvents[fromIndexPath.row]
+        eventController.move(event, to: to.row)
+        
+        var colorIndex = 0
+        for cell in tableView.visibleCells {
+            guard let cell = cell as? CountdownTableViewCell else { return }
+            updateCellColor(for: cell, at: colorIndex)
+            colorIndex += 1
+        }
     }
 
     // MARK: - Navigation
@@ -113,6 +116,15 @@ class CountdownsTableViewController: UITableViewController {
     }
     
     // MARK: - Private
+    
+    private func updateCellColor(for cell: CountdownTableViewCell, at indexRow: Int) {
+        cell.event = eventController.filteredEvents[indexRow]
+        if indexRow % 2 == 0 {
+            cell.backgroundColor = UIColor(named: .secondaryCellBackgroundColor)
+        } else {
+            cell.backgroundColor = UIColor(named: .cellBackgroundColor)
+        }
+    }
     
     private func confirmDeletion(for event: Event, at indexPath: IndexPath) {
         let alert = UIAlertController(
