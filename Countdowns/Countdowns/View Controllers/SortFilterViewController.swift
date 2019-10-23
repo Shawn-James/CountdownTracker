@@ -22,6 +22,7 @@ class SortFilterViewController: UIViewController {
     @IBOutlet weak var sortPicker: UIPickerView!
     @IBOutlet weak var filterPicker: UIPickerView!
     @IBOutlet weak var tagPicker: UIPickerView!
+    @IBOutlet weak var datePicker: UIDatePicker!
     
     // MARK: - View Lifecyle
     override func viewDidLoad() {
@@ -35,35 +36,47 @@ class SortFilterViewController: UIViewController {
         filterPicker.reloadAllComponents()
         tagPicker.reloadAllComponents()
         
-        // set current picker selections from current saved setting
+        resetPickerSelections()
+        
+        showHideFilterComponents(for: EventController.shared.currentFilterStyle)
+    }
+    
+    // MARK: - Methods
+    
+    // set current picker selections from current saved setting
+    func resetPickerSelections() {
         let sortStyle = EventController.shared.currentSortStyle
         guard let sortStyleIndex = EventController.SortStyle.allCases.firstIndex(of: sortStyle) else { return }
         let filterStyle = EventController.shared.currentFilterStyle
         guard let filterStyleIndex = EventController.FilterStyle.allCases.firstIndex(of: filterStyle) else { return }
         let currentTag = EventController.shared.currentFilterTag
         guard let currentTagIndex = EventController.shared.tags.firstIndex(of: currentTag) else { return }
+        if EventController.shared.currentFilterDate < Date() {
+            EventController.shared.currentFilterDate = Date()
+        }
         
         sortPicker.selectRow(sortStyleIndex, inComponent: 0, animated: false)
         filterPicker.selectRow(filterStyleIndex, inComponent: 0, animated: false)
         tagPicker.selectRow(currentTagIndex, inComponent: 0, animated: false)
-        
-        showHideFilterComponents(for: filterStyle)
+        datePicker.setDate(EventController.shared.currentFilterDate, animated: false)
     }
     
-    // MARK: - Methods
-    
+    // show/hide pickers based on current saved filter setting
     func showHideFilterComponents(for filterStyle: EventController.FilterStyle) {
         switch filterStyle {
         case .noLaterThanDate, .noSoonerThanDate:
             tagPicker.isHidden = true
+            datePicker.isHidden = false
         case .tag:
             tagPicker.isHidden = false
+            datePicker.isHidden = true
         case .none:
             tagPicker.isHidden = true
+            datePicker.isHidden = true
         }
     }
 
-    // MARK: - Action Methods
+    // MARK: - IB Methods
     
     @IBAction func cancelTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
@@ -80,6 +93,7 @@ class SortFilterViewController: UIViewController {
         EventController.shared.currentSortStyle = sortChoice
         EventController.shared.currentFilterStyle = filterChoice
         EventController.shared.currentFilterTag = tagChoice
+        EventController.shared.currentFilterDate = datePicker.date
         EventController.shared.sort(by: sortChoice)
         
         delegate?.tableView.reloadData()

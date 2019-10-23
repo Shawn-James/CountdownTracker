@@ -101,10 +101,13 @@ class EventController {
             events.sort(by: { $0.tags.count > $1.tags.count })
         case .creationDate:
             events.sort(by: { $0.creationDate > $1.creationDate })
+        case .creationDateReversed:
+            events.sort(by: { $0.creationDate < $1.creationDate })
         case .modifiedDate:
             events.sort(by: { $0.modifiedDate > $1.modifiedDate })
+        case .modifiedDateReversed:
+            events.sort(by: { $0.modifiedDate < $1.modifiedDate })
         }
-        
         saveEventsToPersistenceStore()
     }
     
@@ -247,15 +250,17 @@ class EventController {
         case soonToLate = "End date ↓"
         case lateToSoon = "End date ↑"
         case creationDate = "Date created ↓"
+        case creationDateReversed = "Date created ↑"
         case modifiedDate = "Date modified ↓"
+        case modifiedDateReversed = "Date modified ↑"
         case numberOfTags = "Number of tags ↓"
         case numberOfTagsReversed = "Number of tags ↑"
     }
     
     enum FilterStyle: String, CaseIterable {
         case none = "(none)"
-        case noLaterThanDate = "Now → end date"
-        case noSoonerThanDate = "End date → ∞"
+        case noLaterThanDate = "Now → ..."
+        case noSoonerThanDate = "... → ∞"
         case tag = "Tag"
     }
 }
