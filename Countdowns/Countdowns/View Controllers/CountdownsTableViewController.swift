@@ -14,6 +14,8 @@ class CountdownsTableViewController: UITableViewController {
     
     var eventController = EventController.shared
     
+    @IBOutlet weak var sortButton: UIBarButtonItem!
+    
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
@@ -23,7 +25,16 @@ class CountdownsTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
+    func reloadViews() {
         tableView.reloadData()
+        if eventController.currentFilterStyle != .none {
+            sortButton.tintColor = .systemRed
+        } else {
+            sortButton.tintColor = .systemBlue
+        }
     }
 
     // MARK: - Table view data source

@@ -111,6 +111,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="sortButton" destination="SXq-Q7-m4x" id="8WK-14-khD"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9ah-XT-2RH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -518,6 +521,6 @@
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="NXY-25-GDQ"/>
+        <segue reference="VuG-8E-PPl"/>
     </inferredMetricsTieBreakers>
 </document>

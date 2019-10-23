@@ -8,7 +8,9 @@
 
 import UIKit
 
-protocol SortFilterViewControllerDelegate: UITableViewController {}
+protocol SortFilterViewControllerDelegate {
+    func reloadViews()
+}
 
 class SortFilterViewController: UIViewController {
     // MARK: - Properties
@@ -96,7 +98,7 @@ class SortFilterViewController: UIViewController {
         EventController.shared.currentFilterDate = datePicker.date
         EventController.shared.sort(by: sortChoice)
         
-        delegate?.tableView.reloadData()
+        delegate?.reloadViews()
         dismiss(animated: true, completion: nil)
     }
 }

@@ -261,6 +261,6 @@ class EventController {
         case none = "(none)"
         case noLaterThanDate = "Now → ..."
         case noSoonerThanDate = "... → ∞"
-        case tag = "Tag"
+        case tag = "Tag..."
     }
 }

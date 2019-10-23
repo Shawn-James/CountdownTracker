@@ -8,7 +8,9 @@
 
 import UIKit
 
-protocol AddEventViewControllerDelegate: UITableViewController {}
+protocol AddEventViewControllerDelegate {
+    func reloadViews()
+}
 
 protocol EditEventViewControllerDelegate {
     func updateViews()
@@ -144,7 +146,7 @@ class AddEditEventViewController: UIViewController {
                 tags: tags, note: note, hasTime: hasCustomTime
             ))
             
-            addEventDelegate?.tableView.reloadData()
+            addEventDelegate?.reloadViews()
         // edit event (if editing)
         } else {
             EventController.shared.update(
