@@ -45,6 +45,11 @@ class CountdownsTableViewController: UITableViewController {
         }
 
         cell.event = eventController.filteredEvents[indexPath.row]
+        if indexPath.row % 2 == 0 {
+            cell.backgroundColor = UIColor(named: .secondaryCellBackgroundColor)
+        } else {
+            cell.backgroundColor = UIColor(named: .cellBackgroundColor)
+        }
 
         return cell
     }

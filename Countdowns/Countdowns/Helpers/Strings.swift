@@ -17,6 +17,10 @@ extension String {
     static let editEventSegue = "EditEventSegue"
     static let sortFilterSegue = "SortFilterSegue"
     
+    // MARK: - Colors
+    static let cellBackgroundColor = "cellBackgroundColor"
+    static let secondaryCellBackgroundColor = "secondaryCellBackgroundColor"
+    
     // MARK: - Methods
     func stripMultiSpace() -> String {
         var string = self
