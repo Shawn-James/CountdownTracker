@@ -22,10 +22,10 @@ class CountdownsTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem)
-        reloadViews()
+        updateViews()
     }
     
-    func reloadViews() {
+    func updateViews() {
         tableView.reloadData()
         if eventController.currentFilterStyle != .none {
             sortButton.tintColor = .systemRed
@@ -77,7 +77,7 @@ class CountdownsTableViewController: UITableViewController {
 
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+        updateViews()
     }
 
     // MARK: - Navigation

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol AddEventViewControllerDelegate {
-    func reloadViews()
+    func updateViews()
 }
 
 protocol EditEventViewControllerDelegate {
@@ -152,7 +152,7 @@ class AddEditEventViewController: UIViewController {
                 tags: tags, note: note, hasTime: hasCustomTime
             ))
             
-            addEventDelegate?.reloadViews()
+            addEventDelegate?.updateViews()
         // edit event (if editing)
         } else {
             EventController.shared.update(

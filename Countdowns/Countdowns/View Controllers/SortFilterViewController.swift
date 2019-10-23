@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SortFilterViewControllerDelegate {
-    func reloadViews()
+    func updateViews()
 }
 
 class SortFilterViewController: UIViewController {
@@ -106,7 +106,7 @@ class SortFilterViewController: UIViewController {
         EventController.shared.currentFilterDate = datePicker.date
         EventController.shared.sort(by: sortChoice)
         
-        delegate?.reloadViews()
+        delegate?.updateViews()
         dismiss(animated: true, completion: nil)
     }
 }
