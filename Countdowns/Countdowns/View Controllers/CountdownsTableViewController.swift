@@ -65,23 +65,9 @@ class CountdownsTableViewController: UITableViewController {
         if editingStyle == .delete {
             let event = eventController.filteredEvents[indexPath.row]
             confirmDeletion(for: event, at: indexPath)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        let event = eventController.filteredEvents[fromIndexPath.row]
-        eventController.move(event, to: to.row)
-        
-        var colorIndex = 0
-        for cell in tableView.visibleCells {
-            guard let cell = cell as? CountdownTableViewCell else { return }
-            updateCellColor(for: cell, at: colorIndex)
-            colorIndex += 1
         }
     }
+
 
     // MARK: - Navigation
 

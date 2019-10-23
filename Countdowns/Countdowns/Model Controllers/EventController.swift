@@ -189,15 +189,6 @@ class EventController {
         saveEventsToPersistenceStore()
     }
     
-    func move(_ event: Event, to newIndex: Int) {
-        guard let oldIndex = events.firstIndex(of: event) else {
-            print("ERROR: Cannot move event; not in list.")
-            return
-        }
-        events.remove(at: oldIndex)
-        events.insert(event, at: newIndex)
-    }
-    
     func delete(_ event: Event) {
         guard let index = events.firstIndex(of: event) else {
             fatalError("Event is not in EventController's `events` list.")
