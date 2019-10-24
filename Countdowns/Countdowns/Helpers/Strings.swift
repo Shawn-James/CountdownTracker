@@ -40,6 +40,13 @@ extension String {
         return "The countdown for \"\(event.name)\" is over!"
     }
     
+    // MARK: - Images
+    
+    static let sortImageInactive = "arrow.up.arrow.down.square"
+    static let sortImageActive = "arrow.up.arrow.down.square.fill"
+    static let archiveImageInactive = "archivebox"
+    static let archiveImageActive = "archivebox.fill"
+    
     // MARK: - Methods
     
     func stripMultiSpace() -> String {

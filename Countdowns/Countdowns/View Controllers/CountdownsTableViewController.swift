@@ -48,8 +48,10 @@ class CountdownsTableViewController: UITableViewController {
         
         if eventController.currentFilterStyle != .none {
             sortButton.tintColor = .systemRed
+            sortButton.image = UIImage(systemName: .sortImageActive, withConfiguration: nil)
         } else {
             sortButton.tintColor = .systemBlue
+            sortButton.image = UIImage(systemName: .sortImageInactive, withConfiguration: nil)
         }
     }
 
