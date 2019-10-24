@@ -93,18 +93,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Countdowns" id="2u1-n4-uja">
-                        <leftBarButtonItems>
-                            <barButtonItem title="Settings" image="gear" catalog="system" id="q0e-il-E6m">
-                                <connections>
-                                    <segue destination="yPV-1C-xKv" kind="show" id="U6T-jG-vV4"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="Sort/Filter" image="arrow.up.arrow.down.square" catalog="system" id="SXq-Q7-m4x">
-                                <connections>
-                                    <segue destination="bFk-uD-UbQ" kind="presentation" identifier="SortFilterSegue" id="2cr-2T-6M3"/>
-                                </connections>
-                            </barButtonItem>
-                        </leftBarButtonItems>
+                        <barButtonItem key="leftBarButtonItem" title="Sort/Filter" image="arrow.up.arrow.down.square" catalog="system" id="SXq-Q7-m4x">
+                            <connections>
+                                <segue destination="bFk-uD-UbQ" kind="presentation" identifier="SortFilterSegue" id="2cr-2T-6M3"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ig0-xE-DsF">
                             <connections>
                                 <segue destination="NEJ-Cn-Agq" kind="presentation" identifier="AddEventSegue" id="VuG-8E-PPl"/>
@@ -205,7 +198,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFt-y0-0dv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1050.7246376811595" y="-520.3125"/>
+            <point key="canvasLocation" x="1051" y="-520"/>
         </scene>
         <!--Add Event-->
         <scene sceneID="uFT-Hf-SYz">
@@ -359,7 +352,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2ZD-n4-1XG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1923.1884057971015" y="-280.58035714285711"/>
+            <point key="canvasLocation" x="2720" y="-520"/>
         </scene>
         <!--Event Detail-->
         <scene sceneID="ze6-9N-8kh">
@@ -473,7 +466,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9QV-Xt-xKH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1918.840579710145" y="485.49107142857139"/>
+            <point key="canvasLocation" x="1938" y="396"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8wJ-OE-6hS">
@@ -493,26 +486,9 @@
             </objects>
             <point key="canvasLocation" x="140.57971014492756" y="164.73214285714286"/>
         </scene>
-        <!--Settings-->
-        <scene sceneID="R9g-wK-Cc1">
-            <objects>
-                <viewController title="Settings" id="yPV-1C-xKv" customClass="SettingsViewController" customModule="Countdowns" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="QDh-5i-euO">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="vIN-nR-bVb"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="ZtN-Qr-Q2k"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zVh-f6-flD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1051" y="875"/>
-        </scene>
     </scenes>
     <resources>
         <image name="arrow.up.arrow.down.square" catalog="system" width="64" height="56"/>
-        <image name="gear" catalog="system" width="64" height="58"/>
         <namedColor name="backgroundColor">
             <color red="0.019999999552965164" green="0.019999999552965164" blue="0.018999999389052391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
