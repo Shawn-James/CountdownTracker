@@ -24,6 +24,10 @@ class AddEditEventViewController: UIViewController {
     var editEventDelegate: EditEventViewControllerDelegate?
     var event: Event?
     
+    var hasCustomTime: Bool {
+        return customTimeSwitch.isOn
+    }
+    
     // MARK: - Outlets
     
     @IBOutlet weak var sceneTitleLabel: UILabel!
@@ -55,7 +59,7 @@ class AddEditEventViewController: UIViewController {
         super.touchesBegan(touches, with: event)
     }
     
-    // MARK: - Action Methods
+    // MARK: - IB Methods
     
     @IBAction func viewSegmentControlChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
@@ -104,42 +108,10 @@ class AddEditEventViewController: UIViewController {
     @IBAction func saveButtonTapped(_ sender: UIButton) {
         guard let eventName = eventNameField.text, !eventName.isEmpty
             else { return }
+
+        let eventDate = getEventDateFromPickers()
         
-        let hasCustomTime = customTimeSwitch.isOn
-        
-        // get date from pickers
-        let eventDate: Date
-        if !hasCustomTime {
-            eventDate = datePicker.date
-        } else {
-            let date = Calendar.autoupdatingCurrent.dateComponents(
-                [.year, .month, .day],
-                from: datePicker.date
-            )
-            let time = Calendar.autoupdatingCurrent.dateComponents(
-                [.hour, .minute],
-                from: timePicker.date
-            )
-            
-            let dateComponents = DateComponents(
-                calendar: .autoupdatingCurrent, timeZone: .autoupdatingCurrent,
-                year: date.year, month: date.month, day: date.day,
-                hour: time.hour, minute: time.minute
-            )
-            guard let dateFromComponents = dateComponents.date else { return }
-            
-            eventDate = dateFromComponents
-        }
-        
-        // get tags from text field
-        var tags = [Tag]()
-        
-        if let tagsText = tagsField.text, !tagsText.isEmpty {
-            let subTags = tagsText.split(separator: .tagSeparator, omittingEmptySubsequences: true)
-            for subTag in subTags {
-                tags.append(String(subTag).stripMultiSpace())
-            }
-        }
+        let tags = getTagDataFromField()
         
         // get note
         let hasNote = !notesTextView.text.isEmpty
@@ -148,23 +120,7 @@ class AddEditEventViewController: UIViewController {
         // dismiss add/edit scene before adding/editing event
         dismiss(animated: true, completion: nil)
         
-        // add new event (if adding)
-        if event == nil {
-            EventController.shared.create(Event(
-                name: eventName, dateTime: eventDate,
-                tags: tags, note: note, hasTime: hasCustomTime
-            ))
-            
-            addEventDelegate?.updateViews()
-        // edit event (if editing)
-        } else {
-            EventController.shared.update(
-                event!, with: eventName, dateTime: eventDate,
-                tags: tags, note: note, hasTime: hasCustomTime
-            )
-            
-            editEventDelegate?.updateViews()
-        }
+        finalizeEventFromData(name: eventName, date: eventDate, tags: tags, note: note)
     }
     
     @IBAction func cancelTapped(_ sender: UIButton) {
@@ -189,6 +145,63 @@ class AddEditEventViewController: UIViewController {
         notesTextView.text = event.note
         
         updatePickersMinMax()
+    }
+    
+    private func getEventDateFromPickers() -> Date {
+        if !hasCustomTime {
+            return datePicker.date
+        } else {
+            let date = Calendar.autoupdatingCurrent.dateComponents(
+                [.year, .month, .day],
+                from: datePicker.date
+            )
+            let time = Calendar.autoupdatingCurrent.dateComponents(
+                [.hour, .minute],
+                from: timePicker.date
+            )
+            
+            let dateComponents = DateComponents(
+                calendar: .autoupdatingCurrent, timeZone: .autoupdatingCurrent,
+                year: date.year, month: date.month, day: date.day,
+                hour: time.hour, minute: time.minute
+            )
+            guard let dateFromComponents = dateComponents.date else { return Date() }
+            
+            return dateFromComponents
+        }
+    }
+    
+    private func getTagDataFromField() -> [Tag] {
+        var tags = [Tag]()
+        
+        if let tagsText = tagsField.text, !tagsText.isEmpty {
+            let subTags = tagsText.split(separator: .tagSeparator, omittingEmptySubsequences: true)
+            for subTag in subTags {
+                tags.append(String(subTag).stripMultiSpace())
+            }
+        }
+        
+        return tags
+    }
+    
+    private func finalizeEventFromData(name: String, date: Date, tags: [Tag], note: String) {
+        if event == nil {
+            // add new event (if adding)
+            EventController.shared.create(Event(
+                name: name, dateTime: date,
+                tags: tags, note: note, hasTime: hasCustomTime
+            ))
+            
+            addEventDelegate?.updateViews()
+        } else {
+            // edit event (if editing)
+            EventController.shared.update(
+                event!, with: name, dateTime: date,
+                tags: tags, note: note, hasTime: hasCustomTime
+            )
+            
+            editEventDelegate?.updateViews()
+        }
     }
     
     private func updatePickersMinMax() {
