@@ -12,9 +12,10 @@
         <scene sceneID="gIe-MN-viU">
             <objects>
                 <tableViewController title="Countdowns Table" id="Oe1-rr-SLr" customClass="CountdownsTableViewController" customModule="Countdowns" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="DkJ-UJ-fob">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="DkJ-UJ-fob">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" name="backgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CountdownCell" rowHeight="100" id="MbF-Tr-cSK" customClass="CountdownTableViewCell" customModule="Countdowns" customModuleProvider="target">
                                 <rect key="frame" x="20" y="55.5" width="374" height="100"/>
@@ -469,6 +470,9 @@
     </scenes>
     <resources>
         <image name="arrow.up.arrow.down.square" catalog="system" width="64" height="56"/>
+        <namedColor name="backgroundColor">
+            <color red="0.019999999552965164" green="0.019999999552965164" blue="0.018999999389052391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="cellBackgroundColor">
             <color red="0.10000000149011612" green="0.10000000149011612" blue="0.090000003576278687" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
