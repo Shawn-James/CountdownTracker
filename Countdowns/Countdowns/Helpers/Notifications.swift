@@ -11,6 +11,8 @@ import UserNotifications
 
 class NotificationsHelper {
     
+    // MARK: - Singleton
+    
     private static var _shared: NotificationsHelper?
     
     static var shared: NotificationsHelper {
@@ -21,6 +23,8 @@ class NotificationsHelper {
         }
     }
     
+    // MARK: - Properties
+    
     var notificationsAllowed: Bool {
         get {
             return UserDefaults.standard.bool(forKey: .notificationsAllowed)
@@ -30,6 +34,8 @@ class NotificationsHelper {
         }
     }
     
+    // MARK: - Methods
+    
     func setNotification(for event: Event) {
         let center = UNUserNotificationCenter.current()
         center.getNotificationSettings { settings in
@@ -37,8 +43,8 @@ class NotificationsHelper {
             
             if settings.alertSetting == .enabled {
                 let content = UNMutableNotificationContent()
-                content.title = "Countdown ended!"
-                content.body = "Test body"
+                content.title = .countdownEndedNotificationTitle
+                content.body = .countdownEndedNotificationBody(for: event)
                 if settings.soundSetting == .enabled {
                     content.sound = .default
                 } else {

@@ -12,23 +12,34 @@ extension String {
     static let countdownCellReuseID = "CountdownCell"
     
     // MARK: - Segue Identifiers
+    
     static let addEventSegue = "AddEventSegue"
     static let eventDetailSegue = "EventDetailSegue"
     static let editEventSegue = "EditEventSegue"
     static let sortFilterSegue = "SortFilterSegue"
     
     // MARK: - Colors
+    
     static let cellBackgroundColor = "cellBackgroundColor"
     static let secondaryCellBackgroundColor = "secondaryCellBackgroundColor"
     
     // MARK: - User Defaults
+    
     static let currentSortStyle = "currentSortStyle"
     static let currentFilterStyle = "currentFilterStyle"
     static let currentFilterTag = "currentFilterTag"
     static let currentFilterDate = "currentFilterDate"
     static let notificationsAllowed = "notificationsAllowed"
     
+    // MARK: - Notifications
+    
+    static let countdownEndedNotificationTitle = "It's time!"
+    static func countdownEndedNotificationBody(for event: Event) -> String {
+        return "The countdown for \"\(event.name)\" is over!"
+    }
+    
     // MARK: - Methods
+    
     func stripMultiSpace() -> String {
         var string = self
         
