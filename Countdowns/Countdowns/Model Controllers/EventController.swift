@@ -131,7 +131,8 @@ class EventController {
     
     func delete(_ event: Event) {
         guard let index = events.firstIndex(of: event) else {
-            fatalError("Event is not in EventController's `events` list.")
+            print("ERROR: event is not in EventController's `events` list.")
+            return
         }
         events.remove(at: index)
         
@@ -216,7 +217,7 @@ class EventController {
     
     private func saveEventsToPersistenceStore() {
         guard let url = eventsURL else {
-            print("cannot save items list; invalid url?")
+            print("Invalid url for events list.")
             return
         }
         
@@ -232,12 +233,12 @@ class EventController {
     private func loadEventsFromPersistenceStore() {
         let fm = FileManager.default
         guard let url = eventsURL else {
-            print("cannot load; invalid url?")
+            print("Invalid url for events list.")
             return
         }
         if !fm.fileExists(atPath: url.path) {
-            print("Event list data file does not yet exist! Loading test data.")
-            events = TestData.events
+            print("Event list data file does not yet exist!")
+            return
         }
         
         do {

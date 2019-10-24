@@ -26,8 +26,6 @@
 		99EF7D0E235E14D90092F4AB /* AddEditEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D0D235E14D90092F4AB /* AddEditEventViewController.swift */; };
 		99EF7D12235E18DE0092F4AB /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D11235E18DE0092F4AB /* Event.swift */; };
 		99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D13235E18EA0092F4AB /* EventController.swift */; };
-		99EF7D16235E24E80092F4AB /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D15235E24E80092F4AB /* TestData.swift */; };
-		99EF7D1B235E446E0092F4AB /* jonElieEinstein.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 99EF7D1A235E3F550092F4AB /* jonElieEinstein.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,8 +50,6 @@
 		99EF7D0D235E14D90092F4AB /* AddEditEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditEventViewController.swift; sourceTree = "<group>"; };
 		99EF7D11235E18DE0092F4AB /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		99EF7D13235E18EA0092F4AB /* EventController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
-		99EF7D15235E24E80092F4AB /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
-		99EF7D1A235E3F550092F4AB /* jonElieEinstein.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jonElieEinstein.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,7 +132,6 @@
 				998FB4572361029C00B1AF60 /* Notifications.swift */,
 				9972B50F235E0AA00015E56B /* Strings.swift */,
 				99480ADA235F5DBD00DC1D48 /* DateFormatters.swift */,
-				99EF7D15235E24E80092F4AB /* TestData.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -163,7 +158,6 @@
 			isa = PBXGroup;
 			children = (
 				9972B505235E09A30015E56B /* Default-568h@2x.png */,
-				99EF7D1A235E3F550092F4AB /* jonElieEinstein.jpg */,
 			);
 			path = img;
 			sourceTree = "<group>";
@@ -227,7 +221,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				99251D4E235E09420060D9FF /* LaunchScreen.storyboard in Resources */,
-				99EF7D1B235E446E0092F4AB /* jonElieEinstein.jpg in Resources */,
 				9972B506235E09A30015E56B /* Default-568h@2x.png in Resources */,
 				99251D4B235E09420060D9FF /* Assets.xcassets in Resources */,
 				99251D49235E09400060D9FF /* Main.storyboard in Resources */,
@@ -246,7 +239,6 @@
 				99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */,
 				99251D42235E09400060D9FF /* AppDelegate.swift in Sources */,
 				99480ADB235F5DBD00DC1D48 /* DateFormatters.swift in Sources */,
-				99EF7D16235E24E80092F4AB /* TestData.swift in Sources */,
 				9972B508235E0A2E0015E56B /* CountdownsTableViewController.swift in Sources */,
 				99EF7D12235E18DE0092F4AB /* Event.swift in Sources */,
 				9972B510235E0AA00015E56B /* Strings.swift in Sources */,
