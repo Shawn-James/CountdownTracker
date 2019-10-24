@@ -44,7 +44,7 @@ class AddEditEventViewController: UIViewController {
     @IBOutlet weak var notesTextView: UITextView!
     @IBOutlet weak var saveButton: UIButton!
     
-    // MARK: - Overridden Super-Funcs
+    // MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,14 +54,19 @@ class AddEditEventViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        eventNameField.becomeFirstResponder()
+    }
+    
+    // MARK: - UI Methods
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
         super.touchesBegan(touches, with: event)
     }
     
-    // MARK: - IB Methods
-    
     @IBAction func viewSegmentControlChanged(_ sender: UISegmentedControl) {
+        view.endEditing(true)
         switch sender.selectedSegmentIndex {
         case 0:
             dateLabel.isHidden = false
@@ -74,10 +79,6 @@ class AddEditEventViewController: UIViewController {
             tagsField.isHidden = true
             notesLabel.isHidden = true
             notesTextView.isHidden = true
-            
-            if notesTextView.isFirstResponder {
-                notesTextView.resignFirstResponder()
-            }
         case 1:
             dateLabel.isHidden = true
             datePicker.isHidden = true
@@ -102,6 +103,7 @@ class AddEditEventViewController: UIViewController {
             timePicker.isHidden = true
         }
         
+        view.endEditing(true)
         updatePickersMinMax()
     }
     
@@ -128,7 +130,12 @@ class AddEditEventViewController: UIViewController {
     }
     
     @IBAction func datePickerChanged(_ sender: UIDatePicker) {
+        view.endEditing(true)
         updatePickersMinMax()
+    }
+    
+    @IBAction func timePickerTouched(_ sender: UIDatePicker) {
+        view.endEditing(true)
     }
     
     // MARK: - Private Methods
