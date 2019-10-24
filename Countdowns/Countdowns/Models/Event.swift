@@ -15,7 +15,6 @@ class Event: Codable {
     var dateTime: Date
     var tags: [Tag]
     var note: String = ""
-    var imageData: Data?
     var hasTime: Bool
     var creationDate: Date
     var modifiedDate: Date
@@ -45,15 +44,12 @@ class Event: Codable {
     }
     
     // MARK: - Init
-    init(name: String, dateTime: Date, tags: [Tag] = [], note: String = "", image: UIImage? = nil, hasTime: Bool = false) {
+    init(name: String, dateTime: Date, tags: [Tag] = [], note: String = "", hasTime: Bool = false) {
         self.name = name
         self.dateTime = dateTime
         self.tags = tags
         self.note = note
         self.hasTime = hasTime
-        if let image = image, let imageData = image.jpegData(compressionQuality: 1.0) {
-            self.imageData = imageData
-        }
         self.creationDate = Date()
         self.modifiedDate = creationDate
         self.uuid = UUID().uuidString
