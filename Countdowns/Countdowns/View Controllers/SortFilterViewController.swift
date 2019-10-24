@@ -98,7 +98,18 @@ class SortFilterViewController: UIViewController {
         let filterChoiceIndex = filterPicker.selectedRow(inComponent: 0)
         let filterChoice = EventController.FilterStyle.allCases[filterChoiceIndex]
         let tagChoiceIndex = tagPicker.selectedRow(inComponent: 0)
-        let tagChoice = EventController.shared.tags[tagChoiceIndex]
+        
+        let tagChoice: Tag
+        if EventController.shared.tags.isEmpty {
+            if filterChoice == .tag {
+                showEmptyTagListAlert()
+                return
+            } else {
+                tagChoice = ""
+            }
+        } else {
+            tagChoice = EventController.shared.tags[tagChoiceIndex]
+        }
         
         EventController.shared.currentSortStyle = sortChoice
         EventController.shared.currentFilterStyle = filterChoice
@@ -108,5 +119,22 @@ class SortFilterViewController: UIViewController {
         
         delegate?.updateViews()
         dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - Private Methods
+    
+    private func showEmptyTagListAlert() {
+        let alert = UIAlertController(
+            title: "Cannot filter by tag!",
+            message: "No tags are currently being used in your countdowns; please choose another filter style.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(
+            title: "OK",
+            style: .default,
+            handler: nil
+        ))
+        
+        present(alert, animated: true, completion: nil)
     }
 }
