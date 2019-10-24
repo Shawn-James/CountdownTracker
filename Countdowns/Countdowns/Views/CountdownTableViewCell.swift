@@ -9,6 +9,9 @@
 import UIKit
 
 class CountdownTableViewCell: UITableViewCell {
+    
+    // MARK: - Properties
+    
     var parentViewController: CountdownsTableViewController?
     
     var timeRemainingTimer: Timer?
