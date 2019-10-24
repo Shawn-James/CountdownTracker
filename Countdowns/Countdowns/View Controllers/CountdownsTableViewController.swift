@@ -22,18 +22,31 @@ class CountdownsTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         updateViews()
     }
     
     func updateViews() {
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        for event in eventController.events {
+            if event.dateTime < Date() {
+                if !event.didNotifyDone {
+                    countdownEndAlert(for: event)
+                    eventController.archive(event)
+                } else {
+                    eventController.archive(event)
+                }
+            }
+        }
         tableView.reloadData()
         if eventController.currentFilterStyle != .none {
             sortButton.tintColor = .systemRed
         } else {
             sortButton.tintColor = .systemBlue
-        }
-        if let indexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: indexPath, animated: true)
         }
     }
 
@@ -127,6 +140,19 @@ class CountdownsTableViewController: UITableViewController {
                 self.eventController.delete(event)
                 self.tableView.deleteRows(at: [indexPath], with: .fade)
         }))
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func countdownEndAlert(for event: Event) {
+        let alert = UIAlertController(
+            title: .countdownEndedNotificationTitle,
+            message: .countdownEndedNotificationBody(for: event),
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { alert in
+            event.didNotifyDone = true
+        })
         
         present(alert, animated: true, completion: nil)
     }

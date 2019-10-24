@@ -145,6 +145,9 @@ class AddEditEventViewController: UIViewController {
         let hasNote = !notesTextView.text.isEmpty
         let note: String = hasNote ? notesTextView.text : ""
         
+        // dismiss add/edit scene before adding/editing event
+        dismiss(animated: true, completion: nil)
+        
         // add new event (if adding)
         if event == nil {
             EventController.shared.create(Event(
@@ -162,8 +165,6 @@ class AddEditEventViewController: UIViewController {
             
             editEventDelegate?.updateViews()
         }
-        
-        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func cancelTapped(_ sender: UIButton) {

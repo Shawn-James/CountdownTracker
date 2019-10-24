@@ -20,7 +20,7 @@ class Event: Codable {
     var creationDate: Date
     var modifiedDate: Date
     
-    var postEventNote: String?
+    var didNotifyDone: Bool = false
     var archived: Bool = false
     
     // MARK: - Computed Properties
