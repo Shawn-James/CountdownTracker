@@ -64,9 +64,6 @@ class NotificationsHelper {
                     }
                 }
             }
-            if settings.badgeSetting == .enabled {
-                // badge
-            }
         }
     }
     

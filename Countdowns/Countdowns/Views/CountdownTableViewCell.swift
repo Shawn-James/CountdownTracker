@@ -9,18 +9,24 @@
 import UIKit
 
 class CountdownTableViewCell: UITableViewCell {
+    var parentViewController: CountdownsTableViewController?
+    
+    var timeRemainingTimer: Timer?
+    
     var event: Event? {
         didSet {
             guard let event = event else { return }
             
             titleLabel.text = event.name
-            timeRemainingLabel.text = DateFormatter.formattedTimeRemaining(for: event)
             tagsLabel.text = event.tagsText
             if let data = event.imageData, let image = UIImage(data: data) {
                 eventImage.image = image
             } else {
                 eventImage.image = nil
             }
+            
+            updateTimeText()
+            updateTimer()
         }
     }
     
@@ -40,8 +46,27 @@ class CountdownTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
-
+    
+    // MARK: - Private Methods
+    
+    private func updateTimeText() {
+        guard let event = event else { return }
+        timeRemainingLabel.text = DateFormatter.formattedTimeRemaining(for: event)
+    }
+    
+    private func updateTimer(_ timer: Timer = Timer()) {
+        guard let event = event else { return }
+        
+        updateTimeText()
+        // if time remaining < 1 day, update in a minute
+        if event.timeInterval < 1 {
+            parentViewController?.updateViews()
+        } else if event.timeInterval < 3660 {
+            timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: updateTimer(_:))
+        } else if event.timeInterval < 86_400 {
+            timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: updateTimer(_:))
+        }
+    }
 }

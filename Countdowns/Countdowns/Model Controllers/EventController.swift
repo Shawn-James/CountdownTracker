@@ -179,6 +179,10 @@ class EventController {
         event.modifiedDate = Date()
         
         saveEventsToPersistenceStore()
+        
+        // update notification
+        NotificationsHelper.shared.cancelNotification(for: event)
+        NotificationsHelper.shared.setNotification(for: event)
     }
     
     func delete(_ event: Event) {

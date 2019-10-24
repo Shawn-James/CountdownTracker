@@ -35,14 +35,16 @@ class CountdownsTableViewController: UITableViewController {
         for event in eventController.events {
             if event.dateTime < Date() {
                 if !event.didNotifyDone {
-                    countdownEndAlert(for: event)
+                    alertForCountdownEnd(for: event)
                     eventController.archive(event)
                 } else {
                     eventController.archive(event)
                 }
             }
         }
+        
         tableView.reloadData()
+        
         if eventController.currentFilterStyle != .none {
             sortButton.tintColor = .systemRed
         } else {
@@ -69,6 +71,7 @@ class CountdownsTableViewController: UITableViewController {
         }
 
         updateCellColor(for: cell, at: indexPath.row)
+        cell.parentViewController = self
 
         return cell
     }
@@ -114,7 +117,7 @@ class CountdownsTableViewController: UITableViewController {
         }
     }
     
-    // MARK: - Private
+    // MARK: - Private Methods
     
     private func updateCellColor(for cell: CountdownTableViewCell, at indexRow: Int) {
         cell.event = eventController.filteredEvents[indexRow]
@@ -144,7 +147,7 @@ class CountdownsTableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    private func countdownEndAlert(for event: Event) {
+    private func alertForCountdownEnd(for event: Event) {
         let alert = UIAlertController(
             title: .countdownEndedNotificationTitle,
             message: .countdownEndedNotificationBody(for: event),
