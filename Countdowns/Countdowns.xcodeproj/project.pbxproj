@@ -14,7 +14,6 @@
 		99251D4E235E09420060D9FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99251D4C235E09420060D9FF /* LaunchScreen.storyboard */; };
 		99480ADB235F5DBD00DC1D48 /* DateFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99480ADA235F5DBD00DC1D48 /* DateFormatters.swift */; };
 		99480ADD235F767700DC1D48 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99480ADC235F767700DC1D48 /* Tag.swift */; };
-		99480ADF235F768000DC1D48 /* TagController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99480ADE235F768000DC1D48 /* TagController.swift */; };
 		99480AE1235FA13300DC1D48 /* PickerDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99480AE0235FA13300DC1D48 /* PickerDelegates.swift */; };
 		9972B506235E09A30015E56B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9972B505235E09A30015E56B /* Default-568h@2x.png */; };
 		9972B508235E0A2E0015E56B /* CountdownsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972B507235E0A2E0015E56B /* CountdownsTableViewController.swift */; };
@@ -38,7 +37,6 @@
 		99251D4F235E09420060D9FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		99480ADA235F5DBD00DC1D48 /* DateFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatters.swift; sourceTree = "<group>"; };
 		99480ADC235F767700DC1D48 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
-		99480ADE235F768000DC1D48 /* TagController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagController.swift; sourceTree = "<group>"; };
 		99480AE0235FA13300DC1D48 /* PickerDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerDelegates.swift; sourceTree = "<group>"; };
 		9972B505235E09A30015E56B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		9972B507235E0A2E0015E56B /* CountdownsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownsTableViewController.swift; sourceTree = "<group>"; };
@@ -149,7 +147,6 @@
 			isa = PBXGroup;
 			children = (
 				99EF7D13235E18EA0092F4AB /* EventController.swift */,
-				99480ADE235F768000DC1D48 /* TagController.swift */,
 			);
 			path = "Model Controllers";
 			sourceTree = "<group>";
@@ -235,7 +232,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				99EF7D08235E13990092F4AB /* EventDetailViewController.swift in Sources */,
-				99480ADF235F768000DC1D48 /* TagController.swift in Sources */,
 				99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */,
 				99251D42235E09400060D9FF /* AppDelegate.swift in Sources */,
 				99480ADB235F5DBD00DC1D48 /* DateFormatters.swift in Sources */,
