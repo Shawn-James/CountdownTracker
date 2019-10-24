@@ -23,11 +23,6 @@ class CountdownTableViewCell: UITableViewCell {
             
             titleLabel.text = event.name
             tagsLabel.text = event.tagsText
-            if let data = event.imageData, let image = UIImage(data: data) {
-                eventImage.image = image
-            } else {
-                eventImage.image = nil
-            }
             
             updateTimeText()
             updateTimer()
@@ -38,7 +33,6 @@ class CountdownTableViewCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timeRemainingLabel: UILabel!
-    @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var tagsLabel: UILabel!
     
     // MARK: - View Lifecycle

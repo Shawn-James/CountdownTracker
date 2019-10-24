@@ -34,10 +34,6 @@ class EventDetailViewController: UIViewController {
         tagsLabel.text = event.tagsText
         noteView.text = event.note
         
-        if let imageData = event.imageData, let image = UIImage(data: imageData) {
-            imageView.image = image
-        }
-        
         let formatter = DateFormatter.eventDateFormatter
         if !event.hasTime { formatter.timeStyle = .none }
         
