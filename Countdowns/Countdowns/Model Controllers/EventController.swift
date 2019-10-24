@@ -15,62 +15,6 @@ class EventController {
     
     private(set) var archivedEvents = [Event]()
     
-    // MARK: - User Defaults
-    
-    var currentSortStyle: SortStyle {
-        get {
-            if let sortStyleRaw = UserDefaults.standard.string(forKey: .currentSortStyle),
-                let sortStyle = SortStyle(rawValue: sortStyleRaw) {
-                return sortStyle
-            } else {
-                return .soonToLate
-            }
-        }
-        set(newSortStyle) {
-            UserDefaults.standard.set(newSortStyle.rawValue, forKey: .currentSortStyle)
-        }
-    }
-    
-    var currentFilterStyle: FilterStyle {
-        get {
-            if let filterStyleRaw = UserDefaults.standard.string(forKey: .currentFilterStyle),
-                let filterStyle = FilterStyle(rawValue: filterStyleRaw) {
-                return filterStyle
-            } else {
-                return .none
-            }
-        }
-        set(newFilterStyle) {
-            UserDefaults.standard.set(newFilterStyle.rawValue, forKey: .currentFilterStyle)
-        }
-    }
-    
-    var currentFilterDate: Date {
-        get {
-            if let filterDate = UserDefaults.standard.object(forKey: .currentFilterDate) as? Date {
-                return filterDate
-            } else {
-                return Date()
-            }
-        }
-        set(newDate) {
-            UserDefaults.standard.set(newDate, forKey: .currentFilterDate)
-        }
-    }
-    
-    var currentFilterTag: Tag? {
-        get {
-            if let filterTag = UserDefaults.standard.string(forKey: .currentFilterTag) {
-                return filterTag
-            } else {
-                return nil
-            }
-        }
-        set(newTag) {
-            UserDefaults.standard.set(newTag, forKey: .currentFilterTag)
-        }
-    }
-    
     // MARK: - Computed Properties
     
     var filteredEvents: [Event] {
@@ -203,6 +147,62 @@ class EventController {
         saveArchivedEventsToPersistenceStore()
     }
     
+    // MARK: - User Defaults
+    
+    var currentSortStyle: SortStyle {
+        get {
+            if let sortStyleRaw = UserDefaults.standard.string(forKey: .currentSortStyle),
+                let sortStyle = SortStyle(rawValue: sortStyleRaw) {
+                return sortStyle
+            } else {
+                return .soonToLate
+            }
+        }
+        set(newSortStyle) {
+            UserDefaults.standard.set(newSortStyle.rawValue, forKey: .currentSortStyle)
+        }
+    }
+    
+    var currentFilterStyle: FilterStyle {
+        get {
+            if let filterStyleRaw = UserDefaults.standard.string(forKey: .currentFilterStyle),
+                let filterStyle = FilterStyle(rawValue: filterStyleRaw) {
+                return filterStyle
+            } else {
+                return .none
+            }
+        }
+        set(newFilterStyle) {
+            UserDefaults.standard.set(newFilterStyle.rawValue, forKey: .currentFilterStyle)
+        }
+    }
+    
+    var currentFilterDate: Date {
+        get {
+            if let filterDate = UserDefaults.standard.object(forKey: .currentFilterDate) as? Date {
+                return filterDate
+            } else {
+                return Date()
+            }
+        }
+        set(newDate) {
+            UserDefaults.standard.set(newDate, forKey: .currentFilterDate)
+        }
+    }
+    
+    var currentFilterTag: Tag? {
+        get {
+            if let filterTag = UserDefaults.standard.string(forKey: .currentFilterTag) {
+                return filterTag
+            } else {
+                return nil
+            }
+        }
+        set(newTag) {
+            UserDefaults.standard.set(newTag, forKey: .currentFilterTag)
+        }
+    }
+    
     // MARK: - Persistence
     
     private var eventsURL: URL? {
@@ -236,7 +236,8 @@ class EventController {
             return
         }
         if !fm.fileExists(atPath: url.path) {
-            print("error loading; items list data file does not yet exist")
+            print("Event list data file does not yet exist! Loading test data.")
+            events = TestData.events
         }
         
         do {
