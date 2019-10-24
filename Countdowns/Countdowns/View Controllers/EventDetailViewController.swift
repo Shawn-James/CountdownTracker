@@ -9,6 +9,7 @@
 import UIKit
 
 class EventDetailViewController: UIViewController {
+    
     // MARK: - Properties
     var event: Event?
     
@@ -26,6 +27,7 @@ class EventDetailViewController: UIViewController {
         updateViews()
     }
     
+    /// Populate views with event data
     func updateViews() {
         guard let event = event else { return }
         nameLabel.text = event.name
@@ -44,7 +46,6 @@ class EventDetailViewController: UIViewController {
     
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let editEventVC = segue.destination as? AddEditEventViewController,
             let event = event, segue.identifier == .editEventSegue

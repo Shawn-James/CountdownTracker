@@ -21,9 +21,9 @@ extension DateFormatter {
         return formatter
     }
     
+    /// Returns a nicely formatted string of the time remaining for an event.
     static func formattedTimeRemaining(for event: Event) -> String {
         let formatter = DateComponentsFormatter()
-        //if event.timeRemaining.duration > 31_536_000 {
         formatter.calendar = .autoupdatingCurrent
         formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
         formatter.unitsStyle = .full

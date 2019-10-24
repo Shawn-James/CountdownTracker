@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 return
         }
         
-        completionHandler([.alert, .badge, .sound])
+        completionHandler([.alert, .sound])
         endedEvent.didNotifyDone = true
     }
 }

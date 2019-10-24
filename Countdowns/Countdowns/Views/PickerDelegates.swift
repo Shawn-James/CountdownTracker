@@ -8,7 +8,10 @@
 
 import UIKit
 
+/// Delegates/DataSources for Sort/Filter scene pickers.
+
 // MARK: - Sort
+
 class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -24,6 +27,7 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
 }
 
 // MARK: - Filter
+
 class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
     let delegate: SortFilterViewController
     
@@ -50,6 +54,7 @@ class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelega
 }
 
 // MARK: - Filter by Tag
+
 class TagFilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1

@@ -28,12 +28,13 @@ class CountdownsTableViewController: UITableViewController {
         updateViews()
     }
     
+    /// Updates all cells (showing alerts for and removing events that have passed), reloads all table data, and colors the filter button as needed if the table is currently being filtered.
     func updateViews() {
         if let indexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: indexPath, animated: true)
         }
         for event in eventController.events {
-            if event.dateTime < Date() {
+            if event.dateTimeHasPassed {
                 if !event.didNotifyDone {
                     alertForCountdownEnd(for: event)
                     eventController.archive(event)
@@ -84,7 +85,6 @@ class CountdownsTableViewController: UITableViewController {
         }
     }
 
-
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -119,6 +119,7 @@ class CountdownsTableViewController: UITableViewController {
     
     // MARK: - Private Methods
     
+    /// Colors cells in alternating pattern (adaptive based on whether in light or dark mode).
     private func updateCellColor(for cell: CountdownTableViewCell, at indexRow: Int) {
         cell.event = eventController.filteredEvents[indexRow]
         if indexRow % 2 == 0 {
@@ -128,10 +129,11 @@ class CountdownsTableViewController: UITableViewController {
         }
     }
     
+    /// Shows an alert that asks for user confirmation to delete the given event.
     private func confirmDeletion(for event: Event, at indexPath: IndexPath) {
         let alert = UIAlertController(
             title: "Delete event?",
-            message: "Are you sure you want to delete event \"\(event.name)\"?",
+            message: "Are you sure you want to delete event \"\(event.name)\"? This cannot be undone.",
             preferredStyle: .alert
         )
         
@@ -147,6 +149,7 @@ class CountdownsTableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    /// Lets the user know that the countdown has ended.
     private func alertForCountdownEnd(for event: Event) {
         let alert = UIAlertController(
             title: .countdownEndedNotificationTitle,

@@ -24,14 +24,16 @@ class Event: Codable {
     
     // MARK: - Computed Properties
     
-    var eventPassed: Bool {
+    var dateTimeHasPassed: Bool {
         return Date() > dateTime
     }
 
+    /// Time remaining until event date/time in `TimeInterval` format
     var timeInterval: TimeInterval {
         return dateTime.timeIntervalSinceNow 
     }
     
+    /// A string representation of the event's complete list of tags
     var tagsText: String {
         var tagsText = ""
         for i in 0 ..< tags.count {

@@ -17,6 +17,7 @@ class CountdownTableViewCell: UITableViewCell {
     var timeRemainingTimer: Timer?
     
     var event: Event? {
+        // Populate subviews and set timer when event is set
         didSet {
             guard let event = event else { return }
             
@@ -44,21 +45,22 @@ class CountdownTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
     }
     
     // MARK: - Private Methods
     
+    /// Update the text of the 'time remaining' label from the event data and the current time.
     private func updateTimeText() {
         guard let event = event else { return }
         timeRemainingLabel.text = DateFormatter.formattedTimeRemaining(for: event)
     }
     
+    /// Update the 'time remaining' label based on the new timer and then update the timer.
+    /// If the time is up, update the table view controller's views to show the alert and archive the event, removing this cell from view.
     private func updateTimer(_ timer: Timer = Timer()) {
         guard let event = event else { return }
         

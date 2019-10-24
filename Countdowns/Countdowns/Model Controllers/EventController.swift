@@ -17,6 +17,7 @@ class EventController {
     
     // MARK: - Computed Properties
     
+    /// A list of all active events that pass the currently selected filter settings.
     var filteredEvents: [Event] {
         var filteredEvents = events
         
@@ -36,7 +37,7 @@ class EventController {
         return filteredEvents
     }
     
-    // active + archived events
+    /// A list of all active + archived events combined.
     private var allEvents: [Event] {
         var fullList = [Event]()
         fullList.append(contentsOf: events)
@@ -44,7 +45,7 @@ class EventController {
         return fullList
     }
     
-    // all tags for all (active) events
+    /// The complete list of all tags for all (active) events.
     var tags: [Tag] {
         var tags = [Tag]()
         
@@ -63,6 +64,7 @@ class EventController {
     
     private static var _shared: EventController?
     
+    /// Returns the current shared instance of EventController if already existing. If not existing, creates instance.
     static var shared: EventController {
         if let sharedInstance = _shared {
             return sharedInstance
@@ -76,6 +78,58 @@ class EventController {
     
     // MARK: - Public Methods
     
+    /// Add the event to the active list, set a notification for the end date, and save the list.
+    func create(_ event: Event) {
+        if !events.contains(event) {
+            events.append(event)
+        }
+        
+        NotificationsHelper.shared.setNotification(for: event)
+        
+        saveEventsToPersistenceStore()
+    }
+    
+    /// Update the given event, save the event list, cancel the previous notification, and set a new notification.
+    func update(_ event: Event,
+                with name: String, dateTime: Date, tags: [Tag],
+                note: String, hasTime: Bool
+    ) {
+        event.name = name
+        event.dateTime = dateTime
+        event.tags = tags
+        event.note = note
+        event.hasTime = hasTime
+        event.modifiedDate = Date()
+        
+        saveEventsToPersistenceStore()
+        
+        // update notification
+        NotificationsHelper.shared.cancelNotification(for: event)
+        NotificationsHelper.shared.setNotification(for: event)
+    }
+    
+    /// Remove the event from the active events list and save the events list.
+    func delete(_ event: Event) {
+        guard let index = events.firstIndex(of: event) else {
+            print("ERROR: event is not in EventController's `events` list.")
+            return
+        }
+        events.remove(at: index)
+        
+        saveEventsToPersistenceStore()
+    }
+    
+    /// Remove the event from the active event list, add it to an archive list, and save both the active and archive lists.
+    func archive(_ event: Event) {
+        delete(event)
+        event.archived = true
+        archivedEvents.append(event)
+        
+        saveEventsToPersistenceStore()
+        saveArchivedEventsToPersistenceStore()
+    }
+    
+    /// Sort the list of active events by the given style.
     func sort(by style: EventController.SortStyle) {
         switch style {
         case .soonToLate:
@@ -98,54 +152,9 @@ class EventController {
         saveEventsToPersistenceStore()
     }
     
-    func create(_ event: Event) {
-        if !events.contains(event) {
-            events.append(event)
-        }
-        
-        NotificationsHelper.shared.setNotification(for: event)
-        
-        saveEventsToPersistenceStore()
-    }
-    
-    func update(_ event: Event,
-                with name: String, dateTime: Date, tags: [Tag],
-                note: String, hasTime: Bool
-    ) {
-        event.name = name
-        event.dateTime = dateTime
-        event.tags = tags
-        event.note = note
-        event.hasTime = hasTime
-        event.modifiedDate = Date()
-        
-        saveEventsToPersistenceStore()
-        
-        // update notification
-        NotificationsHelper.shared.cancelNotification(for: event)
-        NotificationsHelper.shared.setNotification(for: event)
-    }
-    
-    func delete(_ event: Event) {
-        guard let index = events.firstIndex(of: event) else {
-            print("ERROR: event is not in EventController's `events` list.")
-            return
-        }
-        events.remove(at: index)
-        
-        saveEventsToPersistenceStore()
-    }
-    
-    func archive(_ event: Event) {
-        delete(event)
-        event.archived = true
-        archivedEvents.append(event)
-        
-        saveEventsToPersistenceStore()
-        saveArchivedEventsToPersistenceStore()
-    }
-    
     // MARK: - User Defaults
+    
+    /// For each property, the getter gets from the current saved UserDefault (or app default) and setter saves to the UserDefaults.
     
     var currentSortStyle: SortStyle {
         get {
@@ -212,6 +221,7 @@ class EventController {
         return dir.appendingPathComponent("Events.plist")
     }
     
+    /// Encodes and saves events list to plist.
     private func saveEventsToPersistenceStore() {
         guard let url = eventsURL else {
             print("Invalid url for events list.")
@@ -227,6 +237,7 @@ class EventController {
         }
     }
     
+    /// Decodes and loads events list from plist.
     private func loadEventsFromPersistenceStore() {
         let fm = FileManager.default
         guard let url = eventsURL else {
@@ -258,6 +269,7 @@ class EventController {
         return dir.appendingPathComponent("ArchivedEvents.plist")
     }
     
+    /// Encodes and saves archived events list to plist.
     private func saveArchivedEventsToPersistenceStore() {
         guard let url = archivedEventsURL else {
             print("cannot save items list; invalid url?")
@@ -273,6 +285,7 @@ class EventController {
         }
     }
     
+    /// Decodes and loads events list from plist.
     private func loadArchivedEventsFromPersistenceStore() {
         let fm = FileManager.default
         guard let url = archivedEventsURL else {
@@ -293,6 +306,8 @@ class EventController {
     }
     
     // MARK: - Sort/Filter Styles
+    
+    /// Custom types and display strings for sorting and filtering styles.
     
     enum SortStyle: String, CaseIterable {
         case soonToLate = "End date ↓"

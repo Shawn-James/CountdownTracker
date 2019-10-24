@@ -36,6 +36,7 @@ class NotificationsHelper {
     
     // MARK: - Methods
     
+    /// Send a notification to the user Notifications Center for future delivery using the event's uuid string.
     func setNotification(for event: Event) {
         let center = UNUserNotificationCenter.current()
         center.getNotificationSettings { settings in
@@ -67,6 +68,7 @@ class NotificationsHelper {
         }
     }
     
+    /// Cancels a pending notification using the event's uuid string.
     func cancelNotification(for event: Event) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [event.uuid])
     }

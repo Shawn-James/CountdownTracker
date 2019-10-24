@@ -8,7 +8,9 @@
 
 import Foundation
 
+// String extensions to prevent "stringly typed" code.
 extension String {
+    
     static let countdownCellReuseID = "CountdownCell"
     
     // MARK: - Segue Identifiers

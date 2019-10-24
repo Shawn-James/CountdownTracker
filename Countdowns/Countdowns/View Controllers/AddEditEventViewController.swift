@@ -140,6 +140,7 @@ class AddEditEventViewController: UIViewController {
     
     // MARK: - Private Methods
     
+    /// If scene called to edit event, populate views with event info for editing.
     private func resetViewForEditingEvent() {
         guard let event = event else { return }
         
@@ -154,6 +155,7 @@ class AddEditEventViewController: UIViewController {
         updatePickersMinMax()
     }
     
+    /// If custom time being used, concatenate the date and the time from the two pickers and return for use in saving the event.
     private func getEventDateFromPickers() -> Date {
         if !hasCustomTime {
             return datePicker.date
@@ -178,6 +180,7 @@ class AddEditEventViewController: UIViewController {
         }
     }
     
+    /// If tags were entered, separate by commas, strip extraneous whitespace, and return for use in saving the event
     private func getTagDataFromField() -> [Tag] {
         var tags = [Tag]()
         
@@ -191,6 +194,7 @@ class AddEditEventViewController: UIViewController {
         return tags
     }
     
+    /// Save the event, adding it to the list if new or updating the event if editing.
     private func finalizeEventFromData(name: String, date: Date, tags: [Tag], note: String) {
         if event == nil {
             // add new event (if adding)
@@ -211,6 +215,10 @@ class AddEditEventViewController: UIViewController {
         }
     }
     
+    /// Update the timepicker's based on the datepicker's current selection.
+    /// First, set the datepicker's minimum date to today.
+    /// If today, don't allow the timepicker to select a time before now.
+    /// Otherwise, allow any time to be chosen.
     private func updatePickersMinMax() {
         datePicker.minimumDate = Date()
         if Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: datePicker.date) ==

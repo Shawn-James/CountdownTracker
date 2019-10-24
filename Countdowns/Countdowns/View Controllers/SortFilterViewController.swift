@@ -13,7 +13,9 @@ protocol SortFilterViewControllerDelegate {
 }
 
 class SortFilterViewController: UIViewController {
+    
     // MARK: - Properties
+    
     var delegate: SortFilterViewControllerDelegate?
     
     var sortDelegate: SortPickerDelegate?
@@ -21,12 +23,14 @@ class SortFilterViewController: UIViewController {
     var tagDelegate: TagFilterPickerDelegate?
     
     // MARK: - Outlets
+    
     @IBOutlet weak var sortPicker: UIPickerView!
     @IBOutlet weak var filterPicker: UIPickerView!
     @IBOutlet weak var tagPicker: UIPickerView!
     @IBOutlet weak var datePicker: UIDatePicker!
     
     // MARK: - View Lifecyle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -45,7 +49,7 @@ class SortFilterViewController: UIViewController {
     
     // MARK: - Methods
     
-    // set current picker selections from current saved setting
+    /// Set current picker selections from current saved setting.
     func resetPickerSelections() {
         let sortStyle = EventController.shared.currentSortStyle
         if let sortStyleIndex = EventController.SortStyle.allCases.firstIndex(of: sortStyle) {
@@ -71,7 +75,7 @@ class SortFilterViewController: UIViewController {
         datePicker.setDate(EventController.shared.currentFilterDate, animated: false)
     }
     
-    // show/hide pickers based on current saved filter setting
+    /// Show or hide pickers based on the given filter setting.
     func showHideFilterComponents(for filterStyle: EventController.FilterStyle) {
         switch filterStyle {
         case .noLaterThanDate, .noSoonerThanDate:
@@ -92,6 +96,7 @@ class SortFilterViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    /// Save the selected settings and filter the table view's list of events.
     @IBAction func saveTapped(_ sender: UIBarButtonItem) {
         let sortChoiceIndex = sortPicker.selectedRow(inComponent: 0)
         let sortChoice = EventController.SortStyle.allCases[sortChoiceIndex]
@@ -102,6 +107,7 @@ class SortFilterViewController: UIViewController {
         let tagChoice: Tag
         if EventController.shared.tags.isEmpty {
             if filterChoice == .tag {
+                // Prevent user from applying tag filter without having any tags to filter by
                 showEmptyTagListAlert()
                 return
             } else {
@@ -123,6 +129,7 @@ class SortFilterViewController: UIViewController {
     
     // MARK: - Private Methods
     
+    /// Show alert if the user has selected to filter by tags, but their events do not have any tags applied to them.
     private func showEmptyTagListAlert() {
         let alert = UIAlertController(
             title: "Cannot filter by tag!",
