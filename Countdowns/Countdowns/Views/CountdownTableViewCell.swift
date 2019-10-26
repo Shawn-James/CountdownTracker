@@ -56,16 +56,27 @@ class CountdownTableViewCell: UITableViewCell {
     /// Update the 'time remaining' label based on the new timer and then update the timer.
     /// If the time is up, update the table view controller's views to show the alert and archive the event, removing this cell from view.
     private func updateTimer(_ timer: Timer = Timer()) {
-        guard let event = event else { return }
+        guard let event = event,
+            let amViewingArchive = parentViewController?.amViewingArchive
+            else { return }
         
         updateTimeText()
-        // if time remaining < 1 day, update in a minute
-        if event.timeInterval < 1 {
-            parentViewController?.updateViews()
-        } else if event.timeInterval < 3660 {
-            timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: updateTimer(_:))
-        } else if event.timeInterval < 86_400 {
-            timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: updateTimer(_:))
+        
+        if !amViewingArchive {
+            // if time remaining < 1 day, update in a minute
+            if event.timeInterval < 1 {
+                parentViewController?.updateViews()
+            } else if event.timeInterval < 3660 {
+                timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: updateTimer(_:))
+            } else if event.timeInterval < 86_400 {
+                timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: updateTimer(_:))
+            }
+        } else {
+            if event.timeInterval > -3660 {
+                timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: updateTimer(_:))
+            } else if event.timeInterval > -86_460 {
+                timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: updateTimer(_:))
+            }
         }
     }
 }

@@ -71,6 +71,7 @@ class EventController {
         } else {
             _shared = EventController()
             _shared?.loadEventsFromPersistenceStore()
+            _shared?.loadArchivedEventsFromPersistenceStore()
             
             return _shared!
         }
@@ -110,13 +111,13 @@ class EventController {
     
     /// Remove the event from the active events list and save the events list.
     func delete(_ event: Event) {
-        guard let index = events.firstIndex(of: event) else {
-            print("ERROR: event is not in EventController's `events` list.")
-            return
+        if let index = events.firstIndex(of: event) {
+            events.remove(at: index)
+            saveEventsToPersistenceStore()
+        } else if let index = archivedEvents.firstIndex(of: event) {
+            archivedEvents.remove(at: index)
+            saveArchivedEventsToPersistenceStore()
         }
-        events.remove(at: index)
-        
-        saveEventsToPersistenceStore()
     }
     
     /// Remove the event from the active event list, add it to an archive list, and save both the active and archive lists.
@@ -289,11 +290,11 @@ class EventController {
     private func loadArchivedEventsFromPersistenceStore() {
         let fm = FileManager.default
         guard let url = archivedEventsURL else {
-            print("cannot load; invalid url?")
+            print("cannot load archived events; invalid url?")
             return
         }
         if !fm.fileExists(atPath: url.path) {
-            print("error loading; items list data file does not yet exist")
+            print("error loading; archived events list data file does not yet exist")
         }
         
         do {
@@ -301,7 +302,7 @@ class EventController {
             let decoder = PropertyListDecoder()
             archivedEvents = try decoder.decode([Event].self, from: archiveData)
         } catch {
-            print("Error loading items list data: \(error)")
+            print("Error loading archived events list data: \(error)")
         }
     }
     
