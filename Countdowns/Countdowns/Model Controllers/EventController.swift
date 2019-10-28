@@ -130,27 +130,36 @@ class EventController {
         saveArchivedEventsToPersistenceStore()
     }
     
-    /// Sort the list of active events by the given style.
+    /// Sort the lists of active & archived events by the given style.
     func sort(by style: EventController.SortStyle) {
         switch style {
         case .soonToLate:
             events.sort(by: { $0.dateTime < $1.dateTime })
+            archivedEvents.sort(by: { $0.dateTime < $1.dateTime })
         case .lateToSoon:
             events.sort(by: { $0.dateTime > $1.dateTime })
+            archivedEvents.sort(by: { $0.dateTime > $1.dateTime })
         case .numberOfTags:
             events.sort(by: { $0.tags.count < $1.tags.count })
+            archivedEvents.sort(by: { $0.tags.count < $1.tags.count })
         case .numberOfTagsReversed:
             events.sort(by: { $0.tags.count > $1.tags.count })
+            archivedEvents.sort(by: { $0.tags.count > $1.tags.count })
         case .creationDate:
             events.sort(by: { $0.creationDate < $1.creationDate })
+            archivedEvents.sort(by: { $0.creationDate < $1.creationDate })
         case .creationDateReversed:
             events.sort(by: { $0.creationDate > $1.creationDate })
+            archivedEvents.sort(by: { $0.creationDate > $1.creationDate })
         case .modifiedDate:
             events.sort(by: { $0.modifiedDate < $1.modifiedDate })
+            archivedEvents.sort(by: { $0.modifiedDate < $1.modifiedDate })
         case .modifiedDateReversed:
             events.sort(by: { $0.modifiedDate > $1.modifiedDate })
+            archivedEvents.sort(by: { $0.modifiedDate > $1.modifiedDate })
         }
         saveEventsToPersistenceStore()
+        saveArchivedEventsToPersistenceStore()
     }
     
     // MARK: - User Defaults
