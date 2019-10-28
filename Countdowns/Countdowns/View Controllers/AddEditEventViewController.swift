@@ -8,6 +8,8 @@
 
 import UIKit
 
+// MARK: - Delegates
+
 protocol AddEventViewControllerDelegate {
     func updateViews()
 }

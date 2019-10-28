@@ -197,5 +197,7 @@ class CountdownsTableViewController: UITableViewController {
     }
 }
 
+// MARK: - Delegate Adherences
+
 extension CountdownsTableViewController: AddEventViewControllerDelegate {}
 extension CountdownsTableViewController: SortFilterViewControllerDelegate {}
