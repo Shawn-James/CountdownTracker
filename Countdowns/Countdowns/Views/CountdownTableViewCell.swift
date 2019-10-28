@@ -62,21 +62,13 @@ class CountdownTableViewCell: UITableViewCell {
         
         updateTimeText()
         
-        if !amViewingArchive {
-            // if time remaining < 1 day, update in a minute
-            if event.timeInterval < 1 {
-                parentViewController?.updateViews()
-            } else if event.timeInterval < 3660 {
-                timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: updateTimer(_:))
-            } else if event.timeInterval < 86_400 {
-                timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: updateTimer(_:))
-            }
-        } else {
-            if event.timeInterval > -3660 {
-                timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: updateTimer(_:))
-            } else if event.timeInterval > -86_460 {
-                timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: updateTimer(_:))
-            }
+        // if time remaining < 1 day, update in a minute
+        if !amViewingArchive && event.timeInterval < 1 {
+            parentViewController?.updateViews()
+        } else if abs(event.timeInterval) < 3660 {
+            timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: updateTimer(_:))
+        } else if abs(event.timeInterval) < 86_460 {
+            timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: updateTimer(_:))
         }
     }
 }
