@@ -17,6 +17,7 @@ class CountdownsTableViewController: UITableViewController {
     
     @IBOutlet weak var sortButton: UIBarButtonItem!
     @IBOutlet weak var archiveButton: UIBarButtonItem!
+    @IBOutlet weak var currentModeLabel: UILabel!
     
     // MARK: - View Lifecycle
 
@@ -51,17 +52,29 @@ class CountdownsTableViewController: UITableViewController {
         if eventController.currentFilterStyle != .none {
             sortButton.tintColor = .systemRed
             sortButton.image = UIImage(systemName: .sortImageActive)
+            currentModeLabel.text = "Filtering"
+            currentModeLabel.isHidden = false
         } else {
             sortButton.tintColor = .systemBlue
             sortButton.image = UIImage(systemName: .sortImageInactive)
+            currentModeLabel.isHidden = true
         }
         
         if amViewingArchive {
             archiveButton.tintColor = .systemRed
             archiveButton.image = UIImage(systemName: .archiveImageActive)
+            if eventController.currentFilterStyle != .none {
+                currentModeLabel.text = "Filtering Archive"
+            } else {
+                currentModeLabel.text = "Viewing Archive"
+            }
+            currentModeLabel.isHidden = false
         } else {
             archiveButton.tintColor = .systemBlue
             archiveButton.image = UIImage(systemName: .archiveImageInactive)
+            if eventController.currentFilterStyle == .none {
+                currentModeLabel.isHidden = true
+            }
         }
     }
 
