@@ -22,12 +22,28 @@ class CountdownsTableViewController: UITableViewController {
     var eventController = EventController.shared
     
     var displayedEvents: [Event] = EventController.shared.activeEvents
-    
     var amViewingArchive: Bool = false
-    var currentSortStyle: EventController.SortStyle = .soonToLate
-    var currentFilterStyle: EventController.FilterStyle = .none
-    var currentFilterTag: Tag = ""
-    var currentFilterDate: Date = Date()
+    
+    var currentSortStyle: EventController.SortStyle = .soonToLate {
+        didSet {
+            EventController.shared.currentSortStyle = self.currentSortStyle
+        }
+    }
+    var currentFilterStyle: EventController.FilterStyle = .none {
+        didSet {
+            EventController.shared.currentFilterStyle = self.currentFilterStyle
+        }
+    }
+    var currentFilterTag: Tag = "" {
+        didSet {
+            EventController.shared.currentFilterTag = self.currentFilterTag
+        }
+    }
+    var currentFilterDate: Date = Date() {
+        didSet {
+            EventController.shared.currentFilterDate = self.currentFilterDate
+        }
+    }
     
     @IBOutlet weak var sortButton: UIBarButtonItem!
     @IBOutlet weak var archiveButton: UIBarButtonItem!
@@ -43,54 +59,6 @@ class CountdownsTableViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         updateViews()
-    }
-    
-    /// Updates all cells (showing alerts for and removing events that have passed), reloads all table data, and colors the filter button as needed if the table is currently being filtered.
-    func updateViews() {
-        if let indexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: indexPath, animated: true)
-        }
-        sortAndFilter()
-        for event in displayedEvents {
-            if event.dateTimeHasPassed {
-                if !event.didNotifyDone {
-                    alertForCountdownEnd(for: event)
-                    eventController.archive(event)
-                } else {
-                    eventController.archive(event)
-                }
-            }
-        }
-        
-        tableView.reloadData()
-        
-        if eventController.currentFilterStyle != .none {
-            sortButton.tintColor = .systemRed
-            sortButton.image = UIImage(systemName: .sortImageActive)
-            currentModeLabel.text = "Filtering"
-            currentModeLabel.isHidden = false
-        } else {
-            sortButton.tintColor = .systemBlue
-            sortButton.image = UIImage(systemName: .sortImageInactive)
-            currentModeLabel.isHidden = true
-        }
-        
-        if amViewingArchive {
-            archiveButton.tintColor = .systemRed
-            archiveButton.image = UIImage(systemName: .archiveImageActive)
-            if eventController.currentFilterStyle != .none {
-                currentModeLabel.text = "Filtering Archive"
-            } else {
-                currentModeLabel.text = "Viewing Archive"
-            }
-            currentModeLabel.isHidden = false
-        } else {
-            archiveButton.tintColor = .systemBlue
-            archiveButton.image = UIImage(systemName: .archiveImageInactive)
-            if eventController.currentFilterStyle == .none {
-                currentModeLabel.isHidden = true
-            }
-        }
     }
 
     // MARK: - Table view data source
@@ -110,8 +78,16 @@ class CountdownsTableViewController: UITableViewController {
         ) as? CountdownTableViewCell else {
             return UITableViewCell()
         }
-
-        updateCellData(for: cell, at: indexPath.row)
+        
+        cell.event = displayedEvents[indexPath.row]
+        
+        if indexPath.row % 2 == 0 {
+            cell.backgroundColor = UIColor(named: .secondaryCellBackgroundColor)
+        } else {
+            cell.backgroundColor = UIColor(named: .cellBackgroundColor)
+        }
+        
+        cell.parentViewController = self
 
         return cell
     }
@@ -144,13 +120,9 @@ class CountdownsTableViewController: UITableViewController {
             guard let sortFilterVC = segue.destination as? SortFilterViewController
                 else { return }
             
-            let sortDelegate = SortPickerDelegate()
-            let filterDelegate = FilterPickerDelegate(delegate: sortFilterVC)
-            let tagDelegate = TagFilterPickerDelegate()
-            
-            sortFilterVC.sortDelegate = sortDelegate
-            sortFilterVC.filterDelegate = filterDelegate
-            sortFilterVC.tagDelegate = tagDelegate
+            sortFilterVC.sortDelegate = SortPickerDelegate()
+            sortFilterVC.filterDelegate = FilterPickerDelegate(delegate: sortFilterVC)
+            sortFilterVC.tagDelegate = TagFilterPickerDelegate()
             
             sortFilterVC.delegate = self
         }
@@ -182,19 +154,6 @@ class CountdownsTableViewController: UITableViewController {
         )
         
         displayedEvents = eventsToSortFilter
-    }
-    
-    /// Colors cells in alternating pattern (adaptive based on whether in light or dark mode).
-    private func updateCellData(for cell: CountdownTableViewCell, at indexRow: Int) {
-        cell.event = displayedEvents[indexRow]
-        
-        if indexRow % 2 == 0 {
-            cell.backgroundColor = UIColor(named: .secondaryCellBackgroundColor)
-        } else {
-            cell.backgroundColor = UIColor(named: .cellBackgroundColor)
-        }
-        
-        cell.parentViewController = self
     }
     
     /// Shows an alert that asks for user confirmation to delete the given event.
@@ -230,7 +189,68 @@ class CountdownsTableViewController: UITableViewController {
         
         present(alert, animated: true, completion: nil)
     }
+    
+    // MARK: - Scene Appearance
+    
+    /// Updates all cells (showing alerts for and removing events that have passed), reloads all table data, and colors the filter button as needed if the table is currently being filtered.
+    func updateViews() {
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        sortAndFilter()
+        for event in displayedEvents {
+            if event.dateTimeHasPassed {
+                if !event.didNotifyDone {
+                    alertForCountdownEnd(for: event)
+                    eventController.archive(event)
+                } else if !amViewingArchive {
+                    eventController.archive(event)
+                }
+            }
+        }
+        
+        tableView.reloadData()
+        calculateModeLabelAppearance()
+        calculateBarButtonAppearances()
+    }
+    
+    private func calculateModeLabelAppearance() {
+        currentModeLabel.isHidden = false
+        if amViewingArchive {
+            if currentFilterStyle == .none {
+                currentModeLabel.text = "Viewing Archive"
+            } else {
+                currentModeLabel.text = "Filtering Archive"
+            }
+        } else {
+            if currentFilterStyle == .none {
+                currentModeLabel.isHidden = true
+            } else {
+                currentModeLabel.text = "Filtering"
+            }
+        }
+    }
+    
+    private func calculateBarButtonAppearances() {
+        if eventController.currentFilterStyle != .none {
+            sortButton.tintColor = .systemRed
+            sortButton.image = UIImage(systemName: .sortImageActive)
+        } else {
+            sortButton.tintColor = .systemBlue
+            sortButton.image = UIImage(systemName: .sortImageInactive)
+        }
+        
+        if amViewingArchive {
+            archiveButton.tintColor = .systemRed
+            archiveButton.image = UIImage(systemName: .archiveImageActive)
+        } else {
+            archiveButton.tintColor = .systemBlue
+            archiveButton.image = UIImage(systemName: .archiveImageInactive)
+        }
+    }
 }
+
+
 
 // MARK: - Delegate Adherences
 
