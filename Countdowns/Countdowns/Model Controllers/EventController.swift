@@ -29,7 +29,7 @@ class EventController {
     var tags: [Tag] {
         var tags = [Tag]()
         
-        for event in activeEvents {
+        for event in allEvents {
             for tag in event.tags {
                 if !tags.contains(tag) {
                     tags.append(tag)

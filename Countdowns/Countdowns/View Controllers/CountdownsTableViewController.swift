@@ -215,20 +215,25 @@ class CountdownsTableViewController: UITableViewController {
     }
     
     private func calculateModeLabelAppearance() {
+        var text = ""
         currentModeLabel.isHidden = false
+        
         if amViewingArchive {
             if currentFilterStyle == .none {
-                currentModeLabel.text = "Viewing Archive"
+                text = "Viewing Archive"
             } else {
-                currentModeLabel.text = "Filtering Archive"
+                text = "Filtering Archive"
             }
         } else {
             if currentFilterStyle == .none {
                 currentModeLabel.isHidden = true
             } else {
-                currentModeLabel.text = "Filtering"
+                text = "Filtering"
             }
         }
+        
+        text = text.uppercased()
+        currentModeLabel.text = text
     }
     
     private func calculateBarButtonAppearances() {

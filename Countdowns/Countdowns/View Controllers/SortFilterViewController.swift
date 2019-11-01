@@ -45,6 +45,8 @@ class SortFilterViewController: UIViewController {
         sortPicker.delegate = sortDelegate
         filterPicker.delegate = filterDelegate
         tagPicker.delegate = tagDelegate
+        
+        
         sortPicker.reloadAllComponents()
         filterPicker.reloadAllComponents()
         tagPicker.reloadAllComponents()
@@ -130,7 +132,9 @@ class SortFilterViewController: UIViewController {
         delegate?.currentFilterTag = tagChoice
         delegate?.currentFilterDate = datePicker.date
         
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true) {
+            self.delegate?.updateViews()
+        }
     }
     
     // MARK: - Private Methods
