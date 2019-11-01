@@ -9,6 +9,13 @@
 import UIKit
 
 protocol SortFilterViewControllerDelegate {
+    var displayedEvents: [Event] { get set }
+    var amViewingArchive: Bool { get }
+    var currentSortStyle: EventController.SortStyle { get set }
+    var currentFilterStyle: EventController.FilterStyle { get set }
+    var currentFilterTag: Tag { get set }
+    var currentFilterDate: Date { get set }
+    
     func updateViews()
 }
 
@@ -100,10 +107,11 @@ class SortFilterViewController: UIViewController {
     @IBAction func saveTapped(_ sender: UIBarButtonItem) {
         let sortChoiceIndex = sortPicker.selectedRow(inComponent: 0)
         let sortChoice = EventController.SortStyle.allCases[sortChoiceIndex]
+        
         let filterChoiceIndex = filterPicker.selectedRow(inComponent: 0)
         let filterChoice = EventController.FilterStyle.allCases[filterChoiceIndex]
-        let tagChoiceIndex = tagPicker.selectedRow(inComponent: 0)
         
+        let tagChoiceIndex = tagPicker.selectedRow(inComponent: 0)
         let tagChoice: Tag
         if EventController.shared.tags.isEmpty {
             if filterChoice == .tag {
@@ -117,13 +125,11 @@ class SortFilterViewController: UIViewController {
             tagChoice = EventController.shared.tags[tagChoiceIndex]
         }
         
-        EventController.shared.currentSortStyle = sortChoice
-        EventController.shared.currentFilterStyle = filterChoice
-        EventController.shared.currentFilterTag = tagChoice
-        EventController.shared.currentFilterDate = datePicker.date
-        EventController.shared.sort(by: sortChoice)
+        delegate?.currentSortStyle = sortChoice
+        delegate?.currentFilterStyle = filterChoice
+        delegate?.currentFilterTag = tagChoice
+        delegate?.currentFilterDate = datePicker.date
         
-        delegate?.updateViews()
         dismiss(animated: true, completion: nil)
     }
     

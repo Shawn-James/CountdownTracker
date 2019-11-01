@@ -10,10 +10,24 @@ import UIKit
 
 class CountdownsTableViewController: UITableViewController {
     
+    enum ViewMode {
+        case activeUnfiltered
+        case activeFiltered
+        case archiveUnfiltered
+        case archiveFiltered
+    }
+    
     // MARK: - Properties
     
     var eventController = EventController.shared
+    
+    var displayedEvents: [Event] = EventController.shared.activeEvents
+    
     var amViewingArchive: Bool = false
+    var currentSortStyle: EventController.SortStyle = .soonToLate
+    var currentFilterStyle: EventController.FilterStyle = .none
+    var currentFilterTag: Tag = ""
+    var currentFilterDate: Date = Date()
     
     @IBOutlet weak var sortButton: UIBarButtonItem!
     @IBOutlet weak var archiveButton: UIBarButtonItem!
@@ -36,7 +50,8 @@ class CountdownsTableViewController: UITableViewController {
         if let indexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: indexPath, animated: true)
         }
-        for event in eventController.events {
+        sortAndFilter()
+        for event in displayedEvents {
             if event.dateTimeHasPassed {
                 if !event.didNotifyDone {
                     alertForCountdownEnd(for: event)
@@ -85,11 +100,7 @@ class CountdownsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if amViewingArchive {
-            return eventController.archivedEvents.count
-        } else {
-            return eventController.filteredEvents.count
-        }
+        return displayedEvents.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -108,12 +119,7 @@ class CountdownsTableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let event: Event
-            if amViewingArchive {
-                event = eventController.archivedEvents[indexPath.row]
-            } else {
-                event = eventController.filteredEvents[indexPath.row]
-            }
+            let event: Event = displayedEvents[indexPath.row]
             confirmDeletion(for: event, at: indexPath)
         }
     }
@@ -157,14 +163,30 @@ class CountdownsTableViewController: UITableViewController {
         updateViews()
     }
     
+    private func sortAndFilter() {
+        var eventsToSortFilter: [Event]
+        if amViewingArchive {
+            eventsToSortFilter = EventController.shared.archivedEvents
+        } else {
+            eventsToSortFilter = EventController.shared.activeEvents
+        }
+        
+        eventsToSortFilter = EventController.shared.sort(
+            eventsToSortFilter,
+            by: currentSortStyle
+        )
+        eventsToSortFilter = EventController.shared.filter(
+            eventsToSortFilter,
+            by: currentFilterStyle,
+            with: (date: currentFilterDate, tag: currentFilterTag)
+        )
+        
+        displayedEvents = eventsToSortFilter
+    }
     
     /// Colors cells in alternating pattern (adaptive based on whether in light or dark mode).
     private func updateCellData(for cell: CountdownTableViewCell, at indexRow: Int) {
-        if amViewingArchive {
-            cell.event = eventController.archivedEvents[indexRow]
-        } else {
-            cell.event = eventController.filteredEvents[indexRow]
-        }
+        cell.event = displayedEvents[indexRow]
         
         if indexRow % 2 == 0 {
             cell.backgroundColor = UIColor(named: .secondaryCellBackgroundColor)

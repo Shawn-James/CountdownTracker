@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
-        guard let endedEvent = EventController.shared.events.first(
+        guard let endedEvent = EventController.shared.activeEvents.first(
             where: { $0.uuid == notification.request.identifier }) else {
                 print("ERROR: Could not find ended countdown!")
                 return

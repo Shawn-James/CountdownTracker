@@ -11,36 +11,16 @@ import UIKit
 class EventController {
     // MARK: - Properties
     
-    private(set) var events = [Event]()
+    private(set) var activeEvents = [Event]()
     
     private(set) var archivedEvents = [Event]()
     
     // MARK: - Computed Properties
     
-    /// A list of all active events that pass the currently selected filter settings.
-    var filteredEvents: [Event] {
-        var filteredEvents = events
-        
-        switch currentFilterStyle {
-        case .none:
-            break
-        case .noLaterThanDate:
-            filteredEvents = filteredEvents.filter { $0.dateTime < currentFilterDate }
-        case .noSoonerThanDate:
-            filteredEvents = filteredEvents.filter { $0.dateTime > currentFilterDate }
-        case .tag:
-            if let existingFilterTag = currentFilterTag {
-                filteredEvents = filteredEvents.filter { $0.tags.contains(existingFilterTag) }
-            }
-        }
-        
-        return filteredEvents
-    }
-    
     /// A list of all active + archived events combined.
     private var allEvents: [Event] {
         var fullList = [Event]()
-        fullList.append(contentsOf: events)
+        fullList.append(contentsOf: activeEvents)
         fullList.append(contentsOf: archivedEvents)
         return fullList
     }
@@ -49,7 +29,7 @@ class EventController {
     var tags: [Tag] {
         var tags = [Tag]()
         
-        for event in events {
+        for event in activeEvents {
             for tag in event.tags {
                 if !tags.contains(tag) {
                     tags.append(tag)
@@ -81,8 +61,8 @@ class EventController {
     
     /// Add the event to the active list, set a notification for the end date, and save the list.
     func create(_ event: Event) {
-        if !events.contains(event) {
-            events.append(event)
+        if !activeEvents.contains(event) {
+            activeEvents.append(event)
         }
         
         NotificationsHelper.shared.setNotification(for: event)
@@ -111,8 +91,8 @@ class EventController {
     
     /// Remove the event from the active events list and save the events list.
     func delete(_ event: Event) {
-        if let index = events.firstIndex(of: event) {
-            events.remove(at: index)
+        if let index = activeEvents.firstIndex(of: event) {
+            activeEvents.remove(at: index)
             saveEventsToPersistenceStore()
         } else if let index = archivedEvents.firstIndex(of: event) {
             archivedEvents.remove(at: index)
@@ -130,36 +110,53 @@ class EventController {
         saveArchivedEventsToPersistenceStore()
     }
     
+    // MARK: -- Sort/Filter
+    
     /// Sort the lists of active & archived events by the given style.
-    func sort(by style: EventController.SortStyle) {
-        switch style {
-        case .soonToLate:
-            events.sort(by: { $0.dateTime < $1.dateTime })
-            archivedEvents.sort(by: { $0.dateTime < $1.dateTime })
-        case .lateToSoon:
-            events.sort(by: { $0.dateTime > $1.dateTime })
-            archivedEvents.sort(by: { $0.dateTime > $1.dateTime })
-        case .numberOfTags:
-            events.sort(by: { $0.tags.count < $1.tags.count })
-            archivedEvents.sort(by: { $0.tags.count < $1.tags.count })
-        case .numberOfTagsReversed:
-            events.sort(by: { $0.tags.count > $1.tags.count })
-            archivedEvents.sort(by: { $0.tags.count > $1.tags.count })
-        case .creationDate:
-            events.sort(by: { $0.creationDate < $1.creationDate })
-            archivedEvents.sort(by: { $0.creationDate < $1.creationDate })
-        case .creationDateReversed:
-            events.sort(by: { $0.creationDate > $1.creationDate })
-            archivedEvents.sort(by: { $0.creationDate > $1.creationDate })
-        case .modifiedDate:
-            events.sort(by: { $0.modifiedDate < $1.modifiedDate })
-            archivedEvents.sort(by: { $0.modifiedDate < $1.modifiedDate })
-        case .modifiedDateReversed:
-            events.sort(by: { $0.modifiedDate > $1.modifiedDate })
-            archivedEvents.sort(by: { $0.modifiedDate > $1.modifiedDate })
+    func sort(_ events: [Event], by style: EventController.SortStyle) -> [Event] {
+        return events.sorted {
+            switch style {
+            case .soonToLate:
+                return $0.dateTime < $1.dateTime
+            case .lateToSoon:
+                return $0.dateTime > $1.dateTime
+            case .numberOfTags:
+                return $0.tags.count < $1.tags.count
+            case .numberOfTagsReversed:
+                return $0.tags.count > $1.tags.count
+            case .creationDate:
+                return $0.creationDate < $1.creationDate
+            case .creationDateReversed:
+                return $0.creationDate > $1.creationDate
+            case .modifiedDate:
+                return $0.modifiedDate < $1.modifiedDate
+            case .modifiedDateReversed:
+                return $0.modifiedDate > $1.modifiedDate
+            }
         }
-        saveEventsToPersistenceStore()
-        saveArchivedEventsToPersistenceStore()
+    }
+    
+    /// A list of all active events that pass the currently selected filter settings.
+    
+    func filter(_ events: [Event], by style: FilterStyle, with filterInfo: (date: Date?, tag: Tag?)?) -> [Event] {
+        return events.filter {
+            switch style {
+            case .none:
+                return true
+            case .tag:
+                if let tag = filterInfo?.tag, tags.contains(tag) {
+                    return $0.tags.contains(tag)
+                } else {
+                    return false
+                }
+            case .noLaterThanDate:
+                guard let date = filterInfo?.date else { return true }
+                return $0.dateTime < date
+            case .noSoonerThanDate:
+                guard let date = filterInfo?.date else { return true }
+                return $0.dateTime > date
+            }
+        }
     }
     
     // MARK: - User Defaults
@@ -240,7 +237,7 @@ class EventController {
         
         do {
             let encoder = PropertyListEncoder()
-            let eventsData = try encoder.encode(events)
+            let eventsData = try encoder.encode(activeEvents)
             try eventsData.write(to: url)
         } catch {
             print("Error saving events list data: \(error)")
@@ -262,7 +259,7 @@ class EventController {
         do {
             let eventsData = try Data(contentsOf: url)
             let decoder = PropertyListDecoder()
-            events = try decoder.decode([Event].self, from: eventsData)
+            activeEvents = try decoder.decode([Event].self, from: eventsData)
         } catch {
             print("Error loading items list data: \(error)")
         }
