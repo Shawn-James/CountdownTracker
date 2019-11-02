@@ -92,7 +92,6 @@ class CountdownsTableViewController: UITableViewController {
         return cell
     }
 
-    // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let event: Event = displayedEvents[indexPath.row]
@@ -170,7 +169,9 @@ class CountdownsTableViewController: UITableViewController {
             style: .destructive,
             handler: { action in
                 self.eventController.delete(event)
-                self.tableView.deleteRows(at: [indexPath], with: .fade)
+                self.displayedEvents.remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .left)
+                self.updateViews()
         }))
         
         present(alert, animated: true, completion: nil)
