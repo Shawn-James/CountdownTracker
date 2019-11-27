@@ -15,7 +15,6 @@
 		99480ADB235F5DBD00DC1D48 /* DateFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99480ADA235F5DBD00DC1D48 /* DateFormatters.swift */; };
 		99480ADD235F767700DC1D48 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99480ADC235F767700DC1D48 /* Tag.swift */; };
 		99480AE1235FA13300DC1D48 /* PickerDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99480AE0235FA13300DC1D48 /* PickerDelegates.swift */; };
-		9972B506235E09A30015E56B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9972B505235E09A30015E56B /* Default-568h@2x.png */; };
 		9972B508235E0A2E0015E56B /* CountdownsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972B507235E0A2E0015E56B /* CountdownsTableViewController.swift */; };
 		9972B50B235E0A480015E56B /* CountdownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972B50A235E0A480015E56B /* CountdownTableViewCell.swift */; };
 		9972B510235E0AA00015E56B /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972B50F235E0AA00015E56B /* Strings.swift */; };
@@ -38,7 +37,6 @@
 		99480ADA235F5DBD00DC1D48 /* DateFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatters.swift; sourceTree = "<group>"; };
 		99480ADC235F767700DC1D48 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		99480AE0235FA13300DC1D48 /* PickerDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerDelegates.swift; sourceTree = "<group>"; };
-		9972B505235E09A30015E56B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		9972B507235E0A2E0015E56B /* CountdownsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownsTableViewController.swift; sourceTree = "<group>"; };
 		9972B50A235E0A480015E56B /* CountdownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTableViewCell.swift; sourceTree = "<group>"; };
 		9972B50F235E0AA00015E56B /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
@@ -98,7 +96,6 @@
 				99251D41235E09400060D9FF /* AppDelegate.swift */,
 				99251D43235E09400060D9FF /* SceneDelegate.swift */,
 				99251D4A235E09420060D9FF /* Assets.xcassets */,
-				99EF7D19235E3F550092F4AB /* img */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -157,14 +154,6 @@
 				99EF7D13235E18EA0092F4AB /* EventController.swift */,
 			);
 			path = "Model Controllers";
-			sourceTree = "<group>";
-		};
-		99EF7D19235E3F550092F4AB /* img */ = {
-			isa = PBXGroup;
-			children = (
-				9972B505235E09A30015E56B /* Default-568h@2x.png */,
-			);
-			path = img;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -226,7 +215,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				99251D4E235E09420060D9FF /* LaunchScreen.storyboard in Resources */,
-				9972B506235E09A30015E56B /* Default-568h@2x.png in Resources */,
 				99251D4B235E09420060D9FF /* Assets.xcassets in Resources */,
 				99251D49235E09400060D9FF /* Main.storyboard in Resources */,
 			);
@@ -397,14 +385,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 22X3GA956P;
 				INFOPLIST_FILE = Countdowns/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.5;
+				MARKETING_VERSION = 0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jonbash.Countdowns;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -417,14 +405,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 22X3GA956P;
 				INFOPLIST_FILE = Countdowns/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.5;
+				MARKETING_VERSION = 0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jonbash.Countdowns;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
