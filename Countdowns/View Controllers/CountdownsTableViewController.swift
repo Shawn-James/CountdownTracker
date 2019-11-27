@@ -22,24 +22,32 @@ class CountdownsTableViewController: UITableViewController {
     var displayedEvents: [Event] = EventController.shared.activeEvents
     var amViewingArchive: Bool = false
     
-    var currentSortStyle: EventController.SortStyle = .soonToLate {
-        didSet {
-            EventController.shared.currentSortStyle = self.currentSortStyle
+    var currentSortStyle: EventController.SortStyle {
+        get {
+            return EventController.shared.currentSortStyle
+        } set(newSortStyle) {
+            EventController.shared.currentSortStyle = newSortStyle
         }
     }
-    var currentFilterStyle: EventController.FilterStyle = .none {
-        didSet {
-            EventController.shared.currentFilterStyle = self.currentFilterStyle
+    var currentFilterStyle: EventController.FilterStyle {
+        get {
+            return EventController.shared.currentFilterStyle
+        } set(newFilterStyle) {
+            EventController.shared.currentFilterStyle = newFilterStyle
         }
     }
-    var currentFilterTag: Tag = "" {
-        didSet {
-            EventController.shared.currentFilterTag = self.currentFilterTag
+    var currentFilterTag: Tag {
+        get {
+            return EventController.shared.currentFilterTag ?? ""
+        } set(newTag) {
+            EventController.shared.currentFilterTag = newTag
         }
     }
-    var currentFilterDate: Date = Date() {
-        didSet {
-            EventController.shared.currentFilterDate = self.currentFilterDate
+    var currentFilterDate: Date {
+        get {
+            return EventController.shared.currentFilterDate
+        } set(newDate) {
+            EventController.shared.currentFilterDate = newDate
         }
     }
     
