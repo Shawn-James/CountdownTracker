@@ -243,6 +243,12 @@ class AddEditEventViewController: UIViewController {
         
         setTimePickerHidden()
         updatePickersMinMax()
+        
+        if event.archived {
+            datePicker.isEnabled = false
+            timePicker.isEnabled = false
+            customTimeSwitch.isEnabled = false
+        }
     }
     
     /// Update the timepicker's based on the datepicker's current selection.
