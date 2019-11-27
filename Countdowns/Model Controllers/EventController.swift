@@ -281,7 +281,7 @@ class EventController {
     }
     
     /// Encodes and saves archived events list to plist.
-    private func saveArchivedEventsToPersistenceStore() {
+    func saveArchivedEventsToPersistenceStore() {
         guard let url = archivedEventsURL else {
             print("cannot save items list; invalid url?")
             return

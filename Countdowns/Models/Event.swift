@@ -19,8 +19,16 @@ class Event: Codable {
     var creationDate: Date
     var modifiedDate: Date
     
-    var didNotifyDone: Bool = false
-    var archived: Bool = false
+    var didNotifyDone: Bool = false {
+        didSet {
+            EventController.shared.saveArchivedEventsToPersistenceStore()
+        }
+    }
+    var archived: Bool = false {
+        didSet {
+            EventController.shared.saveArchivedEventsToPersistenceStore()
+        }
+    }
     
     // MARK: - Computed Properties
     
