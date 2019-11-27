@@ -18,7 +18,6 @@ class EventDetailViewController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var tagsLabel: UILabel!
     @IBOutlet weak var noteView: UITextView!
-    @IBOutlet weak var imageView: UIImageView!
     
     // MARK: - View Lifecyle
     override func viewDidLoad() {
