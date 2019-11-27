@@ -9,7 +9,7 @@
 import Foundation
 
 extension DateFormatter {
-    static var eventDateFormatter: DateFormatter {
+    static var eventDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         
         formatter.timeZone = .autoupdatingCurrent
@@ -19,7 +19,7 @@ extension DateFormatter {
         formatter.timeStyle = .short
         
         return formatter
-    }
+    }()
     
     /// Returns a nicely formatted string of the time remaining for an event.
     static func formattedTimeRemaining(for event: Event) -> String {
