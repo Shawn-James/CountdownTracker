@@ -27,7 +27,7 @@ class EventController {
     
     /// The complete list of all tags for all (active) events.
     var tags: [Tag] {
-        var tags = [Tag]()
+        var tags = [""]
         
         for event in allEvents {
             for tag in event.tags {
@@ -136,8 +136,8 @@ class EventController {
         }
     }
     
-    /// A list of all active events that pass the currently selected filter settings.
-    
+    /// Returns an array of events filtered by the provided filter settings
+    /// from the provided events array.
     func filter(_ events: [Event], by style: FilterStyle, with filterInfo: (date: Date?, tag: Tag?)?) -> [Event] {
         return events.filter {
             switch style {
@@ -145,7 +145,11 @@ class EventController {
                 return true
             case .tag:
                 if let tag = filterInfo?.tag, tags.contains(tag) {
-                    return $0.tags.contains(tag)
+                    if tag == "" {
+                        return $0.tags.isEmpty
+                    } else {
+                        return $0.tags.contains(tag)
+                    }
                 } else {
                     return false
                 }

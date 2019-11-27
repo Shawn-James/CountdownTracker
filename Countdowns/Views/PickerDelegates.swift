@@ -65,6 +65,9 @@ class TagFilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDel
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if EventController.shared.tags[row] == "" {
+            return .emptyTagDisplayText
+        }
         return EventController.shared.tags[row]
     }
 }

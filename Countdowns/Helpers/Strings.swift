@@ -13,6 +13,8 @@ extension String {
     
     static let countdownCellReuseID = "CountdownCell"
     
+    static let emptyTagDisplayText = "(untagged)"
+    
     // MARK: - Segue Identifiers
     
     static let addEventSegue = "AddEventSegue"
