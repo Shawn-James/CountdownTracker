@@ -164,14 +164,15 @@ class AddEditEventViewController: UIViewController {
         }
     }
     
-    /// If tags were entered, separate by commas, strip extraneous whitespace, and return for use in saving the event
+    /// If tags were entered, separate by commas, strip extraneous whitespace, and return for use in saving the event. Empty tags are not allowed.
     private func getTagDataFromField() -> [Tag] {
         var tags = [Tag]()
         
         if let tagsText = tagsField.text, !tagsText.isEmpty {
             let subTags = tagsText.split(separator: .tagSeparator, omittingEmptySubsequences: true)
             for subTag in subTags {
-                tags.append(String(subTag).stripMultiSpace())
+                let newTag = String(subTag).stripMultiSpace()
+                if !newTag.isEmpty { tags.append(newTag) }
             }
         }
         
