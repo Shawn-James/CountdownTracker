@@ -116,7 +116,11 @@ class AddEditEventViewController: UIViewController {
         let hasNote = !notesTextView.text.isEmpty
         let note: String = hasNote ? notesTextView.text : ""
         
-        finalizeEventFromData(name: eventName, date: eventDate, tags: tags, note: note)
+        finalizeEventFromData(
+            name: eventName,
+            date: eventDate,
+            tags: tags,
+            note: note)
         
         dismiss(animated: true) {
             self.addEventDelegate?.updateViews()
@@ -139,7 +143,9 @@ class AddEditEventViewController: UIViewController {
     
     // MARK: - Private Methods
     
-    /// If custom time being used, concatenate the date and the time from the two pickers and return for use in saving the event.
+    /// If custom time being used, concatenate the date
+    /// and the time from the two pickers and return
+    /// for use in saving the event.
     private func getEventDateFromPickers() -> Date {
         if !hasCustomTime {
             return datePicker.date
@@ -158,13 +164,17 @@ class AddEditEventViewController: UIViewController {
                 year: date.year, month: date.month, day: date.day,
                 hour: time.hour, minute: time.minute
             )
-            guard let dateFromComponents = dateComponents.date else { return Date() }
+            guard let dateFromComponents = dateComponents.date
+                else { return Date() }
             
             return dateFromComponents
         }
     }
     
-    /// If tags were entered, separate by commas, strip extraneous whitespace, and return for use in saving the event. Empty tags are not allowed.
+    /// If tags were entered, separate by commas,
+    /// strip extraneous whitespace, and return
+    /// for use in saving the event.
+    /// Empty tags are not allowed.
     private func getTagDataFromField() -> [Tag] {
         var tags = [Tag]()
         
@@ -179,7 +189,8 @@ class AddEditEventViewController: UIViewController {
         return tags
     }
     
-    /// Save the event, adding it to the list if new or updating the event if editing.
+    /// Save the event, adding it to the list if new
+    /// or updating the event if editing.
     private func finalizeEventFromData(name: String, date: Date, tags: [Tag], note: String) {
         if event == nil {
             // add new event (if adding)
@@ -204,7 +215,8 @@ class AddEditEventViewController: UIViewController {
     
     // MARK: - Reset Views
     
-    /// If scene called to edit event, populate views with event info for editing.
+    /// If scene called to edit event, populate views
+    /// with event info for editing.
     private func resetViewsForEditingEvent() {
         guard let event = event else { return }
         
@@ -226,8 +238,13 @@ class AddEditEventViewController: UIViewController {
     /// Otherwise, allow any time to be chosen.
     private func updatePickersMinMax() {
         datePicker.minimumDate = Date()
-        if Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: datePicker.date) ==
-            Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: Date()) {
+        if Calendar.autoupdatingCurrent.dateComponents(
+                [.year, .month, .day],
+                from: datePicker.date)
+            == Calendar.autoupdatingCurrent.dateComponents(
+                [.year, .month, .day],
+                from: Date()
+        ) {
             timePicker.minimumDate = Date()
         } else {
             timePicker.minimumDate = nil
