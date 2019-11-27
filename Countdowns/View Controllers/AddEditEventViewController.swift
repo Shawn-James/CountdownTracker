@@ -110,7 +110,7 @@ class AddEditEventViewController: UIViewController {
 
         let eventDate = getEventDateFromPickers()
         
-        let tags = getTagDataFromField()
+        guard let tags = getTagDataFromField() else { return }
         
         // get note
         let hasNote = !notesTextView.text.isEmpty
@@ -175,13 +175,17 @@ class AddEditEventViewController: UIViewController {
     /// strip extraneous whitespace, and return
     /// for use in saving the event.
     /// Empty tags are not allowed.
-    private func getTagDataFromField() -> [Tag] {
+    private func getTagDataFromField() -> [Tag]? {
         var tags = [Tag]()
         
         if let tagsText = tagsField.text, !tagsText.isEmpty {
             let subTags = tagsText.split(separator: .tagSeparator, omittingEmptySubsequences: true)
             for subTag in subTags {
                 let newTag = String(subTag).stripMultiSpace()
+                if newTag == .emptyTagDisplayText {
+                    showAlertForEmptyTag()
+                    return nil
+                }
                 if !newTag.isEmpty { tags.append(newTag) }
             }
         }
@@ -211,6 +215,15 @@ class AddEditEventViewController: UIViewController {
             
             editEventDelegate?.updateViews()
         }
+    }
+    
+    private func showAlertForEmptyTag() {
+        let alert = UIAlertController(
+            title: "Bad tag(s)!",
+            message: "Cannot add tag that is empty or named '\(String.emptyTagDisplayText)'; please remove bad tag(s) and try again.",
+            preferredStyle: .alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: nil)))
+        present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Reset Views
