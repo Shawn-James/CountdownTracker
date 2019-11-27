@@ -72,7 +72,7 @@ class EventController {
     
     /// Update the given event, save the event list, cancel the previous notification, and set a new notification.
     func update(_ event: Event,
-                with name: String, dateTime: Date, tags: [Tag],
+                withName name: String, dateTime: Date, tags: [Tag],
                 note: String, hasTime: Bool
     ) {
         event.name = name

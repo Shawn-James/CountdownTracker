@@ -64,6 +64,7 @@ class CountdownsTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         updateViews()
     }
 
@@ -183,6 +184,19 @@ class CountdownsTableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    private func alertAndArchiveFinishedCountdowns() {
+        for event in displayedEvents {
+            if event.dateTimeHasPassed {
+                if !event.didNotifyDone {
+                    alertForCountdownEnd(for: event)
+                }
+                if !amViewingArchive {
+                    EventController.shared.archive(event)
+                }
+            }
+        }
+    }
+    
     /// Lets the user know that the countdown has ended.
     private func alertForCountdownEnd(for event: Event) {
         let alert = UIAlertController(
@@ -205,17 +219,7 @@ class CountdownsTableViewController: UITableViewController {
             tableView.deselectRow(at: indexPath, animated: true)
         }
         sortAndFilter()
-        for event in displayedEvents {
-            if event.dateTimeHasPassed {
-                if !event.didNotifyDone {
-                    alertForCountdownEnd(for: event)
-                }
-                if !amViewingArchive {
-                    EventController.shared.archive(event)
-                }
-            }
-        }
-        
+        alertAndArchiveFinishedCountdowns()
         tableView.reloadData()
         setModeLabelAppearance()
         setBarButtonAppearances()
@@ -239,8 +243,7 @@ class CountdownsTableViewController: UITableViewController {
             }
         }
         
-        text = text.uppercased()
-        currentModeLabel.text = text
+        currentModeLabel.text = text.uppercased()
     }
     
     private func setBarButtonAppearances() {
@@ -276,4 +279,5 @@ extension CountdownsTableViewController: AddEventViewControllerDelegate {
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
     }
 }
+
 extension CountdownsTableViewController: SortFilterViewControllerDelegate {}

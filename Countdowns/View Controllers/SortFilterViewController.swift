@@ -9,8 +9,6 @@
 import UIKit
 
 protocol SortFilterViewControllerDelegate {
-    var displayedEvents: [Event] { get set }
-    var amViewingArchive: Bool { get }
     var currentSortStyle: EventController.SortStyle { get set }
     var currentFilterStyle: EventController.FilterStyle { get set }
     var currentFilterTag: Tag { get set }

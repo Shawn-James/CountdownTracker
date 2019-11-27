@@ -209,7 +209,7 @@ class AddEditEventViewController: UIViewController {
         } else {
             // edit event (if editing)
             EventController.shared.update(
-                event!, with: name, dateTime: date,
+                event!, withName: name, dateTime: date,
                 tags: tags, note: note, hasTime: hasCustomTime
             )
             
