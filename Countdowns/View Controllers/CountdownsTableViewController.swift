@@ -19,8 +19,6 @@ class CountdownsTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    var eventController = EventController.shared
-    
     var displayedEvents: [Event] = EventController.shared.activeEvents
     var amViewingArchive: Bool = false
     
@@ -168,7 +166,7 @@ class CountdownsTableViewController: UITableViewController {
             title: "Delete",
             style: .destructive,
             handler: { action in
-                self.eventController.delete(event)
+                EventController.shared.delete(event)
                 self.displayedEvents.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .left)
                 self.updateViews()
@@ -203,19 +201,19 @@ class CountdownsTableViewController: UITableViewController {
             if event.dateTimeHasPassed {
                 if !event.didNotifyDone {
                     alertForCountdownEnd(for: event)
-                    eventController.archive(event)
-                } else if !amViewingArchive {
-                    eventController.archive(event)
+                }
+                if !amViewingArchive {
+                    EventController.shared.archive(event)
                 }
             }
         }
         
         tableView.reloadData()
-        calculateModeLabelAppearance()
-        calculateBarButtonAppearances()
+        setModeLabelAppearance()
+        setBarButtonAppearances()
     }
     
-    private func calculateModeLabelAppearance() {
+    private func setModeLabelAppearance() {
         var text = ""
         currentModeLabel.isHidden = false
         
@@ -237,8 +235,8 @@ class CountdownsTableViewController: UITableViewController {
         currentModeLabel.text = text
     }
     
-    private func calculateBarButtonAppearances() {
-        if eventController.currentFilterStyle != .none {
+    private func setBarButtonAppearances() {
+        if EventController.shared.currentFilterStyle != .none {
             sortButton.tintColor = .systemRed
             sortButton.image = UIImage(systemName: .sortImageActive)
         } else {

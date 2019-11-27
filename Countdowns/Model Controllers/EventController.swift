@@ -110,7 +110,7 @@ class EventController {
         saveArchivedEventsToPersistenceStore()
     }
     
-    // MARK: -- Sort/Filter
+    // MARK: - Sort/Filter
     
     /// Sort the lists of active & archived events by the given style.
     func sort(_ events: [Event], by style: EventController.SortStyle) -> [Event] {
@@ -265,7 +265,7 @@ class EventController {
         }
     }
     
-    // MARK: -- Archive Persistence
+    // MARK: - Archive Persistence
     
     private var archivedEventsURL: URL? {
         let fm = FileManager.default

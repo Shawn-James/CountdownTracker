@@ -52,7 +52,7 @@ class AddEditEventViewController: UIViewController {
         super.viewDidLoad()
         
         if event != nil {
-            resetViewForEditingEvent()
+            resetViewsForEditingEvent()
         }
     }
     
@@ -60,7 +60,7 @@ class AddEditEventViewController: UIViewController {
         eventNameField.becomeFirstResponder()
     }
     
-    // MARK: - UI Methods
+    // MARK: - UI Actions / Overrides
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
@@ -98,13 +98,7 @@ class AddEditEventViewController: UIViewController {
     }
     
     @IBAction func customTimeSwitchChanged(_ sender: UISwitch) {
-        switch sender.isOn {
-        case true:
-            timePicker.isHidden = false
-        case false:
-            timePicker.isHidden = true
-        }
-        
+        setTimePickerHidden()
         view.endEditing(true)
         updatePickersMinMax()
     }
@@ -141,21 +135,6 @@ class AddEditEventViewController: UIViewController {
     }
     
     // MARK: - Private Methods
-    
-    /// If scene called to edit event, populate views with event info for editing.
-    private func resetViewForEditingEvent() {
-        guard let event = event else { return }
-        
-        sceneTitleLabel.text = "Edit event"
-        eventNameField.text = event.name
-        datePicker.date = event.dateTime
-        timePicker.date = event.dateTime
-        customTimeSwitch.isOn = event.hasTime
-        tagsField.text = event.tagsText
-        notesTextView.text = event.note
-        
-        updatePickersMinMax()
-    }
     
     /// If custom time being used, concatenate the date and the time from the two pickers and return for use in saving the event.
     private func getEventDateFromPickers() -> Date {
@@ -217,6 +196,24 @@ class AddEditEventViewController: UIViewController {
         }
     }
     
+    // MARK: - Reset Views
+    
+    /// If scene called to edit event, populate views with event info for editing.
+    private func resetViewsForEditingEvent() {
+        guard let event = event else { return }
+        
+        sceneTitleLabel.text = "Edit event"
+        eventNameField.text = event.name
+        datePicker.date = event.dateTime
+        timePicker.date = event.dateTime
+        customTimeSwitch.isOn = event.hasTime
+        tagsField.text = event.tagsText
+        notesTextView.text = event.note
+        
+        setTimePickerHidden()
+        updatePickersMinMax()
+    }
+    
     /// Update the timepicker's based on the datepicker's current selection.
     /// First, set the datepicker's minimum date to today.
     /// If today, don't allow the timepicker to select a time before now.
@@ -228,6 +225,15 @@ class AddEditEventViewController: UIViewController {
             timePicker.minimumDate = Date()
         } else {
             timePicker.minimumDate = nil
+        }
+    }
+    
+    private func setTimePickerHidden() {
+        switch customTimeSwitch.isOn {
+        case true:
+            timePicker.isHidden = false
+        case false:
+            timePicker.isHidden = true
         }
     }
 }
