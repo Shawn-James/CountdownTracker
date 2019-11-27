@@ -11,6 +11,7 @@ import UIKit
 // MARK: - Delegates
 
 protocol AddEventViewControllerDelegate {
+    func selectRow(for event: Event)
     func updateViews()
 }
 
@@ -115,10 +116,12 @@ class AddEditEventViewController: UIViewController {
         let hasNote = !notesTextView.text.isEmpty
         let note: String = hasNote ? notesTextView.text : ""
         
-        // dismiss add/edit scene before adding/editing event
-        dismiss(animated: true, completion: nil)
-        
         finalizeEventFromData(name: eventName, date: eventDate, tags: tags, note: note)
+        
+        dismiss(animated: true) {
+            self.addEventDelegate?.updateViews()
+            self.editEventDelegate?.updateViews()
+        }
     }
     
     @IBAction func cancelTapped(_ sender: UIButton) {
@@ -179,12 +182,14 @@ class AddEditEventViewController: UIViewController {
     private func finalizeEventFromData(name: String, date: Date, tags: [Tag], note: String) {
         if event == nil {
             // add new event (if adding)
-            EventController.shared.create(Event(
+            let newEvent = Event(
                 name: name, dateTime: date,
                 tags: tags, note: note, hasTime: hasCustomTime
-            ))
+            )
+            EventController.shared.create(newEvent)
             
             addEventDelegate?.updateViews()
+            addEventDelegate?.selectRow(for: newEvent)
         } else {
             // edit event (if editing)
             EventController.shared.update(

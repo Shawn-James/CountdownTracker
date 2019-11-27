@@ -258,5 +258,14 @@ class CountdownsTableViewController: UITableViewController {
 
 // MARK: - Delegate Adherences
 
-extension CountdownsTableViewController: AddEventViewControllerDelegate {}
+extension CountdownsTableViewController: AddEventViewControllerDelegate {
+    func selectRow(for event: Event) {
+        // get index of event in list
+        guard let index = displayedEvents.firstIndex(of: event) else { return }
+        // make indexPath from index
+        let indexPath = IndexPath(row: index, section: 0)
+        // select row from indexPath
+        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
+    }
+}
 extension CountdownsTableViewController: SortFilterViewControllerDelegate {}
