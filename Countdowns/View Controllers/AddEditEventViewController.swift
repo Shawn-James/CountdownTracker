@@ -251,11 +251,18 @@ class AddEditEventViewController: UIViewController {
         }
     }
     
-    /// Update the timepicker's based on the datepicker's current selection.
-    /// First, set the datepicker's minimum date to today.
-    /// If today, don't allow the timepicker to select a time before now.
-    /// Otherwise, allow any time to be chosen.
+    /// Update the date/time-pickers, partially based on the date-picker's current selection.
+    /// If archived, pickers will be locked to event date/time.
+    /// Otherwise, the date-picker's minimum date is set to today.
+    /// If today's date is selected, no time before now is allowed in the time picker.
+    /// Otherwise, allow any time to be chosen from the time-picker.
     private func updatePickersMinMax() {
+        if let event = event, event.archived {
+            // if archived, we want the event date/time to remain the same!
+            datePicker.minimumDate = nil
+            timePicker.minimumDate = nil
+            return
+        }
         datePicker.minimumDate = Date()
         if Calendar.autoupdatingCurrent.dateComponents(
                 [.year, .month, .day],
