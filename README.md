@@ -1,7 +1,7 @@
 # CountdownTracker
-for Lambda iOS11 Build Week #1
+originally built for Lambda iOS11 Build Week #1
 
-[Sign up for beta testing](https://testflight.apple.com/join/BywP1EcZ) through [TestFlight](https://apps.apple.com/us/app/testflight/id899247664)!
+![http://jonbash.com/assets/images/appstoredownload.svg](https://apps.apple.com/us/app/super-countdown-tracker/id1484864299?ls=1)
 
 **See [project proposal](https://github.com/jonbash/ios-build-sprint-project-proposal) for initial proposal, plans, and brainstorm.**
 
