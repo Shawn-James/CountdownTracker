@@ -1,9 +1,10 @@
 # CountdownTracker
-originally built for Lambda iOS11 Build Week #1
 
 <a href="https://apps.apple.com/us/app/super-countdown-tracker/id1484864299?ls=1" >
   <img src="http://jonbash.com/assets/images/appstoredownload.svg" alt="Buy it on the App Store!" />
 </a>
+
+originally built for Lambda iOS11 Build Week #1
 
 **See [project proposal](https://github.com/jonbash/ios-build-sprint-project-proposal) for initial proposal, plans, and brainstorm.**
 
