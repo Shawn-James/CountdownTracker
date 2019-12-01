@@ -52,6 +52,8 @@ class AddEditEventViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUpPickers()
+        
         if event != nil {
             resetViewsForEditingEvent()
         }
@@ -233,16 +235,32 @@ class AddEditEventViewController: UIViewController {
     private func resetViewsForEditingEvent() {
         guard let event = event else { return }
         
+        let components: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute]
+        let eventDateTimeComponents = Calendar.autoupdatingCurrent.dateComponents(
+            components,
+            from: event.dateTime)
+        let nowComponents = Calendar.autoupdatingCurrent.dateComponents(
+            components,
+            from: Date())
+        let timePickerMinComponents = DateComponents(
+            calendar: .autoupdatingCurrent,
+            timeZone: .autoupdatingCurrent,
+            year: nowComponents.year,
+            month: nowComponents.month,
+            day: nowComponents.day,
+            hour: eventDateTimeComponents.hour,
+            minute: eventDateTimeComponents.minute)
+        
         sceneTitleLabel.text = "Edit event"
         eventNameField.text = event.name
         datePicker.date = event.dateTime
-        timePicker.date = event.dateTime
+        timePicker.date = timePickerMinComponents.date ?? event.dateTime
         customTimeSwitch.isOn = event.hasTime
         tagsField.text = event.tagsText
         notesTextView.text = event.note
         
-        setTimePickerHidden()
         updatePickersMinMax()
+        setTimePickerHidden()
         
         if event.archived {
             datePicker.isEnabled = false
@@ -257,7 +275,7 @@ class AddEditEventViewController: UIViewController {
     /// If today's date is selected, no time before now is allowed in the time picker.
     /// Otherwise, allow any time to be chosen from the time-picker.
     private func updatePickersMinMax() {
-        if let event = event, event.archived {
+        if let event = event, event.archived == true {
             // if archived, we want the event date/time to remain the same!
             datePicker.minimumDate = nil
             timePicker.minimumDate = nil
@@ -266,8 +284,8 @@ class AddEditEventViewController: UIViewController {
         datePicker.minimumDate = Date()
         if Calendar.autoupdatingCurrent.dateComponents(
                 [.year, .month, .day],
-                from: datePicker.date)
-            == Calendar.autoupdatingCurrent.dateComponents(
+                from: datePicker.date
+            ) == Calendar.autoupdatingCurrent.dateComponents(
                 [.year, .month, .day],
                 from: Date()
         ) {
@@ -284,5 +302,12 @@ class AddEditEventViewController: UIViewController {
         case false:
             timePicker.isHidden = true
         }
+    }
+    
+    private func setUpPickers() {
+        datePicker.calendar = .autoupdatingCurrent
+        datePicker.timeZone = .autoupdatingCurrent
+        timePicker.calendar = .autoupdatingCurrent
+        timePicker.timeZone = .autoupdatingCurrent
     }
 }
