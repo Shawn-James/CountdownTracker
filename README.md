@@ -4,7 +4,7 @@
   <img src="http://jonbash.com/assets/images/appstoredownload.svg" alt="Buy it on the App Store!" />
 </a>
 
-originally built for Lambda iOS11 Build Week #1
+originally built for Lambda School iOS11 Build Week #1
 
 **See [project proposal](https://github.com/jonbash/ios-build-sprint-project-proposal) for initial proposal, plans, and brainstorm.**
 
