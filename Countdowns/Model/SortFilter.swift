@@ -14,6 +14,7 @@ import Foundation
 struct EventSort: Equatable, CustomStringConvertible {
    let property: Property
    let direction: ComparisonResult
+   let keyPath: PartialKeyPath<Event>
 
    init(
       property: EventSort.Property = .endDate,
@@ -21,6 +22,17 @@ struct EventSort: Equatable, CustomStringConvertible {
    {
       self.property = property
       self.direction = direction
+      
+      switch property {
+      case .endDate:
+         self.keyPath = \Event.dateTime
+      case .creationDate:
+         self.keyPath = \Event.creationDate
+      case .modifiedDate:
+         self.keyPath = \Event.modifiedDate
+      case .numberOfTags:
+         self.keyPath = \Event.nsmanagedTags.count
+      }
    }
 
    init?(rawValue: Int) {
@@ -30,8 +42,7 @@ struct EventSort: Equatable, CustomStringConvertible {
                rawValue: rawValue / Property.allCases.count)
       else { return nil }
 
-      self.property = property
-      self.direction = direction
+      self.init(property: property, direction: direction)
    }
 
    var rawValue: Int {
@@ -68,13 +79,13 @@ struct EventSort: Equatable, CustomStringConvertible {
 
 // MARK: - Filter
 
-enum EventFilter {
+enum EventFilter: CustomStringConvertible {
    case none
    case noLaterThanDate(Date)
    case noSoonerThanDate(Date)
    case tag(UUID?)
 
-   var pickerText: String {
+   var description: String {
       switch self {
       case .none: return "(none)"
       case .noLaterThanDate: return "Now → ..."
@@ -183,8 +194,12 @@ extension Array where Element == Event {
          switch style {
          case .none:
             return true
-         case .tag(let tagID):
-            return $0.isTaggedWith(tagWithID: tagID)
+         case .tag(let tagIDOrNil):
+            if let tagID = tagIDOrNil {
+               return $0.isTaggedWith(tagWithID: tagID)
+            } else {
+               return $0.tags.isEmpty
+            }
          case .noLaterThanDate(let date):
             return $0.dateTime < date
          case .noSoonerThanDate(let date):

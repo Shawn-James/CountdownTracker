@@ -49,9 +49,14 @@ class EventController {
    }
 
    /// Remove the event from the active event list, add it to an archive list, and save both the active and archive lists.
-   func archive(_ event: Event) -> AnyPublisher<Void, Error> {
-      event.managedObjectContext?.perform {
-         event.archived = true
+   func archive(_ event: Event) -> Future<Void, Error> {
+      Future { promise in
+         guard let moc = event.managedObjectContext else {
+            return promise(.failure(CountdownError.noManagedObjectContextForObject))
+         }
+         moc.perform {
+            event.archived = true
+         }
       }
    }
 

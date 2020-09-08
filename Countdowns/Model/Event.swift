@@ -14,7 +14,7 @@ class Event: NSManagedObject {
    @NSManaged var uuid: String
    @NSManaged var name: String
    @NSManaged var dateTime: Date
-   @NSManaged private var nsmanagedTags: NSMutableSet
+   @NSManaged var nsmanagedTags: NSMutableSet
    @NSManaged var note: String
    @NSManaged var hasTime: Bool
    @NSManaged var creationDate: Date

@@ -18,7 +18,7 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return EventController.SortStyle.allCases.count
+        return SortStyle.allCases.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
