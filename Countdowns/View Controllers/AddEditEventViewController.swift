@@ -183,7 +183,7 @@ class AddEditEventViewController: UIViewController {
         if let tagsText = tagsField.text, !tagsText.isEmpty {
             let subTags = tagsText.split(separator: .tagSeparator, omittingEmptySubsequences: true)
             for subTag in subTags {
-                let newTag = String(subTag).stripMultiSpace()
+                let newTag = String(subTag).strippedMultiSpace()
                 if newTag == .emptyTagDisplayText {
                     showAlertForEmptyTag()
                     return nil

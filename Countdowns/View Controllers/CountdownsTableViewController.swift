@@ -211,7 +211,7 @@ class CountdownsTableViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    // MARK: - Scene Appearance
+    // MARK: - UI Update
     
     /// Updates all cells (showing alerts for and removing events that have passed), reloads all table data, and colors the filter button as needed if the table is currently being filtered.
     func updateViews() {
@@ -267,7 +267,7 @@ class CountdownsTableViewController: UITableViewController {
 
 
 
-// MARK: - Delegate Adherences
+// MARK: - Delegate Conformance
 
 extension CountdownsTableViewController: AddEventViewControllerDelegate {
     func selectRow(for event: Event) {

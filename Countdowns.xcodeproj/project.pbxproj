@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		990EC94424D338F200E41409 /* Countdowns.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94224D338F200E41409 /* Countdowns.xcdatamodeld */; };
+		990EC94624D33A7D00E41409 /* CoreDataMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94524D33A7D00E41409 /* CoreDataMigrationManager.swift */; };
+		990EC94824D33A8600E41409 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94724D33A8600E41409 /* CoreDataStack.swift */; };
+		990EC94A24D33BE600E41409 /* Utilites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94924D33BE600E41409 /* Utilites.swift */; };
+		990EC94C24D34BD100E41409 /* SortFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94B24D34BD100E41409 /* SortFilter.swift */; };
 		99251D42235E09400060D9FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99251D41235E09400060D9FF /* AppDelegate.swift */; };
 		99251D44235E09400060D9FF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99251D43235E09400060D9FF /* SceneDelegate.swift */; };
 		99251D49235E09400060D9FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99251D47235E09400060D9FF /* Main.storyboard */; };
@@ -27,6 +32,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		990EC94324D338F200E41409 /* Countdowns.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Countdowns.xcdatamodel; sourceTree = "<group>"; };
+		990EC94524D33A7D00E41409 /* CoreDataMigrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigrationManager.swift; sourceTree = "<group>"; };
+		990EC94724D33A8600E41409 /* CoreDataStack.swift */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; tabWidth = 3; };
+		990EC94924D33BE600E41409 /* Utilites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilites.swift; sourceTree = "<group>"; };
+		990EC94B24D34BD100E41409 /* SortFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortFilter.swift; sourceTree = "<group>"; };
 		99251D3E235E09400060D9FF /* Countdowns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countdowns.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99251D41235E09400060D9FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		99251D43235E09400060D9FF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +69,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		990EC94D24D3526A00E41409 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				990EC94224D338F200E41409 /* Countdowns.xcdatamodeld */,
+				990EC94724D33A8600E41409 /* CoreDataStack.swift */,
+				990EC94524D33A7D00E41409 /* CoreDataMigrationManager.swift */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
 		99251D35235E09400060D9FF = {
 			isa = PBXGroup;
 			children = (
@@ -80,8 +100,7 @@
 			children = (
 				9972B509235E0A320015E56B /* View Controllers */,
 				9972B50C235E0A4B0015E56B /* Views */,
-				99EF7D0F235E16A60092F4AB /* Models */,
-				99EF7D10235E16AF0092F4AB /* Model Controllers */,
+				99EF7D0F235E16A60092F4AB /* Model */,
 				9972B511235E0AD60015E56B /* Helpers */,
 				9942FF24238EED87005520B6 /* Storyboards */,
 				99251D55235E09580060D9FF /* Application */,
@@ -135,25 +154,21 @@
 				998FB4572361029C00B1AF60 /* Notifications.swift */,
 				9972B50F235E0AA00015E56B /* Strings.swift */,
 				99480ADA235F5DBD00DC1D48 /* DateFormatters.swift */,
+				990EC94924D33BE600E41409 /* Utilites.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		99EF7D0F235E16A60092F4AB /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				99EF7D11235E18DE0092F4AB /* Event.swift */,
-				99480ADC235F767700DC1D48 /* Tag.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		99EF7D10235E16AF0092F4AB /* Model Controllers */ = {
+		99EF7D0F235E16A60092F4AB /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				99EF7D13235E18EA0092F4AB /* EventController.swift */,
+				990EC94B24D34BD100E41409 /* SortFilter.swift */,
+				99EF7D11235E18DE0092F4AB /* Event.swift */,
+				99480ADC235F767700DC1D48 /* Tag.swift */,
+				990EC94D24D3526A00E41409 /* Core Data */,
 			);
-			path = "Model Controllers";
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,6 +243,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				99EF7D08235E13990092F4AB /* EventDetailViewController.swift in Sources */,
+				990EC94624D33A7D00E41409 /* CoreDataMigrationManager.swift in Sources */,
 				99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */,
 				99251D42235E09400060D9FF /* AppDelegate.swift in Sources */,
 				99480ADB235F5DBD00DC1D48 /* DateFormatters.swift in Sources */,
@@ -236,11 +252,15 @@
 				9972B510235E0AA00015E56B /* Strings.swift in Sources */,
 				99251D44235E09400060D9FF /* SceneDelegate.swift in Sources */,
 				99480ADD235F767700DC1D48 /* Tag.swift in Sources */,
+				990EC94C24D34BD100E41409 /* SortFilter.swift in Sources */,
+				990EC94A24D33BE600E41409 /* Utilites.swift in Sources */,
 				99480AE1235FA13300DC1D48 /* PickerDelegates.swift in Sources */,
 				998FB4582361029C00B1AF60 /* Notifications.swift in Sources */,
+				990EC94824D33A8600E41409 /* CoreDataStack.swift in Sources */,
 				99EF7D0C235E14690092F4AB /* SortFilterViewController.swift in Sources */,
 				99EF7D0E235E14D90092F4AB /* AddEditEventViewController.swift in Sources */,
 				9972B50B235E0A480015E56B /* CountdownTableViewCell.swift in Sources */,
+				990EC94424D338F200E41409 /* Countdowns.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,6 +464,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		990EC94224D338F200E41409 /* Countdowns.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				990EC94324D338F200E41409 /* Countdowns.xcdatamodel */,
+			);
+			currentVersion = 990EC94324D338F200E41409 /* Countdowns.xcdatamodel */;
+			path = Countdowns.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 99251D36235E09400060D9FF /* Project object */;
 }

@@ -12,7 +12,7 @@ class CountdownTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
-    var parentViewController: CountdownsTableViewController?
+    weak var parentViewController: CountdownsTableViewController?
     
     var timeRemainingTimer: Timer?
     

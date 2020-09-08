@@ -30,7 +30,7 @@ extension String {
     // MARK: - User Defaults
     
     static let currentSortStyle = "currentSortStyle"
-    static let currentFilterStyle = "currentFilterStyle"
+    static let currentFilter = "currentFilterStyle"
     static let currentFilterTag = "currentFilterTag"
     static let currentFilterDate = "currentFilterDate"
     static let notificationsAllowed = "notificationsAllowed"
@@ -39,7 +39,7 @@ extension String {
     
     static let countdownEndedNotificationTitle = "It's time!"
     static func countdownEndedNotificationBody(for event: Event) -> String {
-        return "The countdown for \"\(event.name)\" is over! It will now be added to the event archive for posterity."
+        "The countdown for \"\(event.name)\" is over! It will now be added to the event archive for posterity."
     }
     
     // MARK: - Images
@@ -51,7 +51,7 @@ extension String {
     
     // MARK: - Methods
     
-    func stripMultiSpace() -> String {
+    func strippedMultiSpace() -> String {
         var string = self
         
         while string.contains("  ") {
