@@ -18,22 +18,36 @@ class EventViewModel: EventViewModeling {
    private(set) var event: Event
 
    var updateViewsFromEvent: ((Event) -> Void)?
+   private(set) var countdownDidEnd: (Event) -> Void
 
-   private var countdownTimer: Timer
+   private var countdownTimer: Timer?
 
-   init(_ event: Event) {
+   init(_ event: Event, countdownDidEnd: @escaping (Event) -> Void) {
       self.event = event
+      self.countdownDidEnd = countdownDidEnd
+
+      updateTimer()
    }
 
    private func updateTimer() {
       // if time remaining < 1 day, update in a minute
-      if !amViewingArchive && event.timeInterval < 1 {
-         parentViewController?.updateViews()
+      let update: (Timer) -> Void = { [weak self] _ in self?.updateTimer() }
+
+      if !event.archived && event.timeInterval < 1 {
+         countdownDidEnd(event)
       } else if abs(event.timeInterval) < 3660 {
-         countdownTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: updateTimer(_:))
+         countdownTimer = Timer.scheduledTimer(
+            withTimeInterval: 1,
+            repeats: false,
+            block: update)
       } else if abs(event.timeInterval) < 86_460 {
-         countdownTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: updateTimer(_:))
+         countdownTimer = Timer.scheduledTimer(
+            withTimeInterval: 60,
+            repeats: false,
+            block: update)
       }
+
+      updateViewsFromEvent?(event)
    }
    
 }
@@ -59,10 +73,4 @@ class CountdownTableViewCell: UITableViewCell {
    @IBOutlet weak var titleLabel: UILabel!
    @IBOutlet weak var timeRemainingLabel: UILabel!
    @IBOutlet weak var tagsLabel: UILabel!
-
-   // MARK: - Private Methods
-
-   /// Update the 'time remaining' label based on the new timer and then update the timer.
-   /// If the time is up, update the table view controller's views to show the alert and archive the event, removing this cell from view.
-
 }
