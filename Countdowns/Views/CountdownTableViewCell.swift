@@ -8,67 +8,61 @@
 
 import UIKit
 
+
+protocol EventViewModeling: AnyObject {
+   var event: Event { get }
+   var updateViewsFromEvent: ((Event) -> Void)? { get set }
+}
+
+class EventViewModel: EventViewModeling {
+   private(set) var event: Event
+
+   var updateViewsFromEvent: ((Event) -> Void)?
+
+   private var countdownTimer: Timer
+
+   init(_ event: Event) {
+      self.event = event
+   }
+
+   private func updateTimer() {
+      // if time remaining < 1 day, update in a minute
+      if !amViewingArchive && event.timeInterval < 1 {
+         parentViewController?.updateViews()
+      } else if abs(event.timeInterval) < 3660 {
+         countdownTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: updateTimer(_:))
+      } else if abs(event.timeInterval) < 86_460 {
+         countdownTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: updateTimer(_:))
+      }
+   }
+   
+}
+
+
 class CountdownTableViewCell: UITableViewCell {
-    
-    // MARK: - Properties
-    
-    weak var parentViewController: CountdownsTableViewController?
-    
-    var timeRemainingTimer: Timer?
-    
-    var event: Event? {
-        // Populate subviews and set timer when event is set
-        didSet {
-            guard let event = event else { return }
-            
-            titleLabel.text = event.name
-            tagsLabel.text = event.tagsText
-            
-            updateTimeText()
-            updateTimer()
-        }
-    }
-    
-    // MARK: - Outlets
-    
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var timeRemainingLabel: UILabel!
-    @IBOutlet weak var tagsLabel: UILabel!
-    
-    // MARK: - View Lifecycle
+   var viewModel: EventViewModeling? {
+      didSet {
+         guard let vm = viewModel else { return }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
+         vm.updateViewsFromEvent = { [weak self] event in
+            self?.timeRemainingLabel.text = DateFormatter.formattedTimeRemaining(for: event)
+         }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-    
-    // MARK: - Private Methods
-    
-    /// Update the text of the 'time remaining' label from the event data and the current time.
-    private func updateTimeText() {
-        guard let event = event else { return }
-        timeRemainingLabel.text = DateFormatter.formattedTimeRemaining(for: event)
-    }
-    
-    /// Update the 'time remaining' label based on the new timer and then update the timer.
-    /// If the time is up, update the table view controller's views to show the alert and archive the event, removing this cell from view.
-    private func updateTimer(_ timer: Timer = Timer()) {
-        guard let event = event,
-            let amViewingArchive = parentViewController?.amViewingArchive
-            else { return }
-        
-        updateTimeText()
-        
-        // if time remaining < 1 day, update in a minute
-        if !amViewingArchive && event.timeInterval < 1 {
-            parentViewController?.updateViews()
-        } else if abs(event.timeInterval) < 3660 {
-            timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: updateTimer(_:))
-        } else if abs(event.timeInterval) < 86_460 {
-            timeRemainingTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: updateTimer(_:))
-        }
-    }
+         // Populate subviews and set timer when event is set
+         titleLabel.text = vm.event.name
+         tagsLabel.text = vm.event.tagsText
+      }
+   }
+
+   // MARK: - Outlets
+
+   @IBOutlet weak var titleLabel: UILabel!
+   @IBOutlet weak var timeRemainingLabel: UILabel!
+   @IBOutlet weak var tagsLabel: UILabel!
+
+   // MARK: - Private Methods
+
+   /// Update the 'time remaining' label based on the new timer and then update the timer.
+   /// If the time is up, update the table view controller's views to show the alert and archive the event, removing this cell from view.
+
 }
