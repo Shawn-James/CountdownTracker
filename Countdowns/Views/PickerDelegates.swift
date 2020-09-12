@@ -72,7 +72,13 @@ class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelega
    func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
 
    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-      EventFilter.descriptions.count
+      // if no tags, don't let user filter by tag
+      let filterCount = EventFilter.descriptions.count
+      if viewModel.tags.count > 0 {
+         return filterCount
+      } else {
+         return filterCount - 1
+      }
    }
 
    func pickerView(
