@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		990C3A35250D455C00ACDE78 /* Combine+Transmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990C3A34250D455C00ACDE78 /* Combine+Transmitter.swift */; };
+		990C3A37250D843400ACDE78 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990C3A36250D843400ACDE78 /* Persistence.swift */; };
+		990C3A39250D861200ACDE78 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990C3A38250D861200ACDE78 /* Settings.swift */; };
 		990EC94424D338F200E41409 /* Countdowns.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94224D338F200E41409 /* Countdowns.xcdatamodeld */; };
 		990EC94624D33A7D00E41409 /* CoreDataMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94524D33A7D00E41409 /* CoreDataMigrationManager.swift */; };
 		990EC94824D33A8600E41409 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94724D33A8600E41409 /* CoreDataStack.swift */; };
@@ -36,6 +38,8 @@
 
 /* Begin PBXFileReference section */
 		990C3A34250D455C00ACDE78 /* Combine+Transmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Transmitter.swift"; sourceTree = "<group>"; };
+		990C3A36250D843400ACDE78 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		990C3A38250D861200ACDE78 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		990EC94324D338F200E41409 /* Countdowns.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Countdowns.xcdatamodel; sourceTree = "<group>"; };
 		990EC94524D33A7D00E41409 /* CoreDataMigrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigrationManager.swift; sourceTree = "<group>"; };
 		990EC94724D33A8600E41409 /* CoreDataStack.swift */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; tabWidth = 3; };
@@ -177,6 +181,8 @@
 				990EC94B24D34BD100E41409 /* SortFilter.swift */,
 				99EF7D11235E18DE0092F4AB /* Event.swift */,
 				99480ADC235F767700DC1D48 /* Tag.swift */,
+				990C3A36250D843400ACDE78 /* Persistence.swift */,
+				990C3A38250D861200ACDE78 /* Settings.swift */,
 				990EC94D24D3526A00E41409 /* Core Data */,
 			);
 			path = Model;
@@ -268,8 +274,10 @@
 				990EC94A24D33BE600E41409 /* Utilites.swift in Sources */,
 				99480AE1235FA13300DC1D48 /* PickerDelegates.swift in Sources */,
 				998FB4582361029C00B1AF60 /* Notifications.swift in Sources */,
+				990C3A37250D843400ACDE78 /* Persistence.swift in Sources */,
 				990EC94824D33A8600E41409 /* CoreDataStack.swift in Sources */,
 				99EF7D0C235E14690092F4AB /* SortFilterViewController.swift in Sources */,
+				990C3A39250D861200ACDE78 /* Settings.swift in Sources */,
 				99CE3DE1250BC9390039E3FC /* EventFetch.swift in Sources */,
 				99EF7D0E235E14D90092F4AB /* AddEditEventViewController.swift in Sources */,
 				9972B50B235E0A480015E56B /* CountdownTableViewCell.swift in Sources */,

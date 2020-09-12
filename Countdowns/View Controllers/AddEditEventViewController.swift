@@ -8,23 +8,20 @@
 
 import UIKit
 
-// MARK: - Delegates
 
-protocol AddEventViewControllerDelegate {
-    func selectRow(for event: Event)
-    func updateViews()
+protocol AddEventViewModeling {
+
 }
 
-protocol EditEventViewControllerDelegate {
-    func updateViews()
+protocol EditEventViewModeling {
+
 }
+
 
 class AddEditEventViewController: UIViewController {
-    
-    // MARK: - Properties
-    
-    var addEventDelegate: AddEventViewControllerDelegate?
-    var editEventDelegate: EditEventViewControllerDelegate?
+
+   
+
     var event: Event?
     
     var hasCustomTime: Bool {
@@ -201,8 +198,11 @@ class AddEditEventViewController: UIViewController {
         if event == nil {
             // add new event (if adding)
             let newEvent = Event(
-                name: name, dateTime: date,
-                tags: tags, note: note, hasTime: hasCustomTime
+                name: name,
+                dateTime: date,
+                tags: Set(tags),
+                note: note,
+                hasTime: hasCustomTime
             )
             EventController.shared.create(newEvent)
             
