@@ -13,3 +13,9 @@ enum CountdownError: Error {
     case unknown
     case other(Error)
 }
+
+enum CodingError: Error {
+   case noData
+   case decodeFailure(Error? = nil)
+   case encodeFailure(Error? = nil)
+}

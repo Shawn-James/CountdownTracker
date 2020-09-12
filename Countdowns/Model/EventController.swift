@@ -68,7 +68,7 @@ class EventController {
    func currentFilter() throws -> EventFilter {
       guard let filterData = UserDefaults.standard.data(forKey: .currentFilter)
       else {
-         throw EventFilter.Error.noData
+         throw EventFilter.CodingError.noData
       }
 
       return try JSONDecoder().decode(EventFilter.self, from: filterData)

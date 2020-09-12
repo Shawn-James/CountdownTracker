@@ -134,11 +134,6 @@ extension EventFilter: Codable {
       case tagID
    }
 
-   enum Error: Swift.Error {
-      case noData
-      case decodeFailure(Swift.Error? = nil)
-      case encodeFailure(Swift.Error? = nil)
-   }
    
    var intValue: Int {
       switch self {
@@ -172,12 +167,12 @@ extension EventFilter: Codable {
          case 3:
             self = .tag(try tagID())
          default:
-            throw Error.decodeFailure()
+            throw CodingError.decodeFailure()
          }
-      } catch let error as Self.Error {
+      } catch let error as CodingError {
          throw error
       } catch {
-         throw Error.decodeFailure(error)
+         throw CodingError.decodeFailure(error)
       }
    }
 
@@ -194,10 +189,10 @@ extension EventFilter: Codable {
          case .tag(let tagID):
             try container.encode(tagID, forKey: .tagID)
          }
-      } catch let error as Self.Error {
+      } catch let error as CodingError {
          throw error
       } catch {
-         throw Error.encodeFailure(error)
+         throw CodingError.encodeFailure(error)
       }
    }
 }
