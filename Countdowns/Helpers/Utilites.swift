@@ -14,6 +14,12 @@ func unimplemented(function: String = #function, file: String = #file) -> Never 
 }
 
 
+enum Either<A, B> {
+   case a(A)
+   case b(B)
+}
+
+
 /// Modifies the `value` passed in and returns the object modified using the passed-in closure. Returns a copy if a value type, but mutates the original if a reference type is provided. Useful for making the setup of an item more succinct and readable.
 /// - Parameters:
 ///   - value: The item to be modified; can be just about anything
