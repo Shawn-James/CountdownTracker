@@ -28,7 +28,11 @@ class EventController {
 
    // MARK: - Public Methods
 
-   func fetch(_ fetch: Event.FetchDescriptor) throws -> [Event] {
+   func fetchEvents(_ fetch: Event.FetchDescriptor) throws -> [Event] {
+      try coreDataStack.fetch(with: fetch)
+   }
+
+   func fetchTags(_ fetch: Tag.FetchDescriptor) throws -> [Tag] {
       try coreDataStack.fetch(with: fetch)
    }
 

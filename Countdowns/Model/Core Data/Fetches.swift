@@ -11,6 +11,8 @@ import CoreData
 
 extension Event: CDFetchable {
    enum FetchDescriptor: CDFetchDescriptor {
+      typealias Object = Event
+
       case all
       case unarchived
       case archived
@@ -28,11 +30,20 @@ extension Event: CDFetchable {
             return NSPredicate(format: "uuid == %@", uuid as CVarArg)
          }
       }
+   }
+}
 
-      func request() -> NSFetchRequest<Event> {
-         let request = Event.fetchRequest() as! NSFetchRequest<Event>
-         request.predicate = self.predicate
-         return request
+
+extension Tag: CDFetchable {
+   enum FetchDescriptor: CDFetchDescriptor {
+      typealias Object = Tag
+
+      case all
+
+      var predicate: NSPredicate? {
+         switch self {
+         case .all: return nil
+         }
       }
    }
 }

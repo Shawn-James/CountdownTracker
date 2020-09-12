@@ -28,3 +28,12 @@ protocol CDFetchDescriptor {
    var predicate: NSPredicate? { get }
    func request() -> NSFetchRequest<Object>
 }
+
+
+extension CDFetchDescriptor {
+   func request() -> NSFetchRequest<Object> {
+      let request = Object.fetchRequest() as! NSFetchRequest<Object>
+      request.predicate = self.predicate
+      return request
+   }
+}
