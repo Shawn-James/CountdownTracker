@@ -148,6 +148,18 @@ enum EventFilter: CustomStringConvertible {
       }
    }
 
+   var tagID: UUID? {
+      get {
+         if case .tag(let id) = self {
+            return id
+         } else { return nil }
+      }
+      set {
+         Self.cachedTagID = newValue
+         self = .tag(newValue)
+      }
+   }
+
    var intValue: Int {
       get {
          switch self {
@@ -161,6 +173,9 @@ enum EventFilter: CustomStringConvertible {
          switch newValue {
          case 0: self = .none
          case 1: self = .before(Self.cachedDate ??= Date())
+         case 2: self = .after(Self.cachedDate ??= Date())
+         case 3: self = .tag(Self.cachedTagID)
+         default: break
          }
       }
    }

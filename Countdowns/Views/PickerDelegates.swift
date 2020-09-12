@@ -23,7 +23,10 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
 
    func numberOfComponents(in pickerView: UIPickerView) -> Int { 2 }
 
-   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+   func pickerView(
+      _ pickerView: UIPickerView,
+      numberOfRowsInComponent component: Int
+   ) -> Int {
       if component == 0 {
          return 2
       } else {
@@ -43,7 +46,11 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
       }
    }
 
-   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+   func pickerView(
+      _ pickerView: UIPickerView,
+      didSelectRow row: Int,
+      inComponent component: Int
+   ) {
       if component == 0 {
          let ascending = (row == 1)
          viewModel.currentSort.ascending = ascending
@@ -76,8 +83,12 @@ class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelega
       EventFilter.descriptions[row]
    }
 
-   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-      
+   func pickerView(
+      _ pickerView: UIPickerView,
+      didSelectRow row: Int,
+      inComponent component: Int
+   ) {
+      viewModel.currentFilter.intValue = row
    }
 }
 
@@ -92,14 +103,26 @@ class TagFilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDel
 
    func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
 
-   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-      tags.count + 1
+   func pickerView(
+      _ pickerView: UIPickerView,
+      numberOfRowsInComponent component: Int
+   ) -> Int {
+      viewModel.tags.count + 1
    }
 
-   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-      if EventController.shared.tags[row] == "" {
-         return .emptyTagDisplayText
-      }
-      return EventController.shared.tags[row]
+   func pickerView(
+      _ pickerView: UIPickerView,
+      titleForRow row: Int,
+      forComponent component: Int
+   ) -> String? {
+      (row == 0) ? "" : viewModel.tags[row - 1].name
+   }
+
+   func pickerView(
+      _ pickerView: UIPickerView,
+      didSelectRow row: Int,
+      inComponent component: Int
+   ) {
+      viewModel.currentFilter.tagID = viewModel.tags[row].uuid
    }
 }
