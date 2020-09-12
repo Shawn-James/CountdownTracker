@@ -12,8 +12,8 @@ import Foundation
 // MARK: - Sort
 
 struct EventSort: Equatable, CustomStringConvertible, RawRepresentable {
-   let property: Property
-   let ascending: Bool
+   var property: Property
+   var ascending: Bool
 
    init(
       property: EventSort.Property = .endDate,
@@ -113,18 +113,67 @@ struct EventSort: Equatable, CustomStringConvertible, RawRepresentable {
 
 enum EventFilter: CustomStringConvertible {
    case none
-   case noLaterThanDate(Date)
-   case noSoonerThanDate(Date)
+   case before(Date)
+   case after(Date)
    case tag(UUID?)
 
    var description: String {
-      switch self {
-      case .none: return "(none)"
-      case .noLaterThanDate: return "Now → ..."
-      case .noSoonerThanDate: return "... → ∞"
-      case .tag: return "Tag..."
+      Self.descriptions[intValue]
+   }
+
+   var date: Date? {
+      get {
+         switch self {
+         case .before(let date), .after(let date):
+            return date
+         default:
+            return nil
+         }
+      }
+      set {
+         Self.cachedDate = newValue
+         if let date = newValue {
+            if case .after = self {
+               self = .after(date)
+            } else {
+               self = .before(date)
+            }
+         } else {
+            if case .tag = self {
+               return
+            } else {
+               self = .none
+            }
+         }
       }
    }
+
+   var intValue: Int {
+      get {
+         switch self {
+         case .none: return 0
+         case .before: return 1
+         case .after: return 2
+         case .tag: return 3
+         }
+      }
+      set {
+         switch newValue {
+         case 0: self = .none
+         case 1: self = .before(Self.cachedDate ??= Date())
+         }
+      }
+   }
+
+   static var descriptions: [String] {
+      ["(none)",
+       "Now → ...",
+       "... → ∞",
+       "Tag...",]
+   }
+
+   static var cachedDate: Date?
+   static var cachedTagID: UUID?
 }
 
 extension EventFilter: Codable {
@@ -132,16 +181,6 @@ extension EventFilter: Codable {
       case intValue
       case date
       case tagID
-   }
-
-   
-   var intValue: Int {
-      switch self {
-      case .none: return 0
-      case .noLaterThanDate: return 1
-      case .noSoonerThanDate: return 2
-      case .tag: return 3
-      }
    }
 
    init(from decoder: Decoder) throws {
@@ -161,9 +200,9 @@ extension EventFilter: Codable {
          case 0:
             self = .none
          case 1:
-            self = .noLaterThanDate(try date())
+            self = .before(try date())
          case 2:
-            self = .noSoonerThanDate(try date())
+            self = .after(try date())
          case 3:
             self = .tag(try tagID())
          default:
@@ -184,7 +223,7 @@ extension EventFilter: Codable {
          switch self {
          case .none:
             break
-         case .noLaterThanDate(let date), .noSoonerThanDate(let date):
+         case .before(let date), .after(let date):
             try container.encode(date, forKey: .date)
          case .tag(let tagID):
             try container.encode(tagID, forKey: .tagID)
@@ -226,9 +265,9 @@ extension Array where Element == Event {
             } else {
                return $0.tags.isEmpty
             }
-         case .noLaterThanDate(let date):
+         case .before(let date):
             return $0.dateTime < date
-         case .noSoonerThanDate(let date):
+         case .after(let date):
             return $0.dateTime > date
          }
       }

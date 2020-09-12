@@ -8,27 +8,26 @@
 
 import UIKit
 
-/// Delegates/DataSources for Sort/Filter scene pickers.
 
 // MARK: - Sort
 
 class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
-   // COMPONENT 1: ASCENDING OR DESCENDING
+   // COMPONENT 1: ASCENDING/DESCENDING
    // COMPONENT 2: PROPERTY BY WHICH TO SORT
 
-   private static let moreThanTwoComponentsErrorMsg =
-      "Expected only two components in sort picker but found more than two"
-   private static let moreThanAllowedRowsErrorMsg =
-      "Found more rows in picker component than expected"
+   var viewModel: SortFilterViewModeling
+
+   init(_ viewModel: SortFilterViewModeling) {
+      self.viewModel = viewModel
+   }
 
    func numberOfComponents(in pickerView: UIPickerView) -> Int { 2 }
 
    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-      switch component {
-      case 0: return 2
-      case 1: return EventSort.Property.allCases.count
-      default:
-         preconditionFailure(Self.moreThanTwoComponentsErrorMsg)
+      if component == 0 {
+         return 2
+      } else {
+         return EventSort.Property.allCases.count
       }
    }
 
@@ -37,21 +36,19 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
       titleForRow row: Int,
       forComponent component: Int
    ) -> String? {
-      switch component {
-      case 0:
-         switch row {
-         case 0: return "↓"
-         case 1: return "↑"
-         default:
-            preconditionFailure(Self.moreThanAllowedRowsErrorMsg)
-         }
-      case 1:
-         guard let property = EventSort.Property(rawValue: UInt8(row)) else {
-            preconditionFailure(Self.moreThanAllowedRowsErrorMsg)
-         }
-         return property.description
-      default:
-         preconditionFailure(Self.moreThanTwoComponentsErrorMsg)
+      if component == 0 {
+         return (row == 1) ? "↑" : "↓"
+      } else {
+         return EventSort.Property(rawValue: UInt8(row))?.description
+      }
+   }
+
+   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+      if component == 0 {
+         let ascending = (row == 1)
+         viewModel.currentSort.ascending = ascending
+      } else if let property = EventSort.Property(rawValue: UInt8(row)) {
+         viewModel.currentSort.property = property
       }
    }
 }
@@ -59,34 +56,50 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
 // MARK: - Filter
 
 class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return EventController.FilterStyle.allCases.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return EventController.FilterStyle.allCases[row].rawValue
-    }
+   var viewModel: SortFilterViewModeling
+
+   init(_ viewModel: SortFilterViewModeling) {
+      self.viewModel = viewModel
+   }
+
+   func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
+
+   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+      EventFilter.descriptions.count
+   }
+
+   func pickerView(
+      _ pickerView: UIPickerView,
+      titleForRow row: Int,
+      forComponent component: Int
+   ) -> String? {
+      EventFilter.descriptions[row]
+   }
+
+   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+      
+   }
 }
 
 // MARK: - Filter by Tag
 
 class TagFilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return EventController.shared.tags.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if EventController.shared.tags[row] == "" {
-            return .emptyTagDisplayText
-        }
-        return EventController.shared.tags[row]
-    }
+   var viewModel: SortFilterViewModeling
+
+   init(_ viewModel: SortFilterViewModeling) {
+      self.viewModel = viewModel
+   }
+
+   func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
+
+   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+      tags.count + 1
+   }
+
+   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+      if EventController.shared.tags[row] == "" {
+         return .emptyTagDisplayText
+      }
+      return EventController.shared.tags[row]
+   }
 }
