@@ -21,21 +21,60 @@ class CoreDataStack {
       //container.viewContext.automaticallyMergesChangesFromParent = true
       return container
    }()
+
    var mainContext: NSManagedObjectContext { container.viewContext }
-   
-   @Published private(set) var error: Error?
 
    init() {}
 
-   func save(in context: NSManagedObjectContext? = nil) {
-      let context = context ?? mainContext
+   func fetch<Object: CDFetchable>(
+      with descriptor: Object.FetchDescriptor,
+      from context: NSManagedObjectContext? = nil
+   ) throws -> [Object] {
+      let moc = context ?? mainContext
 
-      context.perform {
+      return try moc.fetch(descriptor.request())
+   }
+
+   func save(in context: NSManagedObjectContext? = nil) throws {
+      let moc = context ?? mainContext
+
+      var caughtError: Error?
+      moc.performAndWait {
          do {
-            try context.save()
+            try moc.save()
          } catch {
-            self.error = error
+            caughtError = error
          }
       }
+      if let error = caughtError {
+         throw error
+      }
+   }
+}
+
+// MARK: - CDFetchable
+
+/// An NSManagedObject subclass that can be fetched using the CDFetchDescriptor and associated interfaces.
+protocol CDFetchable: NSManagedObject {
+   /// The class's associated FetchDescriptor type.
+   associatedtype FetchDescriptor: CDFetchDescriptor where FetchDescriptor.Object == Self
+}
+
+/// Typically an enum with computed values for requests and predicates that makes fetching more simple and type safe for Core Data NSManagedObjects.
+protocol CDFetchDescriptor {
+   associatedtype Object: CDFetchable where Object.FetchDescriptor == Self
+
+   var predicate: NSPredicate? { get }
+   func request() -> NSFetchRequest<Object>
+}
+
+// MARK: - NSMO Extensions
+
+extension NSManagedObject {
+   func getContext() throws -> NSManagedObjectContext {
+      guard let moc = self.managedObjectContext else {
+         throw CountdownError.noManagedObjectContextForObject
+      }
+      return moc
    }
 }

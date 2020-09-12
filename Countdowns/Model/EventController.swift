@@ -6,8 +6,9 @@
 //  Copyright © 2019 Jon Bash. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Combine
+import CoreData
 
 
 class EventController {
@@ -15,6 +16,10 @@ class EventController {
    private let coreDataStack = CoreDataStack()
 
    // MARK: - Public Methods
+
+   func fetch(_ fetch: Event.FetchDescriptor) throws -> [Event] {
+      try coreDataStack.fetch(with: fetch)
+   }
 
    /// Add the event to the active list, set a notification for the end date, and save the list.
    func create(_ event: Event) {
@@ -38,26 +43,6 @@ class EventController {
       // update notification
       NotificationsHelper.shared.cancelNotification(for: event)
       NotificationsHelper.shared.setNotification(for: event)
-   }
-
-   func delete(_ event: Event) {
-      event.managedObjectContext?.performAndWait {
-         event.managedObjectContext?.delete(event)
-      }
-
-      return coreDataStack.save(in: event.managedObjectContext)
-   }
-
-   /// Remove the event from the active event list, add it to an archive list, and save both the active and archive lists.
-   func archive(_ event: Event) -> Future<Void, Error> {
-      Future { promise in
-         guard let moc = event.managedObjectContext else {
-            return promise(.failure(CountdownError.noManagedObjectContextForObject))
-         }
-         moc.perform {
-            event.archived = true
-         }
-      }
    }
 
    // MARK: - User Defaults
@@ -102,7 +87,7 @@ class EventController {
    }
 
    /// Encodes and saves archived events list to plist.
-   func saveArchivedEventsToPersistenceStore() {
+   private func saveArchivedEventsToPersistenceStore() {
       unimplemented()
    }
 
@@ -111,4 +96,3 @@ class EventController {
       unimplemented()
    }
 }
-

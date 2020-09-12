@@ -11,55 +11,64 @@ import Foundation
 
 // MARK: - Sort
 
-struct EventSort: Equatable, CustomStringConvertible {
+struct EventSort: Equatable, CustomStringConvertible, RawRepresentable {
    let property: Property
-   let direction: ComparisonResult
-   let keyPath: PartialKeyPath<Event>
+   let ascending: Bool
 
    init(
       property: EventSort.Property = .endDate,
-      direction: ComparisonResult = .orderedAscending)
+      ascending: Bool = true)
    {
       self.property = property
-      self.direction = direction
-      
+      self.ascending = ascending
+   }
+
+   /// Initializes from a rawValue that stores both a Property and a bit for whether it is ascending or descending
+   init?(rawValue: UInt8) {
+      let isAscending = Self.rawToAscending(rawValue)
+      guard let property = Property(rawValue: rawValue) else { return nil }
+
+      self.init(property: property, ascending: isAscending)
+   }
+
+   var rawValue: UInt8 {
+      let ascBit: UInt8 = ascending ? Self.ascendingRaw : 0
+      return property.rawValue | ascBit
+   }
+
+   var description: String {
+      "\(property) \(ascending ? "↓" : "↑")"
+   }
+
+   var sort: (Event, Event) -> Bool {
       switch property {
       case .endDate:
-         self.keyPath = \Event.dateTime
+         return Self.sorter(keyPath: \.dateTime, ascending: ascending)
       case .creationDate:
-         self.keyPath = \Event.creationDate
+         return Self.sorter(keyPath: \.creationDate, ascending: ascending)
       case .modifiedDate:
-         self.keyPath = \Event.modifiedDate
+         return Self.sorter(keyPath: \.modifiedDate, ascending: ascending)
       case .numberOfTags:
-         self.keyPath = \Event.nsmanagedTags.count
+         return Self.sorter(keyPath: \.tags.count, ascending: ascending)
       }
    }
 
-   init?(rawValue: Int) {
-      guard let property = Property(
-               rawValue: rawValue % Property.allCases.count),
-            let direction = ComparisonResult(
-               rawValue: rawValue / Property.allCases.count)
-      else { return nil }
-
-      self.init(property: property, direction: direction)
-   }
-
-   var rawValue: Int {
-      property.rawValue + (Property.allCases.count * direction.rawValue)
-   }
-
-   var isAscending: Bool { direction == .orderedAscending }
-
-   var description: String {
-      "\(property) \(isAscending ? "↓" : "↑")"
-   }
-
-   enum Property: Int, CustomStringConvertible, CaseIterable {
+   enum Property: UInt8, CustomStringConvertible, CaseIterable {
       case endDate
       case creationDate
       case modifiedDate
       case numberOfTags
+
+      /// Initializes from a rawValue that stores both a Property and a bit for whether it is ascending or descending
+      init?(rawValue: UInt8) {
+         for property in Property.allCases {
+            if property.rawValue == rawValue & (EventSort.ascendingRaw - 1) {
+               self = property
+               return
+            }
+         }
+         return nil
+      }
 
       var description: String {
          switch self {
@@ -71,6 +80,29 @@ struct EventSort: Equatable, CustomStringConvertible {
             return "Date modified"
          case .numberOfTags:
             return "Number of tags"
+         }
+      }
+   }
+
+   private static let ascendingRaw: UInt8 = 0b1000_0000
+
+   private static func ascendingToRaw(_ ascending: Bool) -> UInt8 {
+      ascending ? ascendingRaw : 0
+   }
+
+   private static func rawToAscending(_ rawValue: UInt8) -> Bool {
+      (rawValue & ascendingRaw) == ascendingRaw
+   }
+
+   static func sorter<T: Comparable>(
+      keyPath: KeyPath<Event, T>,
+      ascending: Bool
+   ) -> ((Event, Event) -> Bool) {
+      return { lhs, rhs in
+         if ascending {
+            return (lhs[keyPath: keyPath] < rhs[keyPath: keyPath])
+         } else {
+            return (rhs[keyPath: keyPath] > rhs[keyPath: keyPath])
          }
       }
    }
@@ -138,7 +170,7 @@ extension EventFilter: Codable {
          case 2:
             self = .noSoonerThanDate(try date())
          case 3:
-            self = .tag(try? tagID())
+            self = .tag(try tagID())
          default:
             throw Error.decodeFailure()
          }
@@ -174,19 +206,18 @@ extension EventFilter: Codable {
 // MARK: - Extensions
 
 extension Array where Element == Event {
+   func sorted(by style: EventSort) -> [Event] {
+      self.sorted(by: style.sort)
+   }
+
    mutating func sort(by style: EventSort) {
-      self.sort(by: {
-         switch style.property {
-         case .endDate:
-            return $0.dateTime.compare($1.dateTime) == style.direction
-         case .creationDate:
-            return $0.creationDate.compare($1.creationDate) == style.direction
-         case .modifiedDate:
-            return $0.modifiedDate.compare($1.modifiedDate) == style.direction
-         case .numberOfTags:
-            return $0.tags.count.compare($1.tags.count) == style.direction
-         }
-      })
+      self.sort(by: style.sort)
+   }
+
+   func filtered(by style: EventFilter) -> [Event] {
+      var copy = self
+      copy.filter(by: style)
+      return copy
    }
 
    mutating func filter(by style: EventFilter) {
@@ -205,22 +236,6 @@ extension Array where Element == Event {
          case .noSoonerThanDate(let date):
             return $0.dateTime > date
          }
-      }
-   }
-}
-
-
-extension Int {
-   func compare(_ other: Int) -> ComparisonResult {
-      switch self {
-      case other:
-         return .orderedSame
-      case ..<other:
-         return .orderedAscending
-      case (other + 1)... :
-         return .orderedDescending
-      default:
-         fatalError("Impossible case")
       }
    }
 }

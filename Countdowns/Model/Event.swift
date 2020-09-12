@@ -53,6 +53,8 @@ extension Event {
    /// Time remaining until event date/time in `TimeInterval` format
    var timeInterval: TimeInterval { dateTime.timeIntervalSinceNow }
 
+   // MARK: - Tags
+
    var tags: Set<Tag> {
       nsmanagedTags.reduce(into: Set<Tag>()) { out, tag in
          out.insert(tag as! Tag)
@@ -81,5 +83,20 @@ extension Event {
 
    func isTaggedWith(tagWithID tagID: UUID) -> Bool {
       nsmanagedTags.contains(where: { ($0 as! Tag).uuid == tagID })
+   }
+}
+
+extension Event {
+   /// Remove the event from the active event list, add it to an archive list, and save both the active and archive lists.
+   func archive() throws {
+      let moc = try getContext()
+      moc.performAndWait { self.archived = true }
+   }
+
+   func delete() throws {
+      let moc = try getContext()
+      moc.performAndWait {
+         moc.delete(self)
+      }
    }
 }

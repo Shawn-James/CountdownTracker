@@ -13,28 +13,52 @@ import UIKit
 // MARK: - Sort
 
 class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return SortStyle.allCases.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return EventController.SortStyle.allCases[row].rawValue
-    }
+   // COMPONENT 1: ASCENDING OR DESCENDING
+   // COMPONENT 2: PROPERTY BY WHICH TO SORT
+
+   private static let moreThanTwoComponentsErrorMsg =
+      "Expected only two components in sort picker but found more than two"
+   private static let moreThanAllowedRowsErrorMsg =
+      "Found more rows in picker component than expected"
+
+   func numberOfComponents(in pickerView: UIPickerView) -> Int { 2 }
+
+   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+      switch component {
+      case 0: return 2
+      case 1: return EventSort.Property.allCases.count
+      default:
+         preconditionFailure(Self.moreThanTwoComponentsErrorMsg)
+      }
+   }
+
+   func pickerView(
+      _ pickerView: UIPickerView,
+      titleForRow row: Int,
+      forComponent component: Int
+   ) -> String? {
+      switch component {
+      case 0:
+         switch row {
+         case 0: return "↓"
+         case 1: return "↑"
+         default:
+            preconditionFailure(Self.moreThanAllowedRowsErrorMsg)
+         }
+      case 1:
+         guard let property = EventSort.Property(rawValue: UInt8(row)) else {
+            preconditionFailure(Self.moreThanAllowedRowsErrorMsg)
+         }
+         return property.description
+      default:
+         preconditionFailure(Self.moreThanTwoComponentsErrorMsg)
+      }
+   }
 }
 
 // MARK: - Filter
 
 class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
-    let delegate: SortFilterViewController
-    
-    init(delegate: SortFilterViewController) {
-        self.delegate = delegate
-    }
-    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -45,11 +69,6 @@ class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelega
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return EventController.FilterStyle.allCases[row].rawValue
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let filterStyle = EventController.FilterStyle.allCases[row]
-        delegate.showHideFilterComponents(for: filterStyle)
     }
 }
 

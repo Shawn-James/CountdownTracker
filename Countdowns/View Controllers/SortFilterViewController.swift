@@ -17,22 +17,35 @@ protocol SortFilterViewControllerDelegate {
    func updateViews()
 }
 
-protocol SortFilterViewModel {
+protocol SortFilterViewModeling {
+   var tags: [Tag] { get }
+
    var currentFilter: EventFilter { get }
    var currentSort: EventSort { get }
+
+   var sortDelegate: UIPickerViewDelegate & UIPickerViewDataSource { get }
+   var filterDelegate: UIPickerViewDelegate & UIPickerViewDataSource { get }
+   var tagDelegate: UIPickerViewDelegate & UIPickerViewDataSource { get }
+}
+
+struct SortFilterViewModel: SortFilterViewModeling {
+   var currentFilter: EventFilter
+   var currentSort: EventSort
+
+   var tags: [Tag]
+
+   let sortDelegate: UIPickerViewDataSource & UIPickerViewDelegate = SortPickerDelegate()
+   let filterDelegate: UIPickerViewDataSource & UIPickerViewDelegate = FilterPickerDelegate()
+   let tagDelegate: UIPickerViewDataSource & UIPickerViewDelegate = TagFilterPickerDelegate()
 }
 
 class SortFilterViewController: UIViewController {
 
    // MARK: - Properties
 
-   var viewModel: SortFilterViewModel!
+   var viewModel: SortFilterViewModeling!
 
-   var delegate: SortFilterViewControllerDelegate?
-
-   var sortDelegate: SortPickerDelegate?
-   var filterDelegate: FilterPickerDelegate?
-   var tagDelegate: TagFilterPickerDelegate?
+   weak var delegate: SortFilterViewControllerDelegate?
 
    // MARK: - Outlets
 
@@ -47,9 +60,9 @@ class SortFilterViewController: UIViewController {
       super.viewDidLoad()
 
       // set picker delegates & reload data
-      sortPicker.delegate = sortDelegate
-      filterPicker.delegate = filterDelegate
-      tagPicker.delegate = tagDelegate
+      sortPicker.delegate = viewModel.sortDelegate
+      filterPicker.delegate = viewModel.filterDelegate
+      tagPicker.delegate = viewModel.tagDelegate
 
 
       sortPicker.reloadAllComponents()
@@ -65,13 +78,15 @@ class SortFilterViewController: UIViewController {
 
    /// Set current picker selections from current saved setting.
    func resetPickerSelections() {
-      if let sortStyleIndex = EventController.SortStyle.allCases.firstIndex(of: sortStyle) {
+      if let sortStyleIndex = EventSort.Property.allCases.firstIndex(of: viewModel.currentSort.property) {
          sortPicker.selectRow(sortStyleIndex, inComponent: 0, animated: false)
       }
 
-      let filterStyle = EventController.shared.currentFilterStyle
-      if let filterStyleIndex = EventController.FilterStyle.allCases.firstIndex(of: filterStyle) {
-         filterPicker.selectRow(filterStyleIndex, inComponent: 0, animated: false)
+      filterPicker.selectRow(viewModel.currentFilter.intValue, inComponent: 0, animated: false)
+      if case .tag(let tagID) = viewModel.currentFilter,
+         let tagIdx = viewModel.tags.firstIndex(where: { $0.uuid == tagID })
+      {
+         
       }
 
       if let currentTag = EventController.shared.currentFilterTag,

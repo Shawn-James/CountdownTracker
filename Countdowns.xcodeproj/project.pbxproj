@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		990C3A35250D455C00ACDE78 /* Combine+Transmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990C3A34250D455C00ACDE78 /* Combine+Transmitter.swift */; };
 		990EC94424D338F200E41409 /* Countdowns.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94224D338F200E41409 /* Countdowns.xcdatamodeld */; };
 		990EC94624D33A7D00E41409 /* CoreDataMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94524D33A7D00E41409 /* CoreDataMigrationManager.swift */; };
 		990EC94824D33A8600E41409 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94724D33A8600E41409 /* CoreDataStack.swift */; };
@@ -24,6 +25,7 @@
 		9972B50B235E0A480015E56B /* CountdownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972B50A235E0A480015E56B /* CountdownTableViewCell.swift */; };
 		9972B510235E0AA00015E56B /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972B50F235E0AA00015E56B /* Strings.swift */; };
 		998FB4582361029C00B1AF60 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998FB4572361029C00B1AF60 /* Notifications.swift */; };
+		99CE3DE1250BC9390039E3FC /* EventFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CE3DE0250BC9390039E3FC /* EventFetch.swift */; };
 		99D827732507D46900787A79 /* CountdownError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D827722507D46900787A79 /* CountdownError.swift */; };
 		99EF7D08235E13990092F4AB /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D07235E13990092F4AB /* EventDetailViewController.swift */; };
 		99EF7D0C235E14690092F4AB /* SortFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D0B235E14690092F4AB /* SortFilterViewController.swift */; };
@@ -33,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		990C3A34250D455C00ACDE78 /* Combine+Transmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Transmitter.swift"; sourceTree = "<group>"; };
 		990EC94324D338F200E41409 /* Countdowns.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Countdowns.xcdatamodel; sourceTree = "<group>"; };
 		990EC94524D33A7D00E41409 /* CoreDataMigrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigrationManager.swift; sourceTree = "<group>"; };
 		990EC94724D33A8600E41409 /* CoreDataStack.swift */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; tabWidth = 3; };
@@ -52,6 +55,7 @@
 		9972B50A235E0A480015E56B /* CountdownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTableViewCell.swift; sourceTree = "<group>"; };
 		9972B50F235E0AA00015E56B /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		998FB4572361029C00B1AF60 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		99CE3DE0250BC9390039E3FC /* EventFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFetch.swift; sourceTree = "<group>"; };
 		99D827722507D46900787A79 /* CountdownError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownError.swift; sourceTree = "<group>"; };
 		99EF7D07235E13990092F4AB /* EventDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
 		99EF7D0B235E14690092F4AB /* SortFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SortFilterViewController.swift; path = "Countdowns/View Controllers/SortFilterViewController.swift"; sourceTree = SOURCE_ROOT; };
@@ -76,6 +80,7 @@
 			children = (
 				990EC94224D338F200E41409 /* Countdowns.xcdatamodeld */,
 				990EC94724D33A8600E41409 /* CoreDataStack.swift */,
+				99CE3DE0250BC9390039E3FC /* EventFetch.swift */,
 				990EC94524D33A7D00E41409 /* CoreDataMigrationManager.swift */,
 			);
 			path = "Core Data";
@@ -87,7 +92,9 @@
 				99251D40235E09400060D9FF /* Countdowns */,
 				99251D3F235E09400060D9FF /* Products */,
 			);
+			indentWidth = 3;
 			sourceTree = "<group>";
+			tabWidth = 3;
 		};
 		99251D3F235E09400060D9FF /* Products */ = {
 			isa = PBXGroup;
@@ -158,6 +165,7 @@
 				99480ADA235F5DBD00DC1D48 /* DateFormatters.swift */,
 				990EC94924D33BE600E41409 /* Utilites.swift */,
 				99D827722507D46900787A79 /* CountdownError.swift */,
+				990C3A34250D455C00ACDE78 /* Combine+Transmitter.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -248,6 +256,7 @@
 				99EF7D08235E13990092F4AB /* EventDetailViewController.swift in Sources */,
 				990EC94624D33A7D00E41409 /* CoreDataMigrationManager.swift in Sources */,
 				99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */,
+				990C3A35250D455C00ACDE78 /* Combine+Transmitter.swift in Sources */,
 				99251D42235E09400060D9FF /* AppDelegate.swift in Sources */,
 				99480ADB235F5DBD00DC1D48 /* DateFormatters.swift in Sources */,
 				9972B508235E0A2E0015E56B /* CountdownsTableViewController.swift in Sources */,
@@ -261,6 +270,7 @@
 				998FB4582361029C00B1AF60 /* Notifications.swift in Sources */,
 				990EC94824D33A8600E41409 /* CoreDataStack.swift in Sources */,
 				99EF7D0C235E14690092F4AB /* SortFilterViewController.swift in Sources */,
+				99CE3DE1250BC9390039E3FC /* EventFetch.swift in Sources */,
 				99EF7D0E235E14D90092F4AB /* AddEditEventViewController.swift in Sources */,
 				9972B50B235E0A480015E56B /* CountdownTableViewCell.swift in Sources */,
 				99D827732507D46900787A79 /* CountdownError.swift in Sources */,
