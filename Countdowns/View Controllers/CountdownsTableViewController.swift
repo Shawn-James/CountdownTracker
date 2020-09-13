@@ -15,18 +15,18 @@ protocol CountdownsViewModeling {
    var currentFilter: EventFilter { get }
 
    func sortFilterViewModel() -> SortFilterViewModeling
-   func addViewModel(didCreateEvent: @escaping (Event) -> Void) -> AddEventViewModeling
+
+   func eventViewModel(
+      _ event: Event,
+      countdownDidEnd: @escaping (Event) -> Void)
+      -> EventViewModeling
+   func addViewModel(
+      didCreateEvent: @escaping (Event) -> Void)
+      -> AddEventViewModeling
    func detailViewModel(for event: Event) -> EventDetailViewModeling
    func editViewModel(for event: Event) -> EditEventViewModeling
 
    func delete(_ event: Event)
-}
-
-enum CountdownsViewMode {
-   case activeUnfiltered
-   case activeFiltered
-   case archiveUnfiltered
-   case archiveFiltered
 }
 
 class CountdownsTableViewController: UITableViewController {
@@ -61,11 +61,12 @@ class CountdownsTableViewController: UITableViewController {
          as? CountdownTableViewCell else {
             preconditionFailure("Could not dequeue countdown cell")
       }
+      let event = viewModel.displayedEvents[indexPath.row]
 
-      cell.viewModel = EventViewModel(
-         viewModel.displayedEvents[indexPath.row],
-         countdownDidEnd: { [weak self] event in
-            self?.alertForCountdownEnd(for: event)
+      cell.viewModel = viewModel.eventViewModel(
+         event,
+         countdownDidEnd: { [weak self] in
+            self?.alertForCountdownEnd(for: $0)
       })
 
       if indexPath.row % 2 == 0 {

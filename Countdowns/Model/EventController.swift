@@ -37,15 +37,33 @@ class EventController {
    }
 
    /// Add the event to the active list, set a notification for the end date, and save the list.
-   func createEvent(_ event: Event) {
+   @discardableResult func createEvent(
+      withName name: String,
+      dateTime: Date,
+      tags: [Tag],
+      note: String,
+      hasTime: Bool
+   ) throws -> Event {
       let moc = coreDataStack.mainContext
+      let event = Event(
+         name: name,
+         dateTime: dateTime,
+         tags: Set(tags),
+         note: note,
+         hasTime: hasTime,
+         context: moc)
       moc.performAndWait {
          moc.insert(event)
       }
+      try moc.save()
+      return event
    }
 
-   func createTag(_ name: String) throws {
-      
+   func createTag(_ name: String) throws -> Tag {
+      let moc = coreDataStack.mainContext
+      let tag = Tag(name: name, context: moc)
+      try coreDataStack.save(in: moc)
+      return tag
    }
 
    /// Update the given event, save changes, and reset the event's user notification.
@@ -71,5 +89,20 @@ class EventController {
       // update notification
       NotificationsHelper.shared.cancelNotification(for: event)
       NotificationsHelper.shared.setNotification(for: event)
+   }
+
+   /// If tags were entered, separate by commas, strip extraneous whitespace,
+   /// and return for use in saving the event. Empty tags are not allowed.
+   func parseTags(from tagText: String) throws -> [Tag] {
+      try tagText
+         .split(separator: .tagSeparator, omittingEmptySubsequences: true)
+         .lazy
+         .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+         .filter({ !$0.isEmpty })
+         .compactMap(tagForName(_:))
+   }
+
+   private func tagForName(_ tagName: String) throws -> Tag {
+      try fetchTags(.name(tagName)).first ?? (try createTag(tagName))
    }
 }

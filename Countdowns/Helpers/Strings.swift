@@ -48,26 +48,20 @@ extension String {
     static let sortImageActive = "arrow.up.arrow.down.square.fill"
     static let archiveImageInactive = "archivebox"
     static let archiveImageActive = "archivebox.fill"
-    
-    // MARK: - Methods
-    
-    func strippedMultiSpace() -> String {
-        var string = self
-        
-        while string.contains("  ") {
-            string = string.replacingOccurrences(of: "  ", with: " ")
-        }
-        while string.last == " " {
-            string.removeLast()
-        }
-        while string.first == " " {
-            string.removeFirst()
-        }
-        
-        return string
-    }
 }
 
 extension Character {
-    static let tagSeparator = Character(",")
+   static let tagSeparator: Character = ","
+
+   static func +(lhs: Character, rhs: Character) -> String {
+      String(lhs) + String(rhs)
+   }
+}
+
+func +(lhs: Character, rhs: String) -> String {
+   String(lhs) + rhs
+}
+
+func +(lhs: String, rhs: Character) -> String {
+   lhs + String(rhs)
 }

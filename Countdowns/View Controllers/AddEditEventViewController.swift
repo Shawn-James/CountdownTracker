@@ -11,12 +11,17 @@ import UIKit
 
 protocol AddOrEditEventViewModeling: AnyObject {
    var tags: [Tag] { get }
+
+   var newName: String { get set }
+   var newDateTime: Date { get set }
    var hasCustomTime: Bool { get set }
+   var newNote: String { get set }
+   var newTagText: String { get set }
+
+   func saveEvent() throws
 }
 
-protocol AddEventViewModeling: AddOrEditEventViewModeling {
-
-}
+protocol AddEventViewModeling: AddOrEditEventViewModeling {}
 
 
 protocol EditEventViewModeling: AddOrEditEventViewModeling {
@@ -24,30 +29,27 @@ protocol EditEventViewModeling: AddOrEditEventViewModeling {
 }
 
 class AddEventViewModel: AddEventViewModeling {
-   let tags: [Tag]
-
+   var newName: String = ""
+   var newDateTime: Date = Date()
+   var newNote: String = ""
+   var newTagText: String = ""
    var hasCustomTime: Bool = false
+
+   var tags: [Tag] { (try? eventController.fetchTags(.all)) ?? [] }
 
    private let eventController: EventController
 
    init(eventController: EventController) {
       self.eventController = eventController
    }
-}
 
-class EditEventViewModel: EditEventViewModeling, EventDetailViewModeling {
-   let tags: [Tag]
-
-   var event: Event
-   lazy var hasCustomTime: Bool = event.hasTime
-
-   var editViewModel: EditEventViewModeling { self }
-
-   private let controller: EventController
-
-   init(event: Event, controller: EventController) {
-      self.event = event
-      self.controller = controller
+   func saveEvent() throws {
+      try eventController.createEvent(
+         withName: newName,
+         dateTime: newDateTime,
+         tags: eventController.parseTags(from: newTagText),
+         note: newNote,
+         hasTime: hasCustomTime)
    }
 }
 
@@ -97,11 +99,11 @@ class AddEditEventViewController: UIViewController {
    override func viewDidLoad() {
       super.viewDidLoad()
 
-      setUpViews()
-
       if viewModel.isEditing {
          resetViewsForEditingEvent()
       }
+
+      eventNameField.addTarget(self, action: #selector(nameDidChange(_:)), for: .editingChanged)
    }
 
    override func viewDidAppear(_ animated: Bool) {
@@ -109,11 +111,19 @@ class AddEditEventViewController: UIViewController {
       eventNameField.becomeFirstResponder()
    }
 
-   // MARK: - UI Actions / Overrides
-
    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
       view.endEditing(true)
       super.touchesBegan(touches, with: event)
+   }
+
+   // MARK: - Actions
+
+   @objc private func nameDidChange(_ sender: Any?) {
+      viewModel.addOrEdit.newName = eventNameField.text ?? ""
+   }
+
+   @objc private func noteDidChange(_ sender: Any?) {
+      viewModel.addOrEdit.newNote = notesTextView.text
    }
 
    @IBAction func viewSegmentControlChanged(_ sender: UISegmentedControl) {
@@ -147,28 +157,19 @@ class AddEditEventViewController: UIViewController {
    }
 
    @IBAction func customTimeSwitchChanged(_ sender: UISwitch) {
+      viewModel.addOrEdit.hasCustomTime = sender.isOn
       setTimePickerHidden()
       view.endEditing(true)
       updatePickersMinMax()
    }
 
    @IBAction func saveButtonTapped(_ sender: UIButton) {
-      guard let eventName = eventNameField.text, !eventName.isEmpty
-         else { return }
-
-      let eventDate = getEventDateFromPickers()
-
-      guard let tags = getTagDataFromField() else { return }
-
-      // get note
-      let hasNote = !notesTextView.text.isEmpty
-      let note: String = hasNote ? notesTextView.text : ""
-
-      finalizeEventFromData(
-         name: eventName,
-         date: eventDate,
-         tags: tags,
-         note: note)
+      guard !viewModel.addOrEdit.newName.isEmpty else { return }
+      do {
+         try viewModel.addOrEdit.saveEvent()
+      } catch {
+         NSLog("\(error)") // TODO: alert for error
+      }
    }
 
    @IBAction func cancelTapped(_ sender: UIButton) {
@@ -211,58 +212,12 @@ class AddEditEventViewController: UIViewController {
       }
    }
 
-   /// If tags were entered, separate by commas, strip extraneous whitespace,
-   /// and return for use in saving the event. Empty tags are not allowed.
-   private func getTagDataFromField() -> [Tag]? {
-      var tags = [Tag]()
-
-      if let tagsText = tagsField.text, !tagsText.isEmpty {
-         let subTags = tagsText.split(separator: .tagSeparator, omittingEmptySubsequences: true)
-         for subTag in subTags {
-            let newTag = String(subTag).strippedMultiSpace()
-            if !newTag.isEmpty { tags.append(newTag) }
-         }
-      }
-
-      return tags
-   }
-
-   /// Save the event, adding it to the list if new or updating the event if editing.
-   private func finalizeEventFromData(name: String, date: Date, tags: [Tag], note: String) {
-      if event == nil {
-         // add new event (if adding)
-         let newEvent = Event(
-            name: name,
-            dateTime: date,
-            tags: Set(tags),
-            note: note,
-            hasTime: hasCustomTime
-         )
-         EventController.shared.create(newEvent)
-
-         addEventDelegate?.updateViews()
-         addEventDelegate?.selectRow(for: newEvent)
-      } else {
-         // edit event (if editing)
-         EventController.shared.update(
-            viewModel.event!,
-            withName: name,
-            dateTime: date,
-            tags: tags,
-            note: note,
-            hasTime: viewModel.hasCustomTime
-         )
-
-         editEventDelegate?.updateViews()
-      }
-   }
-
    // MARK: - Reset Views
 
    /// If scene called to edit event, populate views
    /// with event info for editing.
    private func resetViewsForEditingEvent() {
-      guard let event = event else { return }
+      guard let event = viewModel.edit?.event else { return }
 
       let components: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute]
       let eventDateTimeComponents = Calendar.autoupdatingCurrent.dateComponents(
@@ -304,20 +259,19 @@ class AddEditEventViewController: UIViewController {
    /// If today's date is selected, no time before now is allowed in the time picker.
    /// Otherwise, allow any time to be chosen from the time-picker.
    private func updatePickersMinMax() {
-      if let event = event, event.archived == true {
+      if let event = viewModel.edit?.event, event.archived == true {
          // if archived, we want the event date/time to remain the same!
-         datePicker.minimumDate = nil
-         timePicker.minimumDate = nil
+         datePicker.minimumDate = event.dateTime
+         datePicker.maximumDate = event.dateTime
+         timePicker.minimumDate = event.dateTime
+         timePicker.maximumDate = event.dateTime
          return
       }
+      let cal = Calendar.current
       datePicker.minimumDate = Date()
-      if Calendar.autoupdatingCurrent.dateComponents(
-         [.year, .month, .day],
-         from: datePicker.date
-         ) == Calendar.autoupdatingCurrent.dateComponents(
-            [.year, .month, .day],
-            from: Date()
-         ) {
+      if cal.dateComponents([.year, .month, .day], from: datePicker.date)
+         == cal.dateComponents([.year, .month, .day], from: Date())
+      {
          timePicker.minimumDate = Date()
       } else {
          timePicker.minimumDate = nil
@@ -331,15 +285,5 @@ class AddEditEventViewController: UIViewController {
       case false:
          timePicker.isHidden = true
       }
-   }
-
-   private func setUpViews() {
-      customTimeSwitch.addTarget(self,
-                                 action: #selector(hasCustomTimeDidChange(_:)),
-                                 for: .touchUpInside)
-   }
-
-   @objc func hasCustomTimeDidChange(_ sender: Any?) {
-      viewModel.hasCustomTime = customTimeSwitch.isOn
    }
 }
