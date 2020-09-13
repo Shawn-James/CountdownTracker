@@ -14,23 +14,23 @@ class Settings {
 
    private let userDefaults = UserDefaults.standard
 
-   func getCurrentSort() -> EventSort {
+   func getCurrentSort() -> EventSortDescriptor {
       let rawSort = UInt8(userDefaults.integer(forKey: .currentSortStyle))
-      return EventSort(rawValue: rawSort) ?? EventSort()
+      return EventSortDescriptor(rawValue: rawSort) ?? EventSortDescriptor()
    }
 
-   func setCurrentSort(_ sort: EventSort) {
+   func setCurrentSort(_ sort: EventSortDescriptor) {
       userDefaults.set(sort.rawValue, forKey: .currentSortStyle)
    }
 
-   func getCurrentFilter() throws -> EventFilter {
+   func getCurrentFilter() throws -> EventFilterDescriptor {
       guard let data = userDefaults.data(forKey: .currentFilter) else {
          throw CodingError.noData
       }
-      return try decoder.decode(EventFilter.self, from: data)
+      return try decoder.decode(EventFilterDescriptor.self, from: data)
    }
 
-   func setCurrentFilter(_ filter: EventFilter) throws {
+   func setCurrentFilter(_ filter: EventFilterDescriptor) throws {
       let data = try encoder.encode(filter)
       userDefaults.setValue(data, forKey: .currentFilter)
    }

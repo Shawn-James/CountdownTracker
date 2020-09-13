@@ -8,29 +8,13 @@
 
 import UIKit
 
-protocol CountdownsViewModeling {
-   var displayedEvents: [Event] { get }
-   var isViewingArchive: Bool { get set }
-   var currentSort: EventSort { get }
-   var currentFilter: EventFilter { get }
-
-   func sortFilterViewModel() -> SortFilterViewModeling
-
-   func eventViewModel(
-      _ event: Event,
-      countdownDidEnd: @escaping (Event) -> Void)
-      -> EventViewModeling
-   func addViewModel(
-      didCreateEvent: @escaping (Event) -> Void)
-      -> AddEventViewModeling
-   func detailViewModel(for event: Event) -> EventDetailViewModeling
-   func editViewModel(for event: Event) -> EditEventViewModeling
-
-   func delete(_ event: Event)
-}
 
 class CountdownsTableViewController: UITableViewController {
-   var viewModel: CountdownsViewModeling!
+
+   lazy var viewModel: CountdownsViewModeling = CountdownsViewModel { [weak self] in
+      self?.alertForCountdownEnd(for: $0)
+   }
+   
 
    @IBOutlet weak var sortButton: UIBarButtonItem!
    @IBOutlet weak var archiveButton: UIBarButtonItem!
@@ -46,43 +30,6 @@ class CountdownsTableViewController: UITableViewController {
    override func viewDidAppear(_ animated: Bool) {
       super.viewDidAppear(animated)
       updateViews()
-   }
-
-   // MARK: - Table view data source
-
-   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      viewModel.displayedEvents.count
-   }
-
-   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      guard let cell = tableView.dequeueReusableCell(
-         withIdentifier: .countdownCellReuseID,
-         for: indexPath)
-         as? CountdownTableViewCell else {
-            preconditionFailure("Could not dequeue countdown cell")
-      }
-      let event = viewModel.displayedEvents[indexPath.row]
-
-      cell.viewModel = viewModel.eventViewModel(
-         event,
-         countdownDidEnd: { [weak self] in
-            self?.alertForCountdownEnd(for: $0)
-      })
-
-      if indexPath.row % 2 == 0 {
-         cell.backgroundColor = UIColor(named: .secondaryCellBackgroundColor)
-      } else {
-         cell.backgroundColor = UIColor(named: .cellBackgroundColor)
-      }
-
-      return cell
-   }
-
-   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-      if editingStyle == .delete {
-         let event: Event = viewModel.displayedEvents[indexPath.row]
-         confirmDeletion(for: event, at: indexPath)
-      }
    }
 
    // MARK: - Navigation
@@ -137,9 +84,13 @@ class CountdownsTableViewController: UITableViewController {
          title: "Delete",
          style: .destructive,
          handler: { action in
-            self.viewModel.delete(event)
-            self.tableView.deleteRows(at: [indexPath], with: .left)
-            self.updateViews()
+            do {
+               try self.viewModel.delete(event)
+               self.tableView.deleteRows(at: [indexPath], with: .left)
+               self.updateViews()
+            } catch {
+               self.presentAlert(for: error)
+            }
       }))
 
       present(alert, animated: true, completion: nil)
@@ -187,13 +138,13 @@ class CountdownsTableViewController: UITableViewController {
       currentModeLabel.isHidden = false
 
       if viewModel.isViewingArchive {
-         if case .none = viewModel.currentFilter {
+         if case .all = viewModel.currentFilter {
             text = "Viewing Archive"
          } else {
             text = "Filtering Archive"
          }
       } else {
-         if case .none = viewModel.currentFilter {
+         if case .all = viewModel.currentFilter {
             currentModeLabel.isHidden = true
          } else {
             text = "Filtering"
@@ -204,7 +155,7 @@ class CountdownsTableViewController: UITableViewController {
    }
 
    private func setBarButtonAppearances() {
-      if case .none = viewModel.currentFilter {
+      if case .all = viewModel.currentFilter {
          sortButton.tintColor = .systemBlue
          sortButton.image = UIImage(systemName: .sortImageInactive)
       } else {

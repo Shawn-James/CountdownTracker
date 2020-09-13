@@ -16,23 +16,27 @@ protocol EventViewModeling: AnyObject {
 
 
 class CountdownTableViewCell: UITableViewCell {
-   var viewModel: EventViewModeling? {
-      didSet {
-         guard let vm = viewModel else { return }
-
-         vm.updateViewsFromEvent = { [weak self] event in
-            self?.timeRemainingLabel.text = DateFormatter.formattedTimeRemaining(for: event)
-         }
-
-         // Populate subviews and set timer when event is set
-         titleLabel.text = vm.event.name
-         tagsLabel.text = vm.event.tagsText
-      }
-   }
+   private(set) var viewModel: EventViewModeling?
 
    // MARK: - Outlets
 
    @IBOutlet private weak var titleLabel: UILabel!
    @IBOutlet private weak var timeRemainingLabel: UILabel!
    @IBOutlet private weak var tagsLabel: UILabel!
+
+   func configure(with viewModel: EventViewModeling, indexPath: IndexPath) {
+      viewModel.updateViewsFromEvent = { [weak self] event in
+         self?.timeRemainingLabel.text = DateFormatter.formattedTimeRemaining(for: event)
+      }
+
+      // Populate subviews and set timer when event is set
+      titleLabel.text = viewModel.event.name
+      tagsLabel.text = viewModel.event.tagsText
+
+      if indexPath.row % 2 == 0 {
+         backgroundColor = UIColor(named: .secondaryCellBackgroundColor)
+      } else {
+         backgroundColor = UIColor(named: .cellBackgroundColor)
+      }
+   }
 }

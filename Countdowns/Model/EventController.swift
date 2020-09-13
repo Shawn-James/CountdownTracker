@@ -12,18 +12,48 @@ import CoreData
 
 
 class EventController {
+   var currentSortStyle: EventSortDescriptor {
+      get { currentFetchDescriptor.sortDescriptor }
+      set { currentFetchDescriptor.sortDescriptor = newValue }
+   }
+   var currentFilter: EventFilterDescriptor {
+      get { currentFetchDescriptor.filterDescriptor }
+      set { currentFetchDescriptor.filterDescriptor = newValue }
+   }
+
+   private var currentFetchDescriptor: Event.FetchDescriptor {
+      didSet {
+         settings.setCurrentSort(currentFetchDescriptor.sortDescriptor)
+         try? settings.setCurrentFilter(currentFetchDescriptor.filterDescriptor)
+         activeEventFetcher = eventFetchers[currentFetchDescriptor]
+            ??= coreDataStack.fetchedResultsController(for: currentFetchDescriptor)
+      }
+   }
+
+   weak var delegate: FetchDelegate? {
+      didSet { activeEventFetcher.delegate = delegate as? NSFetchedResultsControllerDelegate }
+   }
+
+   private var activeEventFetcher: NSFetchedResultsController<Event> {
+      willSet { activeEventFetcher.delegate = nil }
+      didSet {
+         activeEventFetcher.delegate = delegate as? NSFetchedResultsControllerDelegate
+         try? activeEventFetcher.performFetch()
+      }
+   }
+
+   private var eventFetchers: [Event.FetchDescriptor: NSFetchedResultsController<Event>] = [:]
 
    private let coreDataStack = CoreDataStack()
    private let settings = Settings()
 
-   var currentSortStyle: EventSort {
-      get { settings.getCurrentSort() }
-      set { settings.setCurrentSort(newValue) }
-   }
-
-   var currentFilter: EventFilter {
-      get { (try? settings.getCurrentFilter()) ?? .none }
-      set { try? settings.setCurrentFilter(newValue) }
+   init() {
+      let fetch = Event.FetchDescriptor(
+         sortDescriptor: settings.getCurrentSort(),
+         filterDescriptor: (try? settings.getCurrentFilter()) ?? .all)
+      currentFetchDescriptor = fetch
+      activeEventFetcher = eventFetchers[fetch]
+         ??= coreDataStack.fetchedResultsController(for: currentFetchDescriptor)
    }
 
    // MARK: - Public Methods
@@ -89,6 +119,15 @@ class EventController {
       // update notification
       NotificationsHelper.shared.cancelNotification(for: event)
       NotificationsHelper.shared.setNotification(for: event)
+   }
+
+   func deleteEvent(_ event: Event) throws {
+      let moc = try event.getContext()
+
+      moc.performAndWait {
+         moc.delete(event)
+      }
+      try coreDataStack.save(in: moc)
    }
 
    /// If tags were entered, separate by commas, strip extraneous whitespace,

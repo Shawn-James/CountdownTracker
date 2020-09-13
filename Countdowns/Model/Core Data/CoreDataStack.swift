@@ -24,6 +24,18 @@ class CoreDataStack {
 
    var mainContext: NSManagedObjectContext { container.viewContext }
 
+   func fetchedResultsController<Object: CDFetchable>(
+      for fetch: Object.FetchDescriptor,
+      with context: NSManagedObjectContext? = nil
+   ) -> NSFetchedResultsController<Object> {
+      NSFetchedResultsController(
+         fetchRequest: fetch.request(),
+         managedObjectContext: context ?? mainContext,
+         sectionNameKeyPath: nil,
+         cacheName: nil
+      )
+   }
+
    init() {}
 
    func fetch<Object: CDFetchable>(

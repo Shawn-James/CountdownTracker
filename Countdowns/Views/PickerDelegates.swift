@@ -30,7 +30,7 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
       if component == 0 {
          return 2
       } else {
-         return EventSort.Property.allCases.count
+         return EventSortDescriptor.Property.allCases.count
       }
    }
 
@@ -42,7 +42,7 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
       if component == 0 {
          return (row == 1) ? "↑" : "↓"
       } else {
-         return EventSort.Property(rawValue: UInt8(row))?.description
+         return EventSortDescriptor.Property(rawValue: UInt8(row))?.description
       }
    }
 
@@ -54,7 +54,7 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
       if component == 0 {
          let ascending = (row == 1)
          viewModel.currentSort.ascending = ascending
-      } else if let property = EventSort.Property(rawValue: UInt8(row)) {
+      } else if let property = EventSortDescriptor.Property(rawValue: UInt8(row)) {
          viewModel.currentSort.property = property
       }
    }
@@ -73,7 +73,7 @@ class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelega
 
    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
       // if no tags, don't let user filter by tag
-      let filterCount = EventFilter.descriptions.count
+      let filterCount = UserFilterOption.descriptions.count
       if viewModel.tags.count > 0 {
          return filterCount
       } else {
@@ -86,7 +86,7 @@ class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelega
       titleForRow row: Int,
       forComponent component: Int
    ) -> String? {
-      EventFilter.descriptions[row]
+      UserFilterOption.descriptions[row]
    }
 
    func pickerView(

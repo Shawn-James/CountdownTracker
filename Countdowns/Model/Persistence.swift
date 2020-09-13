@@ -21,19 +21,15 @@ protocol CDFetchable: NSManagedObject {
 }
 
 
-/// Typically an enum with computed values for requests and predicates that makes fetching more simple and type safe for Core Data NSManagedObjects.
-protocol CDFetchDescriptor {
+/// A type with attributes for requests and predicates that makes fetching more simple and type safe for Core Data NSManagedObjects.
+protocol CDFetchDescriptor: Hashable {
    associatedtype Object: CDFetchable where Object.FetchDescriptor == Self
 
-   var predicate: NSPredicate? { get }
+   var sectionNameKeyPath: String? { get }
+
    func request() -> NSFetchRequest<Object>
 }
 
 
-extension CDFetchDescriptor {
-   func request() -> NSFetchRequest<Object> {
-      let request = Object.fetchRequest() as! NSFetchRequest<Object>
-      request.predicate = self.predicate
-      return request
-   }
-}
+/// Temporary stand-in for NSFetchedResultsControllerDelegate; TODO: modify to make more generic & reusable
+protocol FetchDelegate: AnyObject {}

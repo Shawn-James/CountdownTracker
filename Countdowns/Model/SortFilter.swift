@@ -11,12 +11,12 @@ import Foundation
 
 // MARK: - Sort
 
-struct EventSort: Equatable, CustomStringConvertible, RawRepresentable {
+struct EventSortDescriptor: Hashable, CustomStringConvertible, RawRepresentable {
    var property: Property
    var ascending: Bool
 
    init(
-      property: EventSort.Property = .endDate,
+      property: EventSortDescriptor.Property = .endDate,
       ascending: Bool = true)
    {
       self.property = property
@@ -53,6 +53,19 @@ struct EventSort: Equatable, CustomStringConvertible, RawRepresentable {
       }
    }
 
+   func nsSortDescriptor() -> NSSortDescriptor {
+      switch property {
+      case .endDate:
+         return NSSortDescriptor(keyPath: \Event.dateTime, ascending: ascending)
+      case .creationDate:
+         return NSSortDescriptor(keyPath: \Event.creationDate, ascending: ascending)
+      case .modifiedDate:
+         return NSSortDescriptor(keyPath: \Event.modifiedDate, ascending: ascending)
+      case .numberOfTags:
+         return NSSortDescriptor(keyPath: \Event.tags.count, ascending: ascending)
+      }
+   }
+
    enum Property: UInt8, CustomStringConvertible, CaseIterable {
       case endDate
       case creationDate
@@ -62,7 +75,7 @@ struct EventSort: Equatable, CustomStringConvertible, RawRepresentable {
       /// Initializes from a rawValue that stores both a Property and a bit for whether it is ascending or descending
       init?(rawValue: UInt8) {
          for property in Property.allCases {
-            if property.rawValue == rawValue & (EventSort.ascendingRaw - 1) {
+            if property.rawValue == rawValue & (EventSortDescriptor.ascendingRaw - 1) {
                self = property
                return
             }
@@ -111,39 +124,55 @@ struct EventSort: Equatable, CustomStringConvertible, RawRepresentable {
 
 // MARK: - Filter
 
-enum EventFilter: CustomStringConvertible {
-   case none
-   case before(Date)
-   case after(Date)
+enum EventFilterDescriptor: Hashable {
+   case all
+   case date(Date, endIsBefore: Bool = true)
    case tag(UUID?)
+   case archived(Bool)
+   case eventID(UUID)
 
-   var description: String {
-      Self.descriptions[intValue]
+   static let before: (Date) -> Self = { date in
+      .date(date, endIsBefore: true)
+   }
+   static let after: (Date) -> Self = { date in
+      .date(date, endIsBefore: false)
+   }
+
+   var nsPredicate: NSPredicate? {
+      switch self {
+      case .all: return nil
+      case let .date(date, endIsBefore):
+         let predicateString: String = endIsBefore ? "dateTime < %@" : "dateTime > %@"
+         return NSPredicate(format: predicateString, date as CVarArg)
+      case .tag(let tagID):
+         if let uuid = tagID {
+            return NSPredicate(format: "ANY tags.uuid == %@", uuid as CVarArg)
+         } else {
+            return NSPredicate(format: "tags.@count == 0")
+         }
+      case .archived(let archived):
+         return NSPredicate(format: "archived == %b", archived)
+      case .eventID(let uuid):
+         return NSPredicate(format: "uuid == %@", uuid as CVarArg)
+      }
    }
 
    var date: Date? {
       get {
-         switch self {
-         case .before(let date), .after(let date):
+         if case .date(let date, _) = self {
             return date
-         default:
-            return nil
-         }
+         } else { return nil }
       }
       set {
          Self.cachedDate = newValue
          if let date = newValue {
-            if case .after = self {
-               self = .after(date)
+            if case .date(_, let isBefore) = self {
+               self = .date(date, endIsBefore: isBefore)
             } else {
-               self = .before(date)
+               self = .date(date)
             }
-         } else {
-            if case .tag = self {
-               return
-            } else {
-               self = .none
-            }
+         } else if case .date = self {
+            self = .all
          }
       }
    }
@@ -163,35 +192,29 @@ enum EventFilter: CustomStringConvertible {
    var intValue: Int {
       get {
          switch self {
-         case .none: return 0
-         case .before: return 1
-         case .after: return 2
+         case .all: return 0
+         case .date(_, let isBefore): return isBefore ? 1 : 2
          case .tag: return 3
+         case .archived(let isArchived): return isArchived ? 5 : 4
+         case .eventID: return -1
          }
       }
       set {
          switch newValue {
-         case 0: self = .none
-         case 1: self = .before(Self.cachedDate ??= Date())
-         case 2: self = .after(Self.cachedDate ??= Date())
+         case 0: self = .all
+         case 1, 2: self = .date(Self.cachedDate ??= Date(), endIsBefore: newValue == 1)
          case 3: self = .tag(Self.cachedTagID)
+         case 4, 5: self = .archived(newValue == 5)
          default: break
          }
       }
-   }
-
-   static var descriptions: [String] {
-      ["(none)",
-       "Now → ...",
-       "... → ∞",
-       "Tag...",]
    }
 
    static var cachedDate: Date?
    static var cachedTagID: UUID?
 }
 
-extension EventFilter: Codable {
+extension EventFilterDescriptor: Codable {
    enum CodingKeys: CodingKey {
       case intValue
       case date
@@ -213,13 +236,15 @@ extension EventFilter: Codable {
 
          switch rawInt {
          case 0:
-            self = .none
+            self = .all
          case 1:
             self = .before(try date())
          case 2:
             self = .after(try date())
          case 3:
             self = .tag(try tagID())
+         case 4, 5:
+            self = .archived(rawInt == 5)
          default:
             throw CodingError.decodeFailure()
          }
@@ -236,12 +261,11 @@ extension EventFilter: Codable {
          try container.encode(intValue, forKey: .intValue)
 
          switch self {
-         case .none:
-            break
-         case .before(let date), .after(let date):
+         case .date(let date, _):
             try container.encode(date, forKey: .date)
          case .tag(let tagID):
             try container.encode(tagID, forKey: .tagID)
+         default: break
          }
       } catch let error as CodingError {
          throw error
@@ -255,24 +279,22 @@ extension EventFilter: Codable {
 // MARK: - Extensions
 
 extension Array where Element == Event {
-   func sorted(by style: EventSort) -> [Event] {
+   func sorted(by style: EventSortDescriptor) -> [Event] {
       self.sorted(by: style.sort)
    }
 
-   mutating func sort(by style: EventSort) {
+   mutating func sort(by style: EventSortDescriptor) {
       self.sort(by: style.sort)
    }
 
-   func filtered(by style: EventFilter) -> [Event] {
-      var copy = self
-      copy.filter(by: style)
-      return copy
+   func filtered(by style: EventFilterDescriptor) -> [Event] {
+      configure(self) { $0.filter(by: style) }
    }
 
-   mutating func filter(by style: EventFilter) {
+   mutating func filter(by style: EventFilterDescriptor) {
       self = filter {
          switch style {
-         case .none:
+         case .all:
             return true
          case .tag(let tagIDOrNil):
             if let tagID = tagIDOrNil {
@@ -280,10 +302,12 @@ extension Array where Element == Event {
             } else {
                return $0.tags.isEmpty
             }
-         case .before(let date):
-            return $0.dateTime < date
-         case .after(let date):
-            return $0.dateTime > date
+         case let .date(date, endIsBefore):
+            return endIsBefore ? $0.dateTime < date : $0.dateTime > date
+         case .archived(let isArchived):
+            return isArchived ? $0.archived : !$0.archived
+         case .eventID(let id):
+            return $0.uuid == id.uuidString
          }
       }
    }
