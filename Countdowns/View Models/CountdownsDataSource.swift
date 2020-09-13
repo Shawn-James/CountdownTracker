@@ -11,6 +11,8 @@ import CoreData
 
 
 class CountdownsDataSource: UITableViewDiffableDataSource<Int, Event> {
+   typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Event>
+   
    /// Closure determines whether provided event should be deleted.
    /// If closure is nil, event will be deleted.
    var didConfirmDelete: ((Event) -> Bool)?
@@ -29,14 +31,18 @@ class CountdownsDataSource: UITableViewDiffableDataSource<Int, Event> {
          return cell
       }
    }
+
+   func updateSnapshot() {
+      var snapshot = Snapshot()
+      snapshot.appendSections([0])
+      snapshot.appendItems(viewModel.displayedEvents)
+      apply(snapshot)
+   }
 }
 
 extension CountdownsDataSource: NSFetchedResultsControllerDelegate {
-   func controller(
-      _ controller: NSFetchedResultsController<NSFetchRequestResult>,
-      didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
-   ) {
-      apply(snapshot as NSDiffableDataSourceSnapshot<Int, Event>)
+   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+
    }
 }
 

@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
          else { return NSLog(failMsg) }
 
       do {
-         guard let endedEvent = try controller.fetchEvents(.uuid(uuid)).first else {
+         guard let endedEvent = try controller.event(withID: uuid) else {
             return NSLog(failMsg)
          }
          completionHandler([.alert, .sound])

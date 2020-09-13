@@ -10,11 +10,12 @@ import UIKit
 
 
 class CountdownsTableViewController: UITableViewController {
+   typealias DataSource = UITableViewDiffableDataSource<Int, Event>
 
    lazy var viewModel: CountdownsViewModeling = CountdownsViewModel { [weak self] in
       self?.alertForCountdownEnd(for: $0)
    }
-   
+   lazy var dataSource = CountdownsDataSource(viewModel: viewModel, tableView: tableView)
 
    @IBOutlet weak var sortButton: UIBarButtonItem!
    @IBOutlet weak var archiveButton: UIBarButtonItem!
@@ -45,9 +46,10 @@ class CountdownsTableViewController: UITableViewController {
       case String.editEventSegue:
          guard
             let editEventVC = segue.destination as? AddEditEventViewController,
-            let idx = tableView.indexPathForSelectedRow
+            let idx = tableView.indexPathForSelectedRow,
+            let event = dataSource.itemIdentifier(for: idx)
             else { return }
-         let event = viewModel.displayedEvents[idx.row]
+
          editEventVC.viewModel = .b(viewModel.editViewModel(for: event))
       case String.eventDetailSegue:
          guard
@@ -129,48 +131,30 @@ class CountdownsTableViewController: UITableViewController {
       }
       alertAndArchiveFinishedCountdowns()
       tableView.reloadData()
-      setModeLabelAppearance()
-      setBarButtonAppearances()
-   }
 
-   private func setModeLabelAppearance() {
+      // mode label
       var text = ""
       currentModeLabel.isHidden = false
 
-      if viewModel.isViewingArchive {
-         if case .all = viewModel.currentFilter {
-            text = "Viewing Archive"
-         } else {
-            text = "Filtering Archive"
-         }
-      } else {
-         if case .all = viewModel.currentFilter {
-            currentModeLabel.isHidden = true
-         } else {
-            text = "Filtering"
-         }
+      switch (viewModel.isFiltering, viewModel.isViewingArchive) {
+      case (true, true):
+         text = "Filtering Archive"
+      case (true, false):
+         text = "Filtering"
+      case (false, true):
+         text = "Viewing Archive"
+      case (false, false):
+         currentModeLabel.isHidden = true
       }
-
       currentModeLabel.text = text.uppercased()
+
+      // sort/archive buttons
+      sortButton.tintColor = viewModel.isFiltering ? .systemRed : .systemBlue
+      sortButton.image = UIImage(systemName: viewModel.isFiltering ? .sortImageActive : .sortImageInactive)
+      archiveButton.tintColor = viewModel.isViewingArchive ? .systemRed : .systemBlue
+      archiveButton.image = UIImage(systemName: viewModel.isViewingArchive ? .archiveImageActive : .archiveImageInactive)
    }
 
-   private func setBarButtonAppearances() {
-      if case .all = viewModel.currentFilter {
-         sortButton.tintColor = .systemBlue
-         sortButton.image = UIImage(systemName: .sortImageInactive)
-      } else {
-         sortButton.tintColor = .systemRed
-         sortButton.image = UIImage(systemName: .sortImageActive)
-      }
-
-      if viewModel.isViewingArchive {
-         archiveButton.tintColor = .systemRed
-         archiveButton.image = UIImage(systemName: .archiveImageActive)
-      } else {
-         archiveButton.tintColor = .systemBlue
-         archiveButton.image = UIImage(systemName: .archiveImageInactive)
-      }
-   }
 
    private func selectRow(for event: Event) {
       guard let index = viewModel.displayedEvents.firstIndex(of: event) else { return }

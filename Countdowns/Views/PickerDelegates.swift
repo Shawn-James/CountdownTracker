@@ -73,7 +73,7 @@ class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelega
 
    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
       // if no tags, don't let user filter by tag
-      let filterCount = UserFilterOption.descriptions.count
+      let filterCount = EventFilterDescriptor.Option.descriptions.count
       if viewModel.tags.count > 0 {
          return filterCount
       } else {
@@ -86,7 +86,7 @@ class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelega
       titleForRow row: Int,
       forComponent component: Int
    ) -> String? {
-      UserFilterOption.descriptions[row]
+      EventFilterDescriptor.Option.descriptions[row]
    }
 
    func pickerView(
@@ -94,7 +94,7 @@ class FilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelega
       didSelectRow row: Int,
       inComponent component: Int
    ) {
-      viewModel.currentFilter.intValue = row
+      viewModel.currentFilter.option.intValue = row
    }
 }
 
@@ -129,6 +129,6 @@ class TagFilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDel
       didSelectRow row: Int,
       inComponent component: Int
    ) {
-      viewModel.currentFilter.tagID = viewModel.tags[row].uuid
+      viewModel.currentFilter.option.tagID = viewModel.tags[row].uuid
    }
 }

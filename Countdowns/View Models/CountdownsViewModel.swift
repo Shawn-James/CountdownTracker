@@ -10,9 +10,12 @@ import Foundation
 
 
 protocol CountdownsViewModeling {
+   var displayedEvents: [Event] { get }
+   
    var isViewingArchive: Bool { get set }
-   var currentSort: EventSortDescriptor { get }
-   var currentFilter: EventFilterDescriptor { get }
+   var isFiltering: Bool { get }
+//   var currentSort: EventSortDescriptor { get }
+//   var currentFilter: EventFilterDescriptor { get }
 
    var eventDidEnd: (Event) -> Void { get set }
 
@@ -33,13 +36,15 @@ protocol CountdownsViewModeling {
 
 
 class CountdownsViewModel: CountdownsViewModeling {
-   var isViewingArchive: Bool = false
+   var displayedEvents: [Event] { eventController.events }
 
-   var currentSort: EventSortDescriptor {
-      eventController.currentSortStyle
+   var isViewingArchive: Bool {
+      get { eventController.currentFilter.archived }
+      set { eventController.currentFilter.archived = newValue }
    }
-   var currentFilter: EventFilterDescriptor {
-      eventController.currentFilter
+
+   var isFiltering: Bool {
+      eventController.currentFilter.option != .all
    }
 
    var eventDidEnd: (Event) -> Void

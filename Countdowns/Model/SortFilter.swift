@@ -124,97 +124,157 @@ struct EventSortDescriptor: Hashable, CustomStringConvertible, RawRepresentable 
 
 // MARK: - Filter
 
-enum EventFilterDescriptor: Hashable {
-   case all
-   case date(Date, endIsBefore: Bool = true)
-   case tag(UUID?)
-   case archived(Bool)
-   case eventID(UUID)
+struct EventFilterDescriptor: Hashable {
+   var option: Option
+   var archived: Bool
 
-   static let before: (Date) -> Self = { date in
-      .date(date, endIsBefore: true)
-   }
-   static let after: (Date) -> Self = { date in
-      .date(date, endIsBefore: false)
+   init(_ option: Option = .all, archived: Bool = false) {
+      self.option = option
+      self.archived = archived
    }
 
-   var nsPredicate: NSPredicate? {
-      switch self {
-      case .all: return nil
-      case let .date(date, endIsBefore):
-         let predicateString: String = endIsBefore ? "dateTime < %@" : "dateTime > %@"
-         return NSPredicate(format: predicateString, date as CVarArg)
-      case .tag(let tagID):
-         if let uuid = tagID {
-            return NSPredicate(format: "ANY tags.uuid == %@", uuid as CVarArg)
-         } else {
-            return NSPredicate(format: "tags.@count == 0")
-         }
-      case .archived(let archived):
-         return NSPredicate(format: "archived == %b", archived)
-      case .eventID(let uuid):
-         return NSPredicate(format: "uuid == %@", uuid as CVarArg)
+   var filter: (Event) -> Bool {
+      Self.filter(self)
+   }
+
+   var nsPredicate: NSPredicate {
+      let archivePredicate = NSPredicate(format: "archived == %b", archived)
+      if let categoryPredicate = option.nsPredicate {
+         return NSCompoundPredicate(andPredicateWithSubpredicates: [
+            categoryPredicate,
+            archivePredicate
+         ])
+      } else {
+         return archivePredicate
       }
    }
 
-   var date: Date? {
-      get {
-         if case .date(let date, _) = self {
-            return date
-         } else { return nil }
-      }
-      set {
-         Self.cachedDate = newValue
-         if let date = newValue {
-            if case .date(_, let isBefore) = self {
-               self = .date(date, endIsBefore: isBefore)
-            } else {
-               self = .date(date)
-            }
-         } else if case .date = self {
-            self = .all
-         }
-      }
-   }
+   static let unarchived: Self = EventFilterDescriptor(.all, archived: false)
 
-   var tagID: UUID? {
-      get {
-         if case .tag(let id) = self {
-            return id
-         } else { return nil }
-      }
-      set {
-         Self.cachedTagID = newValue
-         self = .tag(newValue)
-      }
+   static func filter(
+      _ descriptor: EventFilterDescriptor
+   ) -> ((Event) -> Bool) {
+      let catComp = descriptor.option.filter
+      return { $0.archived && catComp($0) }
    }
-
-   var intValue: Int {
-      get {
-         switch self {
-         case .all: return 0
-         case .date(_, let isBefore): return isBefore ? 1 : 2
-         case .tag: return 3
-         case .archived(let isArchived): return isArchived ? 5 : 4
-         case .eventID: return -1
-         }
-      }
-      set {
-         switch newValue {
-         case 0: self = .all
-         case 1, 2: self = .date(Self.cachedDate ??= Date(), endIsBefore: newValue == 1)
-         case 3: self = .tag(Self.cachedTagID)
-         case 4, 5: self = .archived(newValue == 5)
-         default: break
-         }
-      }
-   }
-
-   static var cachedDate: Date?
-   static var cachedTagID: UUID?
 }
 
-extension EventFilterDescriptor: Codable {
+extension EventFilterDescriptor: Codable {}
+
+
+extension EventFilterDescriptor {
+   enum Option: Hashable {
+      case all
+      case date(Date, endIsBefore: Bool = true)
+      case tag(UUID?)
+
+      static let before: (Date) -> Self = { date in
+         .date(date, endIsBefore: true)
+      }
+      static let after: (Date) -> Self = { date in
+         .date(date, endIsBefore: false)
+      }
+
+      var filter: (Event) -> Bool {
+         Self.filter(self)
+      }
+
+      var nsPredicate: NSPredicate? {
+         switch self {
+         case .all:
+            return nil
+         case let .date(date, endIsBefore):
+            let predicateString: String = endIsBefore ? "dateTime < %@" : "dateTime > %@"
+            return NSPredicate(format: predicateString, date as CVarArg)
+         case .tag(let tagID):
+            if let uuid = tagID {
+               return NSPredicate(format: "ANY tags.uuid == %@", uuid as CVarArg)
+            } else {
+               return NSPredicate(format: "tags.@count == 0")
+            }
+         }
+      }
+
+      var date: Date? {
+         get {
+            if case .date(let date, _) = self {
+               return date
+            } else { return nil }
+         }
+         set {
+            Self.cachedDate = newValue
+            if let date = newValue {
+               if case .date(_, let isBefore) = self {
+                  self = .date(date, endIsBefore: isBefore)
+               } else {
+                  self = .date(date)
+               }
+            } else if case .date = self {
+               self = .all
+            }
+         }
+      }
+
+      var tagID: UUID? {
+         get {
+            if case .tag(let id) = self {
+               return id
+            } else { return nil }
+         }
+         set {
+            Self.cachedTagID = newValue
+            self = .tag(newValue)
+         }
+      }
+
+      var intValue: Int {
+         get {
+            switch self {
+            case .all: return 0
+            case .date(_, let isBefore): return isBefore ? 1 : 2
+            case .tag: return 3
+            }
+         }
+         set {
+            switch newValue {
+            case 0: self = .all
+            case 1, 2: self = .date(Self.cachedDate ??= Date(), endIsBefore: newValue == 1)
+            case 3: self = .tag(Self.cachedTagID)
+            default: break
+            }
+         }
+      }
+
+      static var cachedDate: Date?
+      static var cachedTagID: UUID?
+
+      static var descriptions: [String] {
+         ["(none)",
+          "Now → ...",
+          "... → ∞",
+          "Tag...",]
+      }
+
+      static func filter(
+         _ option: EventFilterDescriptor.Option
+      ) -> ((Event) -> Bool) {
+         switch option {
+         case .all:
+            return { _ in true }
+         case .tag(let tagIDOrNil):
+            if let tagID = tagIDOrNil {
+               return { $0.isTaggedWith(tagWithID: tagID) }
+            } else {
+               return { $0.tags.isEmpty }
+            }
+         case let .date(date, endIsBefore):
+            return endIsBefore ? { $0.dateTime < date } : { $0.dateTime > date }
+         }
+      }
+   }
+}
+
+extension EventFilterDescriptor.Option: Codable {
    enum CodingKeys: CodingKey {
       case intValue
       case date
@@ -243,8 +303,6 @@ extension EventFilterDescriptor: Codable {
             self = .after(try date())
          case 3:
             self = .tag(try tagID())
-         case 4, 5:
-            self = .archived(rawInt == 5)
          default:
             throw CodingError.decodeFailure()
          }
@@ -292,23 +350,6 @@ extension Array where Element == Event {
    }
 
    mutating func filter(by style: EventFilterDescriptor) {
-      self = filter {
-         switch style {
-         case .all:
-            return true
-         case .tag(let tagIDOrNil):
-            if let tagID = tagIDOrNil {
-               return $0.isTaggedWith(tagWithID: tagID)
-            } else {
-               return $0.tags.isEmpty
-            }
-         case let .date(date, endIsBefore):
-            return endIsBefore ? $0.dateTime < date : $0.dateTime > date
-         case .archived(let isArchived):
-            return isArchived ? $0.archived : !$0.archived
-         case .eventID(let id):
-            return $0.uuid == id.uuidString
-         }
-      }
+      self = filter(style.filter)
    }
 }

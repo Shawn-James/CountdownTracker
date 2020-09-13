@@ -21,20 +21,12 @@ struct EventFetchDescriptor: CDFetchDescriptor, Hashable {
 
    var sectionNameKeyPath: String? { nil }
 
-   static let all: Self = EventFetchDescriptor(
-      sortDescriptor: EventSortDescriptor(),
-      filterDescriptor: EventFilterDescriptor.all)
    static let unarchived: Self = EventFetchDescriptor(
       sortDescriptor: EventSortDescriptor(),
-      filterDescriptor: .archived(false))
+      filterDescriptor: EventFilterDescriptor())
    static let archived: Self = EventFetchDescriptor(
       sortDescriptor: EventSortDescriptor(),
-      filterDescriptor: .archived(true))
-   static func uuid(_ uuid: UUID) -> Self {
-      EventFetchDescriptor(
-         sortDescriptor: EventSortDescriptor(),
-         filterDescriptor: EventFilterDescriptor.eventID(uuid))
-   }
+      filterDescriptor: EventFilterDescriptor(archived: true))
 
    func request() -> NSFetchRequest<Event> {
       let request = Event.fetchRequest() as! NSFetchRequest<Event>

@@ -14,8 +14,9 @@ protocol SortFilterViewModeling: AnyObject {
    var tags: [Tag] { get }
 
    var currentSort: EventSortDescriptor { get set }
-   var currentFilter: UserFilterOption { get set }
+   var currentFilter: EventFilterDescriptor { get set }
 }
+
 
 class SortFilterViewModel: SortFilterViewModeling {
    var tags: [Tag] { (try? controller.fetchTags(.all)) ?? [] }
@@ -24,9 +25,9 @@ class SortFilterViewModel: SortFilterViewModeling {
       get { controller.currentSortStyle }
       set { controller.currentSortStyle = newValue }
    }
-   var currentFilter: UserFilterOption {
-      get { UserFilterOption(controller.currentFilter) ?? .all }
-      set { controller.currentFilter = newValue.filterDescriptor }
+   var currentFilter: EventFilterDescriptor {
+      get { controller.currentFilter }
+      set { controller.currentFilter = newValue }
    }
 
    private let controller: EventController
@@ -36,74 +37,6 @@ class SortFilterViewModel: SortFilterViewModeling {
    }
 }
 
-enum UserFilterOption {
-   case all
-   case before(Date)
-   case after(Date)
-   case tag(UUID?)
-
-   init?(_ filter: EventFilterDescriptor) {
-      switch filter {
-      case .all:
-         self = .all
-      case let .date(date, endIsBefore):
-         self = endIsBefore ? .before(date) : .after(date)
-      case .tag(let tag):
-         self = .tag(tag)
-      default: return nil
-      }
-   }
-
-   var filterDescriptor: EventFilterDescriptor {
-      get {
-         switch self {
-         case .all:
-            return .all
-         case .before(let date):
-            return .before(date)
-         case .after(let date):
-            return .after(date)
-         case .tag(let tagID):
-            return .tag(tagID)
-         }
-      }
-      set {
-         switch newValue {
-         case let .date(date, endIsBefore):
-            self = endIsBefore ? .before(date) : .after(date)
-         case .tag(let tagID):
-            self = .tag(tagID)
-         default: self = .all
-         }
-      }
-   }
-
-   var intValue: Int {
-      get { filterDescriptor.intValue }
-      set { filterDescriptor.intValue = newValue }
-   }
-   var date: Date? {
-      switch self {
-      case .before(let date), .after(let date):
-         return date
-      default: return nil
-      }
-   }
-   var tagID: UUID? {
-      if case .tag(let tagID) = self {
-         return tagID
-      } else {
-         return nil
-      }
-   }
-
-   static var descriptions: [String] {
-      ["(none)",
-       "Now → ...",
-       "... → ∞",
-       "Tag...",]
-   }
-}
 
 class SortFilterViewController: UIViewController {
    var viewModel: SortFilterViewModeling!
@@ -148,16 +81,16 @@ class SortFilterViewController: UIViewController {
       }
 
       filterPicker.selectRow(
-         viewModel.currentFilter.intValue,
+         viewModel.currentFilter.option.intValue,
          inComponent: 0,
          animated: false)
 
-      if case .tag(let tagID) = viewModel.currentFilter {
+      if case .tag(let tagID) = viewModel.currentFilter.option {
          let tagIdx = viewModel.tags.firstIndex(where: { $0.uuid == tagID }) ?? 0
          tagPicker.selectRow(tagIdx, inComponent: 0, animated: false)
       }
 
-      if let date = viewModel.currentFilter.date {
+      if let date = viewModel.currentFilter.option.date {
          datePicker.setDate(date, animated: false)
       }
 
@@ -165,9 +98,9 @@ class SortFilterViewController: UIViewController {
    }
 
    /// Show or hide pickers based on the given filter setting.
-   private func showHideFilterComponents(for filterStyle: UserFilterOption) {
-      switch filterStyle {
-      case .before, .after:
+   private func showHideFilterComponents(for filterStyle: EventFilterDescriptor) {
+      switch filterStyle.option {
+      case .date:
          tagPicker.isHidden = true
          datePicker.isHidden = false
       case .tag:

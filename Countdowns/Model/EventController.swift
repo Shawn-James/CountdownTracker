@@ -12,6 +12,10 @@ import CoreData
 
 
 class EventController {
+   var events: [Event] { activeEventFetcher.fetchedObjects ?? [] }
+
+   var viewingArchive: Bool = false
+
    var currentSortStyle: EventSortDescriptor {
       get { currentFetchDescriptor.sortDescriptor }
       set { currentFetchDescriptor.sortDescriptor = newValue }
@@ -50,13 +54,20 @@ class EventController {
    init() {
       let fetch = Event.FetchDescriptor(
          sortDescriptor: settings.getCurrentSort(),
-         filterDescriptor: (try? settings.getCurrentFilter()) ?? .all)
+         filterDescriptor: (try? settings.getCurrentFilter())
+            ?? EventFilterDescriptor())
       currentFetchDescriptor = fetch
       activeEventFetcher = eventFetchers[fetch]
          ??= coreDataStack.fetchedResultsController(for: currentFetchDescriptor)
    }
 
    // MARK: - Public Methods
+
+   func event(withID uuid: UUID) throws -> Event? {
+      let request = Event.fetchRequest() as! NSFetchRequest<Event>
+      request.predicate = NSPredicate(format: "uuid == %@", uuid as CVarArg)
+      return try coreDataStack.mainContext.fetch(request).first
+   }
 
    func fetchEvents(_ fetch: Event.FetchDescriptor) throws -> [Event] {
       try coreDataStack.fetch(with: fetch)
