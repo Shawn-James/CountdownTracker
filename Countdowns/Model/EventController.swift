@@ -37,11 +37,15 @@ class EventController {
    }
 
    /// Add the event to the active list, set a notification for the end date, and save the list.
-   func create(_ event: Event) {
+   func createEvent(_ event: Event) {
       let moc = coreDataStack.mainContext
       moc.performAndWait {
          moc.insert(event)
       }
+   }
+
+   func createTag(_ name: String) throws {
+      
    }
 
    /// Update the given event, save changes, and reset the event's user notification.

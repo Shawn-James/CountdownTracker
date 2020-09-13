@@ -184,27 +184,24 @@ class AddEditEventViewController: UIViewController {
 
    // MARK: - Private Methods
 
-   /// If custom time being used, concatenate the date
-   /// and the time from the two pickers and return
-   /// for use in saving the event.
+   /// If custom time being used, concatenate the date and the time from the
+   /// two pickers and return for use in saving the event.
    private func getEventDateFromPickers() -> Date {
       if !customTimeSwitch.isEnabled {
          return datePicker.date
       } else {
-         let date = Calendar.autoupdatingCurrent.dateComponents(
-            [.year, .month, .day],
-            from: datePicker.date
-         )
-         let time = Calendar.autoupdatingCurrent.dateComponents(
-            [.hour, .minute],
-            from: timePicker.date
-         )
+         let cal = Calendar.current
+         let date = cal.dateComponents([.year, .month, .day], from: datePicker.date)
+         let time = cal.dateComponents([.hour, .minute], from: timePicker.date)
 
          let dateComponents = DateComponents(
-            calendar: .autoupdatingCurrent, timeZone: .autoupdatingCurrent,
-            year: date.year, month: date.month, day: date.day,
-            hour: time.hour, minute: time.minute
-         )
+            calendar: cal,
+            timeZone: .current,
+            year: date.year,
+            month: date.month,
+            day: date.day,
+            hour: time.hour,
+            minute: time.minute)
          guard let dateFromComponents = dateComponents.date
             else { return Date() }
 
@@ -212,10 +209,8 @@ class AddEditEventViewController: UIViewController {
       }
    }
 
-   /// If tags were entered, separate by commas,
-   /// strip extraneous whitespace, and return
-   /// for use in saving the event.
-   /// Empty tags are not allowed.
+   /// If tags were entered, separate by commas, strip extraneous whitespace,
+   /// and return for use in saving the event. Empty tags are not allowed.
    private func getTagDataFromField() -> [Tag]? {
       var tags = [Tag]()
 
@@ -230,8 +225,7 @@ class AddEditEventViewController: UIViewController {
       return tags
    }
 
-   /// Save the event, adding it to the list if new
-   /// or updating the event if editing.
+   /// Save the event, adding it to the list if new or updating the event if editing.
    private func finalizeEventFromData(name: String, date: Date, tags: [Tag], note: String) {
       if event == nil {
          // add new event (if adding)

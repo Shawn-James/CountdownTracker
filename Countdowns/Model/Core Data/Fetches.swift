@@ -39,10 +39,14 @@ extension Tag: CDFetchable {
       typealias Object = Tag
 
       case all
+      case name(String)
 
       var predicate: NSPredicate? {
          switch self {
-         case .all: return nil
+         case .all:
+            return nil
+         case .name(let name):
+            return NSPredicate(format: "name == %@", name)
          }
       }
    }

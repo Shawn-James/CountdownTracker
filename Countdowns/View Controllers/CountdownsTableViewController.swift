@@ -10,9 +10,14 @@ import UIKit
 
 protocol CountdownsViewModeling {
    var displayedEvents: [Event] { get }
-   var isViewingArchive: Bool { get }
+   var isViewingArchive: Bool { get set }
    var currentSort: EventSort { get }
    var currentFilter: EventFilter { get }
+
+   func editViewModel(for event: Event) -> EditEventViewModeling
+   func addViewModel(didCreateEvent: @escaping (Event) -> Void) -> AddEventViewModeling
+
+   func delete(_ event: Event)
 }
 
 enum CountdownsViewMode {
@@ -55,7 +60,11 @@ class CountdownsTableViewController: UITableViewController {
             preconditionFailure("Could not dequeue countdown cell")
       }
 
-      cell.event = viewModel.displayedEvents[indexPath.row]
+      cell.viewModel = EventViewModel(
+         viewModel.displayedEvents[indexPath.row],
+         countdownDidEnd: { [weak self] event in
+            self?.alertForCountdownEnd(for: event)
+      })
 
       if indexPath.row % 2 == 0 {
          cell.backgroundColor = UIColor(named: .secondaryCellBackgroundColor)
@@ -63,14 +72,12 @@ class CountdownsTableViewController: UITableViewController {
          cell.backgroundColor = UIColor(named: .cellBackgroundColor)
       }
 
-      cell.parentViewController = self
-
       return cell
    }
 
    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
       if editingStyle == .delete {
-         let event: Event = displayedEvents[indexPath.row]
+         let event: Event = viewModel.displayedEvents[indexPath.row]
          confirmDeletion(for: event, at: indexPath)
       }
    }
@@ -78,57 +85,40 @@ class CountdownsTableViewController: UITableViewController {
    // MARK: - Navigation
 
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-      if segue.identifier == .addEventSegue {
+      switch segue.identifier {
+      case String.addEventSegue:
          guard let addEventVC = segue.destination as? AddEditEventViewController
             else { return }
 
-         addEventVC.addEventDelegate = self
-
-      } else if segue.identifier == .eventDetailSegue {
-         guard let eventDetailVC = segue.destination as? EventDetailViewController,
-            let eventCell = sender as? CountdownTableViewCell,
-            let event = eventCell.event else { return }
-
+         addEventVC.viewModel = .a(viewModel.addViewModel(
+            didCreateEvent: { [weak self] in self?.selectRow(for: $0) }))
+      case String.editEventSegue:
+         guard
+            let editEventVC = segue.destination as? AddEditEventViewController,
+            let idx = tableView.indexPathForSelectedRow
+            else { return }
+         let event = viewModel.displayedEvents[idx.row]
+         editEventVC.viewModel = .b(viewModel.editViewModel(for: event))
+      case String.eventDetailSegue:
+         guard
+            let eventDetailVC = segue.destination as? EventDetailViewController,
+            let idx = tableView.indexPathForSelectedRow
+            else { return }
+         let event = viewModel.displayedEvents[idx.row]
          eventDetailVC.event = event
-
-      } else if segue.identifier == .sortFilterSegue {
+      case String.sortFilterSegue:
          guard let sortFilterVC = segue.destination as? SortFilterViewController
             else { return }
-
-         sortFilterVC.sortDelegate = SortPickerDelegate()
-         sortFilterVC.filterDelegate = FilterPickerDelegate(delegate: sortFilterVC)
-         sortFilterVC.tagDelegate = TagFilterPickerDelegate()
-
-         sortFilterVC.delegate = self
+         sortFilterVC.viewModel = SortFilterViewModel(<#T##controller: EventController##EventController#>)
+      default: break
       }
    }
 
    // MARK: - Private Methods
 
    @IBAction func archiveButtonTapped(_ sender: UIBarButtonItem) {
-      amViewingArchive.toggle()
+      viewModel.isViewingArchive.toggle()
       updateViews()
-   }
-
-   private func sortAndFilter() {
-      var eventsToSortFilter: [Event]
-      if amViewingArchive {
-         eventsToSortFilter = EventController.shared.archivedEvents
-      } else {
-         eventsToSortFilter = EventController.shared.activeEvents
-      }
-
-      eventsToSortFilter = EventController.shared.sort(
-         eventsToSortFilter,
-         by: currentSortStyle
-      )
-      eventsToSortFilter = EventController.shared.filter(
-         eventsToSortFilter,
-         by: currentFilterStyle,
-         with: (date: currentFilterDate, tag: currentFilterTag)
-      )
-
-      displayedEvents = eventsToSortFilter
    }
 
    /// Shows an alert that asks for user confirmation to delete the given event.
@@ -144,8 +134,7 @@ class CountdownsTableViewController: UITableViewController {
          title: "Delete",
          style: .destructive,
          handler: { action in
-            EventController.shared.delete(event)
-            self.displayedEvents.remove(at: indexPath.row)
+            self.viewModel.delete(event)
             self.tableView.deleteRows(at: [indexPath], with: .left)
             self.updateViews()
       }))
@@ -154,13 +143,10 @@ class CountdownsTableViewController: UITableViewController {
    }
 
    private func alertAndArchiveFinishedCountdowns() {
-      for event in displayedEvents {
+      for event in viewModel.displayedEvents {
          if event.dateTimeHasPassed {
             if !event.didNotifyDone {
                alertForCountdownEnd(for: event)
-            }
-            if !amViewingArchive {
-               EventController.shared.archive(event)
             }
          }
       }
@@ -187,7 +173,6 @@ class CountdownsTableViewController: UITableViewController {
       if let indexPath = tableView.indexPathForSelectedRow {
          tableView.deselectRow(at: indexPath, animated: true)
       }
-      sortAndFilter()
       alertAndArchiveFinishedCountdowns()
       tableView.reloadData()
       setModeLabelAppearance()
@@ -198,14 +183,14 @@ class CountdownsTableViewController: UITableViewController {
       var text = ""
       currentModeLabel.isHidden = false
 
-      if amViewingArchive {
-         if currentFilterStyle == .none {
+      if viewModel.isViewingArchive {
+         if case .none = viewModel.currentFilter {
             text = "Viewing Archive"
          } else {
             text = "Filtering Archive"
          }
       } else {
-         if currentFilterStyle == .none {
+         if case .none = viewModel.currentFilter {
             currentModeLabel.isHidden = true
          } else {
             text = "Filtering"
@@ -216,15 +201,15 @@ class CountdownsTableViewController: UITableViewController {
    }
 
    private func setBarButtonAppearances() {
-      if EventController.shared.currentFilterStyle != .none {
-         sortButton.tintColor = .systemRed
-         sortButton.image = UIImage(systemName: .sortImageActive)
-      } else {
+      if case .none = viewModel.currentFilter {
          sortButton.tintColor = .systemBlue
          sortButton.image = UIImage(systemName: .sortImageInactive)
+      } else {
+         sortButton.tintColor = .systemRed
+         sortButton.image = UIImage(systemName: .sortImageActive)
       }
 
-      if amViewingArchive {
+      if viewModel.isViewingArchive {
          archiveButton.tintColor = .systemRed
          archiveButton.image = UIImage(systemName: .archiveImageActive)
       } else {
@@ -232,21 +217,10 @@ class CountdownsTableViewController: UITableViewController {
          archiveButton.image = UIImage(systemName: .archiveImageInactive)
       }
    }
-}
 
-
-
-// MARK: - Delegate Conformance
-
-extension CountdownsTableViewController: AddEventViewControllerDelegate {
-   func selectRow(for event: Event) {
-      // get index of event in list
-      guard let index = displayedEvents.firstIndex(of: event) else { return }
-      // make indexPath from index
+   private func selectRow(for event: Event) {
+      guard let index = viewModel.displayedEvents.firstIndex(of: event) else { return }
       let indexPath = IndexPath(row: index, section: 0)
-      // select row from indexPath
       tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
    }
 }
-
-extension CountdownsTableViewController: SortFilterViewControllerDelegate {}

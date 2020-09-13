@@ -46,8 +46,6 @@ class EventDetailViewController: UIViewController {
          let event = event, segue.identifier == .editEventSegue
          else { return}
 
-      
-
       editEventVC.event = event
       editEventVC.editEventDelegate = self
    }

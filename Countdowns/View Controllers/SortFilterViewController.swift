@@ -18,15 +18,21 @@ protocol SortFilterViewModeling: AnyObject {
 }
 
 class SortFilterViewModel: SortFilterViewModeling {
-   var tags: [Tag]
+   var tags: [Tag] { (try? controller.fetchTags(.all)) ?? [] }
 
-   var currentSort: EventSort
-   var currentFilter: EventFilter
+   var currentSort: EventSort {
+      get { controller.currentSortStyle }
+      set { controller.currentSortStyle = newValue }
+   }
+   var currentFilter: EventFilter {
+      get { controller.currentFilter }
+      set { controller.currentFilter = newValue }
+   }
 
-   init(tags: [Tag], sort: EventSort, filter: EventFilter) {
-      self.tags = tags
-      self.currentSort = sort
-      self.currentFilter = filter
+   private let controller: EventController
+
+   init(_ controller: EventController) {
+      self.controller = controller
    }
 }
 

@@ -70,7 +70,7 @@ class CountdownTableViewCell: UITableViewCell {
 
    // MARK: - Outlets
 
-   @IBOutlet weak var titleLabel: UILabel!
-   @IBOutlet weak var timeRemainingLabel: UILabel!
-   @IBOutlet weak var tagsLabel: UILabel!
+   @IBOutlet private weak var titleLabel: UILabel!
+   @IBOutlet private weak var timeRemainingLabel: UILabel!
+   @IBOutlet private weak var tagsLabel: UILabel!
 }
