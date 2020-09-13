@@ -11,6 +11,10 @@
 		990C3A37250D843400ACDE78 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990C3A36250D843400ACDE78 /* Persistence.swift */; };
 		990C3A39250D861200ACDE78 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990C3A38250D861200ACDE78 /* Settings.swift */; };
 		990C3A3C250DA26A00ACDE78 /* EventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990C3A3B250DA26A00ACDE78 /* EventViewModel.swift */; };
+		990C3A3E250E9D0600ACDE78 /* UIViewController+ErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990C3A3D250E9D0500ACDE78 /* UIViewController+ErrorAlert.swift */; };
+		990C3A40250E9D2100ACDE78 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990C3A3F250E9D2100ACDE78 /* Errors.swift */; };
+		990C3A42250E9EDD00ACDE78 /* CountdownsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990C3A41250E9EDD00ACDE78 /* CountdownsDataSource.swift */; };
+		990C3A44250ECCF400ACDE78 /* CountdownsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990C3A43250ECCF400ACDE78 /* CountdownsViewModel.swift */; };
 		990EC94424D338F200E41409 /* Countdowns.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94224D338F200E41409 /* Countdowns.xcdatamodeld */; };
 		990EC94624D33A7D00E41409 /* CoreDataMigrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94524D33A7D00E41409 /* CoreDataMigrationManager.swift */; };
 		990EC94824D33A8600E41409 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94724D33A8600E41409 /* CoreDataStack.swift */; };
@@ -42,6 +46,10 @@
 		990C3A36250D843400ACDE78 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		990C3A38250D861200ACDE78 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		990C3A3B250DA26A00ACDE78 /* EventViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewModel.swift; sourceTree = "<group>"; };
+		990C3A3D250E9D0500ACDE78 /* UIViewController+ErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorAlert.swift"; sourceTree = "<group>"; };
+		990C3A3F250E9D2100ACDE78 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		990C3A41250E9EDD00ACDE78 /* CountdownsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CountdownsDataSource.swift; path = "Countdowns/View Models/CountdownsDataSource.swift"; sourceTree = SOURCE_ROOT; };
+		990C3A43250ECCF400ACDE78 /* CountdownsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownsViewModel.swift; sourceTree = "<group>"; };
 		990EC94324D338F200E41409 /* Countdowns.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Countdowns.xcdatamodel; sourceTree = "<group>"; };
 		990EC94524D33A7D00E41409 /* CoreDataMigrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMigrationManager.swift; sourceTree = "<group>"; };
 		990EC94724D33A8600E41409 /* CoreDataStack.swift */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; tabWidth = 3; };
@@ -85,6 +93,8 @@
 			isa = PBXGroup;
 			children = (
 				990C3A3B250DA26A00ACDE78 /* EventViewModel.swift */,
+				990C3A41250E9EDD00ACDE78 /* CountdownsDataSource.swift */,
+				990C3A43250ECCF400ACDE78 /* CountdownsViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -181,6 +191,8 @@
 				990EC94924D33BE600E41409 /* Utilites.swift */,
 				99D827722507D46900787A79 /* CountdownError.swift */,
 				990C3A34250D455C00ACDE78 /* Combine+Transmitter.swift */,
+				990C3A3F250E9D2100ACDE78 /* Errors.swift */,
+				990C3A3D250E9D0500ACDE78 /* UIViewController+ErrorAlert.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -272,10 +284,13 @@
 			files = (
 				99EF7D08235E13990092F4AB /* EventDetailViewController.swift in Sources */,
 				990EC94624D33A7D00E41409 /* CoreDataMigrationManager.swift in Sources */,
+				990C3A44250ECCF400ACDE78 /* CountdownsViewModel.swift in Sources */,
+				990C3A3E250E9D0600ACDE78 /* UIViewController+ErrorAlert.swift in Sources */,
 				99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */,
 				990C3A35250D455C00ACDE78 /* Combine+Transmitter.swift in Sources */,
 				99251D42235E09400060D9FF /* AppDelegate.swift in Sources */,
 				99480ADB235F5DBD00DC1D48 /* DateFormatters.swift in Sources */,
+				990C3A40250E9D2100ACDE78 /* Errors.swift in Sources */,
 				9972B508235E0A2E0015E56B /* CountdownsTableViewController.swift in Sources */,
 				99EF7D12235E18DE0092F4AB /* Event.swift in Sources */,
 				9972B510235E0AA00015E56B /* Strings.swift in Sources */,
@@ -292,6 +307,7 @@
 				990C3A39250D861200ACDE78 /* Settings.swift in Sources */,
 				99CE3DE1250BC9390039E3FC /* Fetches.swift in Sources */,
 				99EF7D0E235E14D90092F4AB /* AddEditEventViewController.swift in Sources */,
+				990C3A42250E9EDD00ACDE78 /* CountdownsDataSource.swift in Sources */,
 				9972B50B235E0A480015E56B /* CountdownTableViewCell.swift in Sources */,
 				99D827732507D46900787A79 /* CountdownError.swift in Sources */,
 				990EC94424D338F200E41409 /* Countdowns.xcdatamodeld in Sources */,
