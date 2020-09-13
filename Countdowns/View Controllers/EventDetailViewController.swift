@@ -8,10 +8,16 @@
 
 import UIKit
 
-class EventDetailViewController: UIViewController {
 
-   // MARK: - Properties
-   var event: Event?
+protocol EventDetailViewModeling: AnyObject {
+   var event: Event { get }
+
+   var editViewModel: EditEventViewModeling { get }
+}
+
+
+class EventDetailViewController: UIViewController {
+   var viewModel: EventDetailViewModeling?
 
    // MARK: - Outlets
    @IBOutlet weak var nameLabel: UILabel!
@@ -28,7 +34,7 @@ class EventDetailViewController: UIViewController {
 
    /// Populate views with event data
    private func updateViews() {
-      guard let event = event else { return }
+      guard let event = viewModel?.event else { return }
       nameLabel.text = event.name
       tagsLabel.text = event.tagsText
       noteView.text = event.note
@@ -42,12 +48,12 @@ class EventDetailViewController: UIViewController {
    // MARK: - Navigation
 
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-      guard let editEventVC = segue.destination as? AddEditEventViewController,
-         let event = event, segue.identifier == .editEventSegue
+      guard
+         let editEventVC = segue.destination as? AddEditEventViewController,
+         segue.identifier == .editEventSegue,
+         let editVM = viewModel?.editViewModel
          else { return}
 
-      editEventVC.event = event
-      editEventVC.editEventDelegate = self
+      editEventVC.viewModel = .b(editVM)
    }
-
 }

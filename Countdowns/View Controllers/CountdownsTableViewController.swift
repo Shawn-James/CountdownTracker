@@ -14,8 +14,10 @@ protocol CountdownsViewModeling {
    var currentSort: EventSort { get }
    var currentFilter: EventFilter { get }
 
-   func editViewModel(for event: Event) -> EditEventViewModeling
+   func sortFilterViewModel() -> SortFilterViewModeling
    func addViewModel(didCreateEvent: @escaping (Event) -> Void) -> AddEventViewModeling
+   func detailViewModel(for event: Event) -> EventDetailViewModeling
+   func editViewModel(for event: Event) -> EditEventViewModeling
 
    func delete(_ event: Event)
 }
@@ -105,11 +107,11 @@ class CountdownsTableViewController: UITableViewController {
             let idx = tableView.indexPathForSelectedRow
             else { return }
          let event = viewModel.displayedEvents[idx.row]
-         eventDetailVC.event = event
+         eventDetailVC.viewModel = viewModel.detailViewModel(for: event)
       case String.sortFilterSegue:
          guard let sortFilterVC = segue.destination as? SortFilterViewController
             else { return }
-         sortFilterVC.viewModel = SortFilterViewModel(<#T##controller: EventController##EventController#>)
+         sortFilterVC.viewModel = viewModel.sortFilterViewModel()
       default: break
       }
    }

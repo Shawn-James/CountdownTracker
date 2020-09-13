@@ -35,11 +35,13 @@ class AddEventViewModel: AddEventViewModeling {
    }
 }
 
-class EditEventViewModel: EditEventViewModeling {
+class EditEventViewModel: EditEventViewModeling, EventDetailViewModeling {
    let tags: [Tag]
 
    var event: Event
    lazy var hasCustomTime: Bool = event.hasTime
+
+   var editViewModel: EditEventViewModeling { self }
 
    private let controller: EventController
 
