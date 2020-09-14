@@ -9,32 +9,6 @@
 import Foundation
 
 
-protocol CountdownsViewModeling {
-   var displayedEvents: [Event] { get }
-   
-   var isViewingArchive: Bool { get set }
-   var isFiltering: Bool { get }
-//   var currentSort: EventSortDescriptor { get }
-//   var currentFilter: EventFilterDescriptor { get }
-
-   var eventDidEnd: (Event) -> Void { get set }
-
-   var delegate: FetchDelegate? { get set }
-
-   func sortFilterViewModel() -> SortFilterViewModeling
-   func eventViewModel(
-      _ event: Event)
-      -> EventViewModeling
-   func addViewModel(
-      didCreateEvent: @escaping (Event) -> Void)
-      -> AddEventViewModeling
-   func detailViewModel(for event: Event) -> EventDetailViewModeling
-   func editViewModel(for event: Event) -> EditEventViewModeling
-
-   func delete(_ event: Event) throws
-}
-
-
 class CountdownsViewModel: CountdownsViewModeling {
    var displayedEvents: [Event] { eventController.events }
 
@@ -69,7 +43,7 @@ class CountdownsViewModel: CountdownsViewModeling {
    }
 
    func addViewModel(didCreateEvent: @escaping (Event) -> Void) -> AddEventViewModeling {
-      AddEventViewModel(eventController: eventController)
+      AddEventViewModel(eventController: eventController, didCreateEvent: didCreateEvent)
    }
 
    func detailViewModel(for event: Event) -> EventDetailViewModeling {
@@ -78,6 +52,10 @@ class CountdownsViewModel: CountdownsViewModeling {
 
    func editViewModel(for event: Event) -> EditEventViewModeling {
       EventViewModel(event, controller: eventController, countdownDidEnd: eventDidEnd)
+   }
+
+   func archive(_ event: Event) throws {
+      try eventController.archiveEvent(event)
    }
 
    func delete(_ event: Event) throws {

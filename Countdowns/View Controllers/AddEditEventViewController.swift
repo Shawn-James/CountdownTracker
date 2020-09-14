@@ -9,6 +9,8 @@
 import UIKit
 
 
+// MARK: - View Models
+
 protocol AddOrEditEventViewModeling: AnyObject {
    var tags: [Tag] { get }
 
@@ -26,31 +28,6 @@ protocol AddEventViewModeling: AddOrEditEventViewModeling {}
 
 protocol EditEventViewModeling: AddOrEditEventViewModeling {
    var event: Event { get }
-}
-
-class AddEventViewModel: AddEventViewModeling {
-   var newName: String = ""
-   var newDateTime: Date = Date()
-   var newNote: String = ""
-   var newTagText: String = ""
-   var hasCustomTime: Bool = false
-
-   var tags: [Tag] { (try? eventController.fetchTags(.all)) ?? [] }
-
-   private let eventController: EventController
-
-   init(eventController: EventController) {
-      self.eventController = eventController
-   }
-
-   func saveEvent() throws {
-      try eventController.createEvent(
-         withName: newName,
-         dateTime: newDateTime,
-         tags: eventController.parseTags(from: newTagText),
-         note: newNote,
-         hasTime: hasCustomTime)
-   }
 }
 
 
@@ -74,11 +51,11 @@ extension Either where A == AddEventViewModeling, B == EditEventViewModeling {
    var isEditing: Bool { !isAdding }
 }
 
+// MARK: - View Controller
+
 class AddEditEventViewController: UIViewController {
 
    var viewModel: Either<AddEventViewModeling, EditEventViewModeling>!
-
-   // MARK: - Outlets
 
    @IBOutlet weak var sceneTitleLabel: UILabel!
    @IBOutlet weak var viewSegmentedControl: UISegmentedControl!

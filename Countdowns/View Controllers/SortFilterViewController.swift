@@ -10,31 +10,14 @@ import UIKit
 import Combine
 
 
-protocol SortFilterViewModeling: AnyObject {
+protocol SortFilterViewModeling {
    var tags: [Tag] { get }
+
+   var didChange: (() -> Void)? { get set }
+   var didFinish: (() -> Void)? { get set }
 
    var currentSort: EventSortDescriptor { get set }
    var currentFilter: EventFilterDescriptor { get set }
-}
-
-
-class SortFilterViewModel: SortFilterViewModeling {
-   var tags: [Tag] { (try? controller.fetchTags(.all)) ?? [] }
-
-   var currentSort: EventSortDescriptor {
-      get { controller.currentSortStyle }
-      set { controller.currentSortStyle = newValue }
-   }
-   var currentFilter: EventFilterDescriptor {
-      get { controller.currentFilter }
-      set { controller.currentFilter = newValue }
-   }
-
-   private let controller: EventController
-
-   init(_ controller: EventController) {
-      self.controller = controller
-   }
 }
 
 
@@ -45,8 +28,6 @@ class SortFilterViewController: UIViewController {
    private lazy var filterDelegate = FilterPickerDelegate(viewModel)
    private lazy var tagDelegate = TagFilterPickerDelegate(viewModel)
 
-   // MARK: - Outlets
-
    @IBOutlet private weak var sortPicker: UIPickerView!
    @IBOutlet private weak var filterPicker: UIPickerView!
    @IBOutlet private weak var tagPicker: UIPickerView!
@@ -56,6 +37,10 @@ class SortFilterViewController: UIViewController {
 
    override func viewDidLoad() {
       super.viewDidLoad()
+
+      viewModel.didChange = { [unowned self] in
+         self.showHideFilterComponents(for: self.viewModel.currentFilter)
+      }
 
       // set picker delegates & reload data
 
@@ -70,6 +55,11 @@ class SortFilterViewController: UIViewController {
       resetPickerSelections()
 
       showHideFilterComponents(for: viewModel.currentFilter)
+   }
+
+   override func viewWillDisappear(_ animated: Bool) {
+      super.viewWillDisappear(animated)
+      viewModel.didFinish?()
    }
 
    // MARK: - Methods

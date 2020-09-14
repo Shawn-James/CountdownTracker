@@ -11,8 +11,6 @@ import UserNotifications
 
 class NotificationsHelper {
 
-   // MARK: - Singleton
-
    private static var _shared: NotificationsHelper?
 
    static var shared: NotificationsHelper {
@@ -23,8 +21,6 @@ class NotificationsHelper {
       }
    }
 
-   // MARK: - Properties
-
    var notificationsAllowed: Bool {
       get {
          return UserDefaults.standard.bool(forKey: .notificationsAllowed)
@@ -33,8 +29,6 @@ class NotificationsHelper {
          UserDefaults.standard.set(didAllow, forKey: .notificationsAllowed)
       }
    }
-
-   // MARK: - Methods
 
    /// Send a notification to the user Notifications Center for future delivery using the event's uuid string.
    func setNotification(for event: Event) {
@@ -61,7 +55,7 @@ class NotificationsHelper {
                repeats: false)
 
             let request = UNNotificationRequest(
-               identifier: event.uuid,
+               identifier: event.uuid.uuidString,
                content: content,
                trigger: trigger)
 
@@ -77,6 +71,6 @@ class NotificationsHelper {
    /// Cancels a pending notification using the event's uuid string.
    func cancelNotification(for event: Event) {
       UNUserNotificationCenter.current()
-         .removePendingNotificationRequests(withIdentifiers: [event.uuid])
+         .removePendingNotificationRequests(withIdentifiers: [event.uuid.uuidString])
    }
 }

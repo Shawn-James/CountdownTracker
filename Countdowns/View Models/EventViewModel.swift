@@ -75,3 +75,36 @@ class EventViewModel: EventViewModeling, EditEventViewModeling, EventDetailViewM
       updateViewsFromEvent?(event)
    }
 }
+
+// MARK: - Add EVent
+
+class AddEventViewModel: AddEventViewModeling {
+   var newName: String = ""
+   var newDateTime: Date = Date()
+   var newNote: String = ""
+   var newTagText: String = ""
+   var hasCustomTime: Bool = false
+
+   var tags: [Tag] { (try? eventController.fetchTags(.all)) ?? [] }
+
+   private var didCreateEvent: (Event) -> Void
+
+   private let eventController: EventController
+
+   init(eventController: EventController,
+        didCreateEvent: @escaping (Event) -> Void
+   ) {
+      self.eventController = eventController
+      self.didCreateEvent = didCreateEvent
+   }
+
+   func saveEvent() throws {
+      let event = try eventController.createEvent(
+         withName: newName,
+         dateTime: newDateTime,
+         tags: eventController.parseTags(from: newTagText),
+         note: newNote,
+         hasTime: hasCustomTime)
+      didCreateEvent(event)
+   }
+}

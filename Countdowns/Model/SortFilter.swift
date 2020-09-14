@@ -138,15 +138,11 @@ struct EventFilterDescriptor: Hashable {
    }
 
    var nsPredicate: NSPredicate {
-      let archivePredicate = NSPredicate(format: "archived == %b", archived)
-      if let categoryPredicate = option.nsPredicate {
-         return NSCompoundPredicate(andPredicateWithSubpredicates: [
-            categoryPredicate,
-            archivePredicate
-         ])
-      } else {
-         return archivePredicate
-      }
+      let archivePredicate = NSPredicate(format: "archived == \(archived)")
+      return NSCompoundPredicate(andPredicateWithSubpredicates: [
+         option.nsPredicate,
+         archivePredicate
+      ])
    }
 
    static let unarchived: Self = EventFilterDescriptor(.all, archived: false)
@@ -179,10 +175,10 @@ extension EventFilterDescriptor {
          Self.filter(self)
       }
 
-      var nsPredicate: NSPredicate? {
+      var nsPredicate: NSPredicate {
          switch self {
          case .all:
-            return nil
+            return NSPredicate(value: true)
          case let .date(date, endIsBefore):
             let predicateString: String = endIsBefore ? "dateTime < %@" : "dateTime > %@"
             return NSPredicate(format: predicateString, date as CVarArg)

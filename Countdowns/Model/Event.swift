@@ -11,7 +11,7 @@ import CoreData
 
 class Event: NSManagedObject {
    // MARK: - Properties
-   @NSManaged var uuid: String
+   @NSManaged var uuid: UUID
    @NSManaged var name: String
    @NSManaged var dateTime: Date
    @NSManaged var nsmanagedTags: NSMutableSet
@@ -22,6 +22,10 @@ class Event: NSManagedObject {
 
    @NSManaged var didNotifyDone: Bool
    @NSManaged var archived: Bool
+
+   override var description: String {
+      "\"\(name)\" (\(uuid)) (\(objectID))"
+   }
 
    convenience init(
       name: String,
@@ -40,7 +44,7 @@ class Event: NSManagedObject {
       self.hasTime = hasTime
       self.creationDate = Date()
       self.modifiedDate = creationDate
-      self.uuid = UUID().uuidString
+      self.uuid = UUID()
       self.didNotifyDone = false
       self.archived = false
    }
@@ -83,20 +87,5 @@ extension Event {
 
    func isTaggedWith(tagWithID tagID: UUID) -> Bool {
       nsmanagedTags.contains(where: { ($0 as! Tag).uuid == tagID })
-   }
-}
-
-extension Event {
-   /// Remove the event from the active event list, add it to an archive list, and save both the active and archive lists.
-   func archive() throws {
-      let moc = try getContext()
-      moc.performAndWait { self.archived = true }
-   }
-
-   func delete() throws {
-      let moc = try getContext()
-      moc.performAndWait {
-         moc.delete(self)
-      }
    }
 }

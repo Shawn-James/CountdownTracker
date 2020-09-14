@@ -58,6 +58,14 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
          viewModel.currentSort.property = property
       }
    }
+
+   func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+      if component == 0 {
+         return pickerView.intrinsicContentSize.width * 0.15
+      } else {
+         return pickerView.intrinsicContentSize.width * 0.85
+      }
+   }
 }
 
 // MARK: - Filter

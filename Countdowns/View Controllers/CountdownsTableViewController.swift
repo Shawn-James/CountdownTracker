@@ -9,6 +9,33 @@
 import UIKit
 
 
+protocol CountdownsViewModeling {
+   var displayedEvents: [Event] { get }
+
+   var isViewingArchive: Bool { get set }
+   var isFiltering: Bool { get }
+   //   var currentSort: EventSortDescriptor { get }
+   //   var currentFilter: EventFilterDescriptor { get }
+
+   var eventDidEnd: (Event) -> Void { get set }
+
+   var delegate: FetchDelegate? { get set }
+
+   func sortFilterViewModel() -> SortFilterViewModeling
+   func eventViewModel(
+      _ event: Event)
+      -> EventViewModeling
+   func addViewModel(
+      didCreateEvent: @escaping (Event) -> Void)
+      -> AddEventViewModeling
+   func detailViewModel(for event: Event) -> EventDetailViewModeling
+   func editViewModel(for event: Event) -> EditEventViewModeling
+
+   func archive(_ event: Event) throws
+   func delete(_ event: Event) throws
+}
+
+
 class CountdownsTableViewController: UITableViewController {
    typealias DataSource = UITableViewDiffableDataSource<Int, Event>
 
@@ -25,6 +52,7 @@ class CountdownsTableViewController: UITableViewController {
 
    override func viewDidLoad() {
       super.viewDidLoad()
+      tableView.dataSource = dataSource
       self.navigationItem.rightBarButtonItems?.append(self.editButtonItem)
    }
 
@@ -42,7 +70,11 @@ class CountdownsTableViewController: UITableViewController {
             else { return }
 
          addEventVC.viewModel = .a(viewModel.addViewModel(
-            didCreateEvent: { [weak self] in self?.selectRow(for: $0) }))
+            didCreateEvent: { [weak self] newEvent in
+               self?.dismiss(animated: true, completion: {
+                  self?.selectRow(for: newEvent)
+               })
+         }))
       case String.editEventSegue:
          guard
             let editEventVC = segue.destination as? AddEditEventViewController,
@@ -62,6 +94,7 @@ class CountdownsTableViewController: UITableViewController {
          guard let sortFilterVC = segue.destination as? SortFilterViewController
             else { return }
          sortFilterVC.viewModel = viewModel.sortFilterViewModel()
+         sortFilterVC.viewModel.didFinish = { [weak self] in self?.updateViews() }
       default: break
       }
    }
@@ -117,6 +150,11 @@ class CountdownsTableViewController: UITableViewController {
       )
       alert.addAction(UIAlertAction(title: "OK", style: .default) { alert in
          event.didNotifyDone = true
+         do {
+            try self.viewModel.archive(event)
+         } catch {
+            NSLog("Error archiving event \(event): \(error)")
+         }
       })
 
       present(alert, animated: true, completion: nil)
@@ -155,10 +193,10 @@ class CountdownsTableViewController: UITableViewController {
       archiveButton.image = UIImage(systemName: viewModel.isViewingArchive ? .archiveImageActive : .archiveImageInactive)
    }
 
-
    private func selectRow(for event: Event) {
       guard let index = viewModel.displayedEvents.firstIndex(of: event) else { return }
       let indexPath = IndexPath(row: index, section: 0)
-      tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
+      tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
+      tableView.deselectRow(at: indexPath, animated: true)
    }
 }

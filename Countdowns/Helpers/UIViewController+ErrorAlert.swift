@@ -42,12 +42,12 @@ extension UIViewController {
             if (presentedVC as? UIAlertController) != nil {
                 return NSLog("Error while alerted:\n\(errorMessage)")
             } else {
-                presentedVC.presentAlert(for: errorMessage,
-                                         actions: actions,
-                                         animated: animated,
-                                         onComplete: onComplete)
+                return presentedVC.presentAlert(
+                  for: errorMessage,
+                  actions: actions,
+                  animated: animated,
+                  onComplete: onComplete)
             }
-            return
         }
         if let error = errorMessage.error {
             NSLog("An error occurred: \(error)")

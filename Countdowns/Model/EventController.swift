@@ -35,15 +35,12 @@ class EventController {
    }
 
    weak var delegate: FetchDelegate? {
-      didSet { activeEventFetcher.delegate = delegate as? NSFetchedResultsControllerDelegate }
+      didSet { resetFetchControllerDelegate() }
    }
 
    private var activeEventFetcher: NSFetchedResultsController<Event> {
       willSet { activeEventFetcher.delegate = nil }
-      didSet {
-         activeEventFetcher.delegate = delegate as? NSFetchedResultsControllerDelegate
-         try? activeEventFetcher.performFetch()
-      }
+      didSet { resetFetchControllerDelegate() }
    }
 
    private var eventFetchers: [Event.FetchDescriptor: NSFetchedResultsController<Event>] = [:]
@@ -132,6 +129,15 @@ class EventController {
       NotificationsHelper.shared.setNotification(for: event)
    }
 
+   func archiveEvent(_ event: Event) throws {
+      let moc = try event.getContext()
+
+      moc.performAndWait {
+         event.archived = true
+      }
+      try coreDataStack.save(in: moc)
+   }
+
    func deleteEvent(_ event: Event) throws {
       let moc = try event.getContext()
 
@@ -154,5 +160,14 @@ class EventController {
 
    private func tagForName(_ tagName: String) throws -> Tag {
       try fetchTags(.name(tagName)).first ?? (try createTag(tagName))
+   }
+
+   private func resetFetchControllerDelegate() {
+      activeEventFetcher.delegate = delegate as? NSFetchedResultsControllerDelegate
+      do {
+         try activeEventFetcher.performFetch()
+      } catch {
+         print(error)
+      }
    }
 }

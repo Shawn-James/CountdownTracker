@@ -30,6 +30,7 @@ class CountdownsDataSource: UITableViewDiffableDataSource<Int, Event> {
          cell?.configure(with: viewModel.eventViewModel(event), indexPath: idx)
          return cell
       }
+      self.viewModel.delegate = self
    }
 
    func updateSnapshot() {
@@ -38,11 +39,31 @@ class CountdownsDataSource: UITableViewDiffableDataSource<Int, Event> {
       snapshot.appendItems(viewModel.displayedEvents)
       apply(snapshot)
    }
+
+   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+      true
+   }
+
+   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+      switch editingStyle {
+      case .delete:
+         guard let event = itemIdentifier(for: indexPath) else {
+            return NSLog("attempted to delete event at improper index path")
+         }
+         do {
+            try viewModel.delete(event)
+         } catch {
+            NSLog("Error while attempting to delete event '\(event.name)' (\(event.uuid)): \(error)")
+         }
+      default:
+         break
+      }
+   }
 }
 
-extension CountdownsDataSource: NSFetchedResultsControllerDelegate {
+extension CountdownsDataSource: NSFetchedResultsControllerDelegate, FetchDelegate {
    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-
+      updateSnapshot()
    }
 }
 

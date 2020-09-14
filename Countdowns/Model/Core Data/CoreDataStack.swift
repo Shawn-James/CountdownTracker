@@ -28,10 +28,14 @@ class CoreDataStack {
       for fetch: Object.FetchDescriptor,
       with context: NSManagedObjectContext? = nil
    ) -> NSFetchedResultsController<Object> {
-      NSFetchedResultsController(
-         fetchRequest: fetch.request(),
-         managedObjectContext: context ?? mainContext,
-         sectionNameKeyPath: nil,
+      let moc = context ?? mainContext
+      let request = fetch.request()
+      let section = fetch.sectionNameKeyPath
+      
+      return NSFetchedResultsController(
+         fetchRequest: request,
+         managedObjectContext: moc,
+         sectionNameKeyPath: section,
          cacheName: nil
       )
    }
