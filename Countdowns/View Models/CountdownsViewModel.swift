@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 
 class CountdownsViewModel: CountdownsViewModeling {
@@ -22,16 +23,25 @@ class CountdownsViewModel: CountdownsViewModeling {
    }
 
    var eventDidEnd: (Event) -> Void
+   var didEditEvent: (Event) -> Void
+   var didCreateEvent: (Event) -> Void
 
-   var delegate: FetchDelegate? {
+   var delegate: EventFetchDelegate? {
       get { eventController.delegate }
       set { eventController.delegate = newValue }
    }
 
    private let eventController = EventController()
 
-   init(eventDidEnd: @escaping (Event) -> Void) {
+   private var eventVMs: [Event: EventViewModel] = [:]
+
+   init(eventDidEnd: @escaping (Event) -> Void,
+        didEditEvent: @escaping (Event) -> Void,
+        didCreateEvent: @escaping (Event) -> Void
+   ) {
       self.eventDidEnd = eventDidEnd
+      self.didEditEvent = didEditEvent
+      self.didCreateEvent = didCreateEvent
    }
 
    func sortFilterViewModel() -> SortFilterViewModeling {
@@ -39,19 +49,31 @@ class CountdownsViewModel: CountdownsViewModeling {
    }
 
    func eventViewModel(_ event: Event) -> EventViewModeling {
-      EventViewModel(event, controller: eventController, countdownDidEnd: eventDidEnd)
+      eventVMs[event] ??= EventViewModel(
+         event,
+         controller: eventController,
+         didEditEvent: didEditEvent,
+         countdownDidEnd: eventDidEnd)
    }
 
-   func addViewModel(didCreateEvent: @escaping (Event) -> Void) -> AddEventViewModeling {
+   func addViewModel() -> AddEventViewModeling {
       AddEventViewModel(eventController: eventController, didCreateEvent: didCreateEvent)
    }
 
    func detailViewModel(for event: Event) -> EventDetailViewModeling {
-      EventViewModel(event, controller: eventController, countdownDidEnd: eventDidEnd)
+      eventVMs[event] ??= EventViewModel(
+         event,
+         controller: eventController,
+         didEditEvent: didEditEvent,
+         countdownDidEnd: eventDidEnd)
    }
 
    func editViewModel(for event: Event) -> EditEventViewModeling {
-      EventViewModel(event, controller: eventController, countdownDidEnd: eventDidEnd)
+      eventVMs[event] ??= EventViewModel(
+         event,
+         controller: eventController,
+         didEditEvent: didEditEvent,
+         countdownDidEnd: eventDidEnd)
    }
 
    func archive(_ event: Event) throws {

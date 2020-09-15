@@ -11,10 +11,12 @@ import Combine
 import CoreData
 
 
-class EventController {
-   var events: [Event] { activeEventFetcher.fetchedObjects ?? [] }
-
-   var viewingArchive: Bool = false
+class EventController: NSObject {
+   var events: [Event] = [] {
+      didSet {
+         delegate?.eventsDidChange(with: events)
+      }
+   }
 
    var currentSortStyle: EventSortDescriptor {
       get { currentFetchDescriptor.sortDescriptor }
@@ -34,8 +36,10 @@ class EventController {
       }
    }
 
-   weak var delegate: FetchDelegate? {
-      didSet { resetFetchControllerDelegate() }
+   weak var delegate: EventFetchDelegate? {
+      didSet {
+         resetFetchControllerDelegate()
+      }
    }
 
    private var activeEventFetcher: NSFetchedResultsController<Event> {
@@ -45,17 +49,24 @@ class EventController {
 
    private var eventFetchers: [Event.FetchDescriptor: NSFetchedResultsController<Event>] = [:]
 
-   private let coreDataStack = CoreDataStack()
-   private let settings = Settings()
+   private let coreDataStack: CoreDataStack
+   private let settings: Settings
 
-   init() {
+   override init() {
+      let settings = Settings()
+      self.settings = settings
       let fetch = Event.FetchDescriptor(
          sortDescriptor: settings.getCurrentSort(),
          filterDescriptor: (try? settings.getCurrentFilter())
             ?? EventFilterDescriptor())
-      currentFetchDescriptor = fetch
-      activeEventFetcher = eventFetchers[fetch]
-         ??= coreDataStack.fetchedResultsController(for: currentFetchDescriptor)
+      self.currentFetchDescriptor = fetch
+      let cdStack = CoreDataStack()
+      self.coreDataStack = cdStack
+      self.activeEventFetcher = cdStack.fetchedResultsController(for: currentFetchDescriptor)
+      self.eventFetchers[fetch] = activeEventFetcher
+      super.init()
+
+      resetFetchControllerDelegate()
    }
 
    // MARK: - Public Methods
@@ -123,6 +134,7 @@ class EventController {
          event.hasTime = hasTime
          event.modifiedDate = Date()
       }
+      try coreDataStack.save(in: moc)
 
       // update notification
       NotificationsHelper.shared.cancelNotification(for: event)
@@ -163,11 +175,24 @@ class EventController {
    }
 
    private func resetFetchControllerDelegate() {
-      activeEventFetcher.delegate = delegate as? NSFetchedResultsControllerDelegate
+      activeEventFetcher.delegate = self
       do {
          try activeEventFetcher.performFetch()
       } catch {
-         print(error)
+         print(error) // todo: handle error
+      }
+   }
+}
+
+extension EventController: NSFetchedResultsControllerDelegate {
+   func controller(
+      _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+      didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
+   ) {
+      if currentSortStyle.nsSortDescriptor() == nil {
+         events = activeEventFetcher.fetchedObjects?.sorted(by: currentSortStyle) ?? []
+      } else {
+         events = activeEventFetcher.fetchedObjects ?? []
       }
    }
 }

@@ -53,7 +53,7 @@ struct EventSortDescriptor: Hashable, CustomStringConvertible, RawRepresentable 
       }
    }
 
-   func nsSortDescriptor() -> NSSortDescriptor {
+   func nsSortDescriptor() -> NSSortDescriptor? {
       switch property {
       case .endDate:
          return NSSortDescriptor(keyPath: \Event.dateTime, ascending: ascending)
@@ -62,7 +62,9 @@ struct EventSortDescriptor: Hashable, CustomStringConvertible, RawRepresentable 
       case .modifiedDate:
          return NSSortDescriptor(keyPath: \Event.modifiedDate, ascending: ascending)
       case .numberOfTags:
-         return NSSortDescriptor(keyPath: \Event.tags.count, ascending: ascending)
+//         return NSSortDescriptor(key: "nsmanagedTags.@count", ascending: ascending)
+//         return NSSortDescriptor(keyPath: \Event.nsmanagedTags.count, ascending: ascending)
+         return nil // cannot be sorted with NSSortDescriptor; must be sorted after fetch
       }
    }
 
@@ -184,9 +186,9 @@ extension EventFilterDescriptor {
             return NSPredicate(format: predicateString, date as CVarArg)
          case .tag(let tagID):
             if let uuid = tagID {
-               return NSPredicate(format: "ANY tags.uuid == %@", uuid as CVarArg)
+               return NSPredicate(format: "ANY nsmanagedTags.uuid == %@", uuid as CVarArg)
             } else {
-               return NSPredicate(format: "tags.@count == 0")
+               return NSPredicate(format: "nsmanagedTags.@count == 0")
             }
          }
       }

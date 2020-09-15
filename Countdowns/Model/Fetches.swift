@@ -30,9 +30,17 @@ struct EventFetchDescriptor: CDFetchDescriptor, Hashable {
 
    func request() -> NSFetchRequest<Event> {
       let request = Event.fetchRequest() as! NSFetchRequest<Event>
-      request.sortDescriptors = [sortDescriptor.nsSortDescriptor()]
+      request.sortDescriptors = [sortDescriptor.nsSortDescriptor()
+         ?? NSSortDescriptor(keyPath: \Event.dateTime, ascending: true)]
       request.predicate = filterDescriptor.nsPredicate
       return request
+   }
+
+   func hash(into hasher: inout Hasher) {
+      // limit hash elements so when number of options doesn't get out of hand when using as dictionary key (eg with fetched results controller)
+      hasher.combine(sortDescriptor.rawValue)
+      hasher.combine(filterDescriptor.option.intValue)
+      hasher.combine(filterDescriptor.archived)
    }
 }
 

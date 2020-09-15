@@ -55,7 +55,7 @@ extension Event {
    var dateTimeHasPassed: Bool { Date() > dateTime }
 
    /// Time remaining until event date/time in `TimeInterval` format
-   var timeInterval: TimeInterval { dateTime.timeIntervalSinceNow }
+   var timeRemaining: TimeInterval { dateTime.timeIntervalSinceNow }
 
    // MARK: - Tags
 
@@ -67,10 +67,9 @@ extension Event {
 
    /// A string representation of the event's complete list of tags
    var tagsText: String {
-      nsmanagedTags.reduce(into: "") { text, tagAny in
-         if !text.isEmpty { text += ", " }
-         text += (tagAny as! Tag).name
-      }
+      tags.lazy
+         .map { $0.name }
+         .joined(separator: Character.tagSeparator + " ")
    }
 
    func addTag(_ tag: Tag) {

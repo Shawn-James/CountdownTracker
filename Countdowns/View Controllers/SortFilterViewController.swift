@@ -22,7 +22,14 @@ protocol SortFilterViewModeling {
 
 
 class SortFilterViewController: UIViewController {
-   var viewModel: SortFilterViewModeling!
+   var viewModel: SortFilterViewModeling! {
+      get { vmQueue.sync { _viewModel } }
+      set { vmQueue.sync { _viewModel = newValue } }
+   }
+
+   private var _viewModel: SortFilterViewModeling!
+
+   private let vmQueue = DispatchQueue.global()
 
    private lazy var sortDelegate = SortPickerDelegate(viewModel)
    private lazy var filterDelegate = FilterPickerDelegate(viewModel)
@@ -54,6 +61,8 @@ class SortFilterViewController: UIViewController {
 
       resetPickerSelections()
 
+      datePicker.addTarget(self, action: #selector(filterDateDidChange(_:)), for: .valueChanged)
+
       showHideFilterComponents(for: viewModel.currentFilter)
    }
 
@@ -62,7 +71,11 @@ class SortFilterViewController: UIViewController {
       viewModel.didFinish?()
    }
 
-   // MARK: - Methods
+   // MARK: - Private
+
+   @objc private func filterDateDidChange(_ sender: Any?) {
+      viewModel.currentFilter.option.date = datePicker.date
+   }
 
    /// Set current picker selections from current saved setting.
    private func resetPickerSelections() {
@@ -76,7 +89,11 @@ class SortFilterViewController: UIViewController {
          animated: false)
 
       if case .tag(let tagID) = viewModel.currentFilter.option {
-         let tagIdx = viewModel.tags.firstIndex(where: { $0.uuid == tagID }) ?? 0
+         let tagIdx: Int = {
+            if let idx = viewModel.tags.firstIndex(where: { $0.uuid == tagID }) {
+               return idx + 1
+            } else { return 0 }
+         }()
          tagPicker.selectRow(tagIdx, inComponent: 0, animated: false)
       }
 

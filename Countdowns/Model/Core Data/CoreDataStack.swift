@@ -24,22 +24,6 @@ class CoreDataStack {
 
    var mainContext: NSManagedObjectContext { container.viewContext }
 
-   func fetchedResultsController<Object: CDFetchable>(
-      for fetch: Object.FetchDescriptor,
-      with context: NSManagedObjectContext? = nil
-   ) -> NSFetchedResultsController<Object> {
-      let moc = context ?? mainContext
-      let request = fetch.request()
-      let section = fetch.sectionNameKeyPath
-      
-      return NSFetchedResultsController(
-         fetchRequest: request,
-         managedObjectContext: moc,
-         sectionNameKeyPath: section,
-         cacheName: nil
-      )
-   }
-
    init() {}
 
    func fetch<Object: CDFetchable>(
@@ -49,6 +33,22 @@ class CoreDataStack {
       let moc = context ?? mainContext
 
       return try moc.fetch(descriptor.request())
+   }
+
+   func fetchedResultsController<Object: CDFetchable>(
+      for fetch: Object.FetchDescriptor,
+      with context: NSManagedObjectContext? = nil
+   ) -> NSFetchedResultsController<Object> {
+      let moc = context ?? mainContext
+      let request = fetch.request()
+      let section = fetch.sectionNameKeyPath
+
+      return NSFetchedResultsController(
+         fetchRequest: request,
+         managedObjectContext: moc,
+         sectionNameKeyPath: section,
+         cacheName: nil
+      )
    }
 
    func save(in context: NSManagedObjectContext? = nil) throws {

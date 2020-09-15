@@ -49,7 +49,7 @@
 		990C3A3B250DA26A00ACDE78 /* EventViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewModel.swift; sourceTree = "<group>"; };
 		990C3A3D250E9D0500ACDE78 /* UIViewController+ErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ErrorAlert.swift"; sourceTree = "<group>"; };
 		990C3A3F250E9D2100ACDE78 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
-		990C3A41250E9EDD00ACDE78 /* CountdownsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CountdownsDataSource.swift; path = "Countdowns/View Models/CountdownsDataSource.swift"; sourceTree = SOURCE_ROOT; };
+		990C3A41250E9EDD00ACDE78 /* CountdownsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CountdownsDataSource.swift; path = "Countdowns/Views & View Helpers/CountdownsDataSource.swift"; sourceTree = SOURCE_ROOT; };
 		990C3A43250ECCF400ACDE78 /* CountdownsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownsViewModel.swift; sourceTree = "<group>"; };
 		990C3A45250EFB8E00ACDE78 /* SortFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortFilterViewModel.swift; sourceTree = "<group>"; };
 		990EC94324D338F200E41409 /* Countdowns.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Countdowns.xcdatamodel; sourceTree = "<group>"; };
@@ -96,7 +96,6 @@
 			children = (
 				990C3A43250ECCF400ACDE78 /* CountdownsViewModel.swift */,
 				990C3A3B250DA26A00ACDE78 /* EventViewModel.swift */,
-				990C3A41250E9EDD00ACDE78 /* CountdownsDataSource.swift */,
 				990C3A45250EFB8E00ACDE78 /* SortFilterViewModel.swift */,
 			);
 			path = "View Models";
@@ -107,6 +106,7 @@
 			children = (
 				990EC94224D338F200E41409 /* Countdowns.xcdatamodeld */,
 				990EC94724D33A8600E41409 /* CoreDataStack.swift */,
+				990C3A36250D843400ACDE78 /* Persistence.swift */,
 				990EC94524D33A7D00E41409 /* CoreDataMigrationManager.swift */,
 			);
 			path = "Core Data";
@@ -135,7 +135,7 @@
 			children = (
 				990C3A3A250DA24F00ACDE78 /* View Models */,
 				9972B509235E0A320015E56B /* View Controllers */,
-				9972B50C235E0A4B0015E56B /* Views */,
+				9972B50C235E0A4B0015E56B /* Views & View Helpers */,
 				99EF7D0F235E16A60092F4AB /* Model */,
 				9972B511235E0AD60015E56B /* Helpers */,
 				9942FF24238EED87005520B6 /* Storyboards */,
@@ -175,13 +175,14 @@
 			path = "View Controllers";
 			sourceTree = "<group>";
 		};
-		9972B50C235E0A4B0015E56B /* Views */ = {
+		9972B50C235E0A4B0015E56B /* Views & View Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				9972B50A235E0A480015E56B /* CountdownTableViewCell.swift */,
+				990C3A41250E9EDD00ACDE78 /* CountdownsDataSource.swift */,
 				99480AE0235FA13300DC1D48 /* PickerDelegates.swift */,
 			);
-			path = Views;
+			path = "Views & View Helpers";
 			sourceTree = "<group>";
 		};
 		9972B511235E0AD60015E56B /* Helpers */ = {
@@ -202,12 +203,11 @@
 		99EF7D0F235E16A60092F4AB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				99EF7D13235E18EA0092F4AB /* EventController.swift */,
 				99EF7D11235E18DE0092F4AB /* Event.swift */,
 				99480ADC235F767700DC1D48 /* Tag.swift */,
-				99EF7D13235E18EA0092F4AB /* EventController.swift */,
 				990EC94B24D34BD100E41409 /* SortFilter.swift */,
 				99CE3DE0250BC9390039E3FC /* Fetches.swift */,
-				990C3A36250D843400ACDE78 /* Persistence.swift */,
 				990C3A38250D861200ACDE78 /* Settings.swift */,
 				990EC94D24D3526A00E41409 /* Core Data */,
 			);

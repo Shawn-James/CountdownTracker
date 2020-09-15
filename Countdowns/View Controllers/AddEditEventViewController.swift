@@ -12,7 +12,7 @@ import UIKit
 // MARK: - View Models
 
 protocol AddOrEditEventViewModeling: AnyObject {
-   var tags: [Tag] { get }
+   var allTags: [Tag] { get }
 
    var newName: String { get set }
    var newDateTime: Date { get set }
@@ -53,11 +53,12 @@ extension Either where A == AddEventViewModeling, B == EditEventViewModeling {
 
 // MARK: - View Controller
 
-class AddEditEventViewController: UIViewController {
+class AddEditEventViewController: UIViewController, UITextViewDelegate {
 
    var viewModel: Either<AddEventViewModeling, EditEventViewModeling>!
 
-   @IBOutlet weak var sceneTitleLabel: UILabel!
+   var didFinishEditing: (() -> Void)?
+
    @IBOutlet weak var viewSegmentedControl: UISegmentedControl!
    @IBOutlet weak var eventNameField: UITextField!
    @IBOutlet weak var dateLabel: UILabel!
@@ -81,11 +82,25 @@ class AddEditEventViewController: UIViewController {
       }
 
       eventNameField.addTarget(self, action: #selector(nameDidChange(_:)), for: .editingChanged)
+      tagsField.addTarget(self, action: #selector(tagTextDidChange(_:)), for: .editingChanged)
+      configure(notesTextView!) {
+         $0.delegate = self
+         $0.layer.borderColor = UIColor.systemGray.cgColor
+         $0.layer.borderWidth = 0.5
+         $0.layer.cornerRadius = 5
+         $0.layer.cornerCurve = .continuous
+         $0.font = .preferredFont(forTextStyle: .body)
+      }
    }
 
    override func viewDidAppear(_ animated: Bool) {
       super.viewDidAppear(animated)
       eventNameField.becomeFirstResponder()
+   }
+
+   override func viewWillDisappear(_ animated: Bool) {
+      super.viewWillDisappear(animated)
+      didFinishEditing?()
    }
 
    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -99,7 +114,12 @@ class AddEditEventViewController: UIViewController {
       viewModel.addOrEdit.newName = eventNameField.text ?? ""
    }
 
-   @objc private func noteDidChange(_ sender: Any?) {
+   @objc private func tagTextDidChange(_ sender: Any?) {
+      viewModel.addOrEdit.newTagText = tagsField.text ?? ""
+   }
+
+   func textViewDidChange(_ textView: UITextView) {
+      guard textView == notesTextView else { return }
       viewModel.addOrEdit.newNote = notesTextView.text
    }
 
@@ -138,6 +158,7 @@ class AddEditEventViewController: UIViewController {
       setTimePickerHidden()
       view.endEditing(true)
       updatePickersMinMax()
+      viewModel.addOrEdit.newDateTime = getEventDateFromPickers()
    }
 
    @IBAction func saveButtonTapped(_ sender: UIButton) {
@@ -156,10 +177,12 @@ class AddEditEventViewController: UIViewController {
    @IBAction func datePickerChanged(_ sender: UIDatePicker) {
       view.endEditing(true)
       updatePickersMinMax()
+      viewModel.addOrEdit.newDateTime = getEventDateFromPickers()
    }
 
    @IBAction func timePickerTouched(_ sender: UIDatePicker) {
       view.endEditing(true)
+      viewModel.addOrEdit.newDateTime = getEventDateFromPickers()
    }
 
    // MARK: - Private Methods
@@ -183,7 +206,7 @@ class AddEditEventViewController: UIViewController {
             hour: time.hour,
             minute: time.minute)
          guard let dateFromComponents = dateComponents.date
-            else { return Date() }
+            else { fatalError() }
 
          return dateFromComponents
       }
@@ -212,7 +235,7 @@ class AddEditEventViewController: UIViewController {
          hour: eventDateTimeComponents.hour,
          minute: eventDateTimeComponents.minute)
 
-      sceneTitleLabel.text = "Edit event"
+      navigationItem.title = "Edit event"
       eventNameField.text = event.name
       datePicker.date = event.dateTime
       timePicker.date = timePickerMinComponents.date ?? event.dateTime

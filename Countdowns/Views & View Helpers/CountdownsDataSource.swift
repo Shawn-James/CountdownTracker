@@ -17,10 +17,16 @@ class CountdownsDataSource: UITableViewDiffableDataSource<Int, Event> {
    /// If closure is nil, event will be deleted.
    var didConfirmDelete: ((Event) -> Bool)?
 
-   var viewModel: CountdownsViewModeling
+   var viewModel: CountdownsViewModeling {
+      get { viewModelQueue.sync { _viewModel } }
+      set { viewModelQueue.sync { _viewModel = newValue } }
+   }
+   var _viewModel: CountdownsViewModeling
+
+   private let viewModelQueue = DispatchQueue.global()
 
    init(viewModel: CountdownsViewModeling, tableView: UITableView) {
-      self.viewModel = viewModel
+      self._viewModel = viewModel
 
       super.init(tableView: tableView) { tv, idx, event -> UITableViewCell? in
          let cell = tv.dequeueReusableCell(
@@ -33,10 +39,10 @@ class CountdownsDataSource: UITableViewDiffableDataSource<Int, Event> {
       self.viewModel.delegate = self
    }
 
-   func updateSnapshot() {
+   func updateSnapshot(for events: [Event]) {
       var snapshot = Snapshot()
       snapshot.appendSections([0])
-      snapshot.appendItems(viewModel.displayedEvents)
+      snapshot.appendItems(events, toSection: 0)
       apply(snapshot)
    }
 
@@ -61,9 +67,9 @@ class CountdownsDataSource: UITableViewDiffableDataSource<Int, Event> {
    }
 }
 
-extension CountdownsDataSource: NSFetchedResultsControllerDelegate, FetchDelegate {
-   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-      updateSnapshot()
+extension CountdownsDataSource: EventFetchDelegate {
+   func eventsDidChange(with events: [Event]) {
+      updateSnapshot(for: events)
    }
 }
 

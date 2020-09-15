@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 
 protocol CountdownsViewModeling {
@@ -14,20 +15,14 @@ protocol CountdownsViewModeling {
 
    var isViewingArchive: Bool { get set }
    var isFiltering: Bool { get }
-   //   var currentSort: EventSortDescriptor { get }
-   //   var currentFilter: EventFilterDescriptor { get }
 
    var eventDidEnd: (Event) -> Void { get set }
 
-   var delegate: FetchDelegate? { get set }
+   var delegate: EventFetchDelegate? { get set }
 
    func sortFilterViewModel() -> SortFilterViewModeling
-   func eventViewModel(
-      _ event: Event)
-      -> EventViewModeling
-   func addViewModel(
-      didCreateEvent: @escaping (Event) -> Void)
-      -> AddEventViewModeling
+   func eventViewModel(_ event: Event) -> EventViewModeling
+   func addViewModel() -> AddEventViewModeling
    func detailViewModel(for event: Event) -> EventDetailViewModeling
    func editViewModel(for event: Event) -> EditEventViewModeling
 
@@ -39,9 +34,16 @@ protocol CountdownsViewModeling {
 class CountdownsTableViewController: UITableViewController {
    typealias DataSource = UITableViewDiffableDataSource<Int, Event>
 
-   lazy var viewModel: CountdownsViewModeling = CountdownsViewModel { [weak self] in
-      self?.alertForCountdownEnd(for: $0)
-   }
+   lazy var viewModel: CountdownsViewModeling = CountdownsViewModel(
+      eventDidEnd: { [weak self] in self?.alertForCountdownEnd(for: $0) },
+      didEditEvent: { [weak self] editedEvent in
+         self?.navigationController?.dismiss(animated: true, completion: nil)
+      },
+      didCreateEvent: { [weak self] newEvent in
+         self?.dismiss(animated: true, completion: {
+            self?.selectRow(for: newEvent)
+         })
+   })
    lazy var dataSource = CountdownsDataSource(viewModel: viewModel, tableView: tableView)
 
    @IBOutlet weak var sortButton: UIBarButtonItem!
@@ -61,23 +63,51 @@ class CountdownsTableViewController: UITableViewController {
       updateViews()
    }
 
+   /// Updates all cells (showing alerts for and removing events that have passed), reloads all table data, and colors the filter button as needed if the table is currently being filtered.
+   func updateViews() {
+      if let indexPath = tableView.indexPathForSelectedRow {
+         tableView.deselectRow(at: indexPath, animated: true)
+      }
+      alertAndArchiveFinishedCountdowns()
+      tableView.reloadData()
+
+      // mode label
+      var text = ""
+      currentModeLabel.isHidden = false
+
+      switch (viewModel.isFiltering, viewModel.isViewingArchive) {
+      case (true, true):
+         text = "Filtering Archive"
+      case (true, false):
+         text = "Filtering"
+      case (false, true):
+         text = "Viewing Archive"
+      case (false, false):
+         currentModeLabel.isHidden = true
+      }
+      currentModeLabel.text = text.uppercased()
+
+      // sort/archive buttons
+      sortButton.tintColor = viewModel.isFiltering ? .systemRed : .systemBlue
+      sortButton.image = UIImage(systemName: viewModel.isFiltering ? .sortImageActive : .sortImageInactive)
+      archiveButton.tintColor = viewModel.isViewingArchive ? .systemRed : .systemBlue
+      archiveButton.image = UIImage(systemName: viewModel.isViewingArchive ? .archiveImageActive : .archiveImageInactive)
+   }
+
    // MARK: - Navigation
 
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       switch segue.identifier {
       case String.addEventSegue:
-         guard let addEventVC = segue.destination as? AddEditEventViewController
+         guard let nav = segue.destination as? UINavigationController,
+            let addEventVC = nav.viewControllers.first as? AddEditEventViewController
             else { return }
 
-         addEventVC.viewModel = .a(viewModel.addViewModel(
-            didCreateEvent: { [weak self] newEvent in
-               self?.dismiss(animated: true, completion: {
-                  self?.selectRow(for: newEvent)
-               })
-         }))
+         addEventVC.viewModel = .a(viewModel.addViewModel())
       case String.editEventSegue:
          guard
-            let editEventVC = segue.destination as? AddEditEventViewController,
+            let nav = segue.destination as? UINavigationController,
+            let editEventVC = nav.viewControllers.first as? AddEditEventViewController,
             let idx = tableView.indexPathForSelectedRow,
             let event = dataSource.itemIdentifier(for: idx)
             else { return }
@@ -101,7 +131,7 @@ class CountdownsTableViewController: UITableViewController {
 
    // MARK: - Private Methods
 
-   @IBAction func archiveButtonTapped(_ sender: UIBarButtonItem) {
+   @IBAction private func archiveButtonTapped(_ sender: UIBarButtonItem) {
       viewModel.isViewingArchive.toggle()
       updateViews()
    }
@@ -158,39 +188,6 @@ class CountdownsTableViewController: UITableViewController {
       })
 
       present(alert, animated: true, completion: nil)
-   }
-
-   // MARK: - UI Update
-
-   /// Updates all cells (showing alerts for and removing events that have passed), reloads all table data, and colors the filter button as needed if the table is currently being filtered.
-   func updateViews() {
-      if let indexPath = tableView.indexPathForSelectedRow {
-         tableView.deselectRow(at: indexPath, animated: true)
-      }
-      alertAndArchiveFinishedCountdowns()
-      tableView.reloadData()
-
-      // mode label
-      var text = ""
-      currentModeLabel.isHidden = false
-
-      switch (viewModel.isFiltering, viewModel.isViewingArchive) {
-      case (true, true):
-         text = "Filtering Archive"
-      case (true, false):
-         text = "Filtering"
-      case (false, true):
-         text = "Viewing Archive"
-      case (false, false):
-         currentModeLabel.isHidden = true
-      }
-      currentModeLabel.text = text.uppercased()
-
-      // sort/archive buttons
-      sortButton.tintColor = viewModel.isFiltering ? .systemRed : .systemBlue
-      sortButton.image = UIImage(systemName: viewModel.isFiltering ? .sortImageActive : .sortImageInactive)
-      archiveButton.tintColor = viewModel.isViewingArchive ? .systemRed : .systemBlue
-      archiveButton.image = UIImage(systemName: viewModel.isViewingArchive ? .archiveImageActive : .archiveImageInactive)
    }
 
    private func selectRow(for event: Event) {

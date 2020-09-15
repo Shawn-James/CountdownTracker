@@ -137,6 +137,8 @@ class TagFilterPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDel
       didSelectRow row: Int,
       inComponent component: Int
    ) {
-      viewModel.currentFilter.option.tagID = viewModel.tags[row].uuid
+      viewModel.currentFilter.option.tagID = (row == 0) ?
+         nil
+         : viewModel.tags[row - 1].uuid
    }
 }

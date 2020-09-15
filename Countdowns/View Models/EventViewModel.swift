@@ -15,14 +15,14 @@ class EventViewModel: EventViewModeling, EditEventViewModeling, EventDetailViewM
    lazy var newName: String = event.name
    lazy var newDateTime: Date = event.dateTime
    lazy var newNote: String = event.note
-   lazy var newTagText: String = event.tags.lazy.map { $0.name }
-      .joined(separator: Character.tagSeparator + " ")
+   lazy var newTagText: String = event.tagsText
    lazy var hasCustomTime: Bool = event.hasTime
 
    var updateViewsFromEvent: ((Event) -> Void)?
    private(set) var countdownDidEnd: (Event) -> Void
+   var didEditEvent: ((Event) -> Void)
 
-   var tags: [Tag] { (try? controller.fetchTags(.all)) ?? [] }
+   var allTags: [Tag] { (try? controller.fetchTags(.all)) ?? [] }
 
    var editViewModel: EditEventViewModeling { self }
 
@@ -32,40 +32,39 @@ class EventViewModel: EventViewModeling, EditEventViewModeling, EventDetailViewM
    init(
       _ event: Event,
       controller: EventController,
+      didEditEvent: @escaping (Event) -> Void,
       countdownDidEnd: @escaping (Event) -> Void
    ) {
       self.event = event
       self.controller = controller
+      self.didEditEvent = didEditEvent
       self.countdownDidEnd = countdownDidEnd
 
       updateTimer()
-   }
-
-   func newTag(name: String) throws -> Tag {
-      try controller.createTag(name)
    }
 
    func saveEvent() throws {
       try controller.update(event,
                             withName: newName,
                             dateTime: newDateTime,
-                            tags: tags,
+                            tags: controller.parseTags(from: newTagText),
                             note: newNote,
                             hasTime: hasCustomTime)
+      didEditEvent(event)
    }
 
    private func updateTimer() {
       // if time remaining < 1 day, update in a minute
       let update: (Timer) -> Void = { [weak self] _ in self?.updateTimer() }
 
-      if !event.archived && event.timeInterval < 1 {
+      if !event.archived && event.timeRemaining < 1 {
          countdownDidEnd(event)
-      } else if abs(event.timeInterval) < 3660 {
+      } else if abs(event.timeRemaining) < 3660 {
          countdownTimer = Timer.scheduledTimer(
             withTimeInterval: 1,
             repeats: false,
             block: update)
-      } else if abs(event.timeInterval) < 86_460 {
+      } else if abs(event.timeRemaining) < 86_460 {
          countdownTimer = Timer.scheduledTimer(
             withTimeInterval: 60,
             repeats: false,
@@ -85,7 +84,7 @@ class AddEventViewModel: AddEventViewModeling {
    var newTagText: String = ""
    var hasCustomTime: Bool = false
 
-   var tags: [Tag] { (try? eventController.fetchTags(.all)) ?? [] }
+   var allTags: [Tag] { (try? eventController.fetchTags(.all)) ?? [] }
 
    private var didCreateEvent: (Event) -> Void
 

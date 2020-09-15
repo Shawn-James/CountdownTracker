@@ -38,5 +38,6 @@ class CountdownTableViewCell: UITableViewCell {
       } else {
          backgroundColor = UIColor(named: .cellBackgroundColor)
       }
+      viewModel.updateViewsFromEvent?(viewModel.event)
    }
 }

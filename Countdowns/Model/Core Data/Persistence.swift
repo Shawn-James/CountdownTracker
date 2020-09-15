@@ -32,4 +32,14 @@ protocol CDFetchDescriptor: Hashable {
 
 
 /// Temporary stand-in for NSFetchedResultsControllerDelegate; TODO: modify to make more generic & reusable
-protocol FetchDelegate: AnyObject {}
+protocol FetchDelegate: AnyObject {
+   func fetchDidChange()
+}
+
+extension FetchDelegate {
+   func fetchDidChange() {}
+}
+
+protocol EventFetchDelegate: FetchDelegate {
+   func eventsDidChange(with events: [Event])
+}

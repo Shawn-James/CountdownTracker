@@ -20,27 +20,25 @@ extension DateFormatter {
         
         return formatter
     }()
+
+   static let timeRemainingFormatter = configure(DateComponentsFormatter()) {
+      $0.calendar = .autoupdatingCurrent
+      $0.unitsStyle = .full
+      $0.maximumUnitCount = 2
+   }
     
     /// Returns a nicely formatted string of the time remaining for an event.
     static func formattedTimeRemaining(for event: Event) -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.calendar = .autoupdatingCurrent
-        if event.timeInterval > 604_800 {
-            formatter.allowedUnits = [.year, .month, .day]
-        } else if event.timeInterval > 86_400 {
-            formatter.allowedUnits = [.year, .month, .day, .hour]
-        } else if event.timeInterval > 3600 {
-            formatter.allowedUnits = [.year, .month, .day, .hour, .minute]
+        if event.timeRemaining > 604_800 {
+            timeRemainingFormatter.allowedUnits = [.year, .month, .day]
+        } else if event.timeRemaining > 86_400 {
+            timeRemainingFormatter.allowedUnits = [.year, .month, .day, .hour]
+        } else if event.timeRemaining > 3600 {
+            timeRemainingFormatter.allowedUnits = [.year, .month, .day, .hour, .minute]
         } else {
-            formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
+            timeRemainingFormatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
         }
-        formatter.unitsStyle = .full
         
-        formatter.maximumUnitCount = 2
-        
-        guard let formattedTime = formatter.string(from: event.timeInterval)
-            else { return "" }
-        
-        return formattedTime
+        return timeRemainingFormatter.string(from: event.timeRemaining) ?? ""
     }
 }
