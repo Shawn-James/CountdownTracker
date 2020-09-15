@@ -15,18 +15,18 @@ class AddEditEventViewController: UIViewController, UITextViewDelegate {
 
    var didFinishEditing: (() -> Void)?
 
-   @IBOutlet weak var viewSegmentedControl: UISegmentedControl!
-   @IBOutlet weak var eventNameField: UITextField!
-   @IBOutlet weak var dateLabel: UILabel!
-   @IBOutlet weak var datePicker: UIDatePicker!
-   @IBOutlet weak var timeLabel: UILabel!
-   @IBOutlet weak var customTimeSwitch: UISwitch!
-   @IBOutlet weak var timePicker: UIDatePicker!
-   @IBOutlet weak var tagsLabel: UILabel!
-   @IBOutlet weak var tagsField: UITextField!
-   @IBOutlet weak var notesLabel: UILabel!
-   @IBOutlet weak var notesTextView: UITextView!
-   @IBOutlet weak var saveButton: UIButton!
+   @IBOutlet private weak var viewSegmentedControl: UISegmentedControl!
+   @IBOutlet private weak var eventNameField: UITextField!
+   @IBOutlet private weak var dateLabel: UILabel!
+   @IBOutlet private weak var datePicker: UIDatePicker!
+   @IBOutlet private weak var timeLabel: UILabel!
+   @IBOutlet private weak var customTimeSwitch: UISwitch!
+   @IBOutlet private weak var timePicker: UIDatePicker!
+   @IBOutlet private weak var tagsLabel: UILabel!
+   @IBOutlet private weak var tagsField: UITextField!
+   @IBOutlet private weak var notesLabel: UILabel!
+   @IBOutlet private weak var notesTextView: UITextView!
+   @IBOutlet private weak var saveButton: UIButton!
 
    // MARK: - View Lifecycle
 

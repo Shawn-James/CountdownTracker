@@ -23,7 +23,8 @@ class CountdownsTableViewController: UITableViewController {
             self?.selectRow(for: newEvent)
          })
    })
-   lazy var dataSource = CountdownsDataSource(viewModel: viewModel, tableView: tableView)
+   lazy var dataSource: DataSource = CountdownsDataSource(viewModel: viewModel,
+                                                          tableView: tableView)
 
    @IBOutlet weak var sortButton: UIBarButtonItem!
    @IBOutlet weak var archiveButton: UIBarButtonItem!
