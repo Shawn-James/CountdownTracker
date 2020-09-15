@@ -32,7 +32,8 @@
 		9972B508235E0A2E0015E56B /* CountdownsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972B507235E0A2E0015E56B /* CountdownsTableViewController.swift */; };
 		9972B50B235E0A480015E56B /* CountdownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972B50A235E0A480015E56B /* CountdownTableViewCell.swift */; };
 		9972B510235E0AA00015E56B /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972B50F235E0AA00015E56B /* Strings.swift */; };
-		998EF06125105DA600EDD19E /* CountdownsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998EF06025105DA600EDD19E /* CountdownsTests.swift */; };
+		998EF0692511026F00EDD19E /* CountdownsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998EF0682511026F00EDD19E /* CountdownsViewModelTests.swift */; };
+		998EF06B2511032100EDD19E /* ViewModelntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998EF06A2511032100EDD19E /* ViewModelntegrationTests.swift */; };
 		998FB4582361029C00B1AF60 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998FB4572361029C00B1AF60 /* Notifications.swift */; };
 		99CE3DE1250BC9390039E3FC /* Fetches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99CE3DE0250BC9390039E3FC /* Fetches.swift */; };
 		99D827732507D46900787A79 /* CountdownError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D827722507D46900787A79 /* CountdownError.swift */; };
@@ -82,8 +83,9 @@
 		9972B50A235E0A480015E56B /* CountdownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTableViewCell.swift; sourceTree = "<group>"; };
 		9972B50F235E0AA00015E56B /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		998EF05E25105DA500EDD19E /* CountdownsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountdownsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		998EF06025105DA600EDD19E /* CountdownsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownsTests.swift; sourceTree = "<group>"; };
 		998EF06225105DA600EDD19E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		998EF0682511026F00EDD19E /* CountdownsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownsViewModelTests.swift; sourceTree = "<group>"; };
+		998EF06A2511032100EDD19E /* ViewModelntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelntegrationTests.swift; sourceTree = "<group>"; };
 		998FB4572361029C00B1AF60 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		99CE3DE0250BC9390039E3FC /* Fetches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetches.swift; sourceTree = "<group>"; };
 		99D827722507D46900787A79 /* CountdownError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownError.swift; sourceTree = "<group>"; };
@@ -226,7 +228,8 @@
 		998EF05F25105DA500EDD19E /* CountdownsTests */ = {
 			isa = PBXGroup;
 			children = (
-				998EF06025105DA600EDD19E /* CountdownsTests.swift */,
+				998EF0682511026F00EDD19E /* CountdownsViewModelTests.swift */,
+				998EF06A2511032100EDD19E /* ViewModelntegrationTests.swift */,
 				998EF06225105DA600EDD19E /* Info.plist */,
 			);
 			path = CountdownsTests;
@@ -384,7 +387,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				998EF06125105DA600EDD19E /* CountdownsTests.swift in Sources */,
+				998EF06B2511032100EDD19E /* ViewModelntegrationTests.swift in Sources */,
+				998EF0692511026F00EDD19E /* CountdownsViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
