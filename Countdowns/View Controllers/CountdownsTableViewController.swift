@@ -87,15 +87,6 @@ class CountdownsTableViewController: UITableViewController {
             else { return }
 
          addEventVC.viewModel = .a(viewModel.addViewModel())
-      case String.editEventSegue:
-         guard
-            let nav = segue.destination as? UINavigationController,
-            let editEventVC = nav.viewControllers.first as? AddEditEventViewController,
-            let idx = tableView.indexPathForSelectedRow,
-            let event = dataSource.itemIdentifier(for: idx)
-            else { return }
-
-         editEventVC.viewModel = .b(viewModel.editViewModel(for: event))
       case String.eventDetailSegue:
          guard
             let eventDetailVC = segue.destination as? EventDetailViewController,

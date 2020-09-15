@@ -24,7 +24,6 @@ protocol CountdownsViewModeling {
    func eventViewModel(_ event: Event) -> EventViewModeling
    func addViewModel() -> AddEventViewModeling
    func detailViewModel(for event: Event) -> EventDetailViewModeling
-   func editViewModel(for event: Event) -> EditEventViewModeling
 
    func archive(_ event: Event) throws
    func delete(_ event: Event) throws

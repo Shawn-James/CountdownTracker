@@ -23,6 +23,7 @@ protocol AddOrEditEventViewModeling: AnyObject {
    func saveEvent() throws
 }
 
+
 protocol AddEventViewModeling: AddOrEditEventViewModeling {}
 
 
@@ -100,6 +101,7 @@ class EventViewModel: EventViewModeling, EditEventViewModeling, EventDetailViewM
    }
 }
 
+
 // MARK: - Add Event
 
 class AddEventViewModel: AddEventViewModeling {
@@ -132,6 +134,7 @@ class AddEventViewModel: AddEventViewModeling {
       didCreateEvent(event)
    }
 }
+
 
 // MARK: - Either
 
