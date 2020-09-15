@@ -41,7 +41,7 @@
 		99EF7D0C235E14690092F4AB /* SortFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D0B235E14690092F4AB /* SortFilterViewController.swift */; };
 		99EF7D0E235E14D90092F4AB /* AddEditEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D0D235E14D90092F4AB /* AddEditEventViewController.swift */; };
 		99EF7D12235E18DE0092F4AB /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D11235E18DE0092F4AB /* Event.swift */; };
-		99EF7D14235E18EA0092F4AB /* AppEventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D13235E18EA0092F4AB /* AppEventController.swift */; };
+		99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D13235E18EA0092F4AB /* EventController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,7 +93,7 @@
 		99EF7D0B235E14690092F4AB /* SortFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SortFilterViewController.swift; path = "Countdowns/View Controllers/SortFilterViewController.swift"; sourceTree = SOURCE_ROOT; };
 		99EF7D0D235E14D90092F4AB /* AddEditEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditEventViewController.swift; sourceTree = "<group>"; };
 		99EF7D11235E18DE0092F4AB /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
-		99EF7D13235E18EA0092F4AB /* AppEventController.swift */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = AppEventController.swift; sourceTree = "<group>"; tabWidth = 3; };
+		99EF7D13235E18EA0092F4AB /* EventController.swift */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; tabWidth = 3; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,7 +239,7 @@
 		998EF06C2511060700EDD19E /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				99EF7D13235E18EA0092F4AB /* AppEventController.swift */,
+				99EF7D13235E18EA0092F4AB /* EventController.swift */,
 				990EC94D24D3526A00E41409 /* Core Data */,
 			);
 			path = "Model Controllers";
@@ -363,7 +363,7 @@
 				990C3A44250ECCF400ACDE78 /* CountdownsViewModel.swift in Sources */,
 				990C3A3E250E9D0600ACDE78 /* UIViewController+ErrorAlert.swift in Sources */,
 				998EF06E25110C3400EDD19E /* Atomic.swift in Sources */,
-				99EF7D14235E18EA0092F4AB /* AppEventController.swift in Sources */,
+				99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */,
 				990C3A35250D455C00ACDE78 /* Combine+Transmitter.swift in Sources */,
 				99251D42235E09400060D9FF /* AppDelegate.swift in Sources */,
 				99480ADB235F5DBD00DC1D48 /* DateFormatters.swift in Sources */,

@@ -40,6 +40,8 @@ protocol EventController: AnyObject {
 }
 
 
+// MARK: - App Event Controller
+
 class AppEventController: NSObject, EventController {
    var events: [Event] = [] {
       didSet {
@@ -130,9 +132,6 @@ class AppEventController: NSObject, EventController {
          note: note,
          hasTime: hasTime,
          context: moc)
-      moc.performAndWait {
-         moc.insert(event)
-      }
       try moc.save()
       return event
    }
@@ -199,6 +198,8 @@ class AppEventController: NSObject, EventController {
          .compactMap(tagForName(_:))
    }
 
+   // MARK: - Private
+
    private func tagForName(_ tagName: String) throws -> Tag {
       try fetchTags(.name(tagName)).first ?? (try createTag(tagName))
    }
@@ -212,6 +213,8 @@ class AppEventController: NSObject, EventController {
       }
    }
 }
+
+// MARK: - Fetch Delegate
 
 extension AppEventController: NSFetchedResultsControllerDelegate {
    func controller(

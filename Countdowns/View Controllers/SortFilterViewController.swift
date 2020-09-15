@@ -64,7 +64,7 @@ class SortFilterViewController: UIViewController {
    /// Set current picker selections from current saved setting.
    private func resetPickerSelections() {
       if let sortStyleIndex = EventSortDescriptor.Property.allCases.firstIndex(of: viewModel.currentSort.property) {
-         sortPicker.selectRow(sortStyleIndex, inComponent: 0, animated: false)
+         sortPicker.selectRow(sortStyleIndex, inComponent: 1, animated: false)
       }
 
       filterPicker.selectRow(

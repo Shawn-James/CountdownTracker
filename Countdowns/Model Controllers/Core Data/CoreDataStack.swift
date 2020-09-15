@@ -18,7 +18,7 @@ class CoreDataStack {
             preconditionFailure("Failed to load persistent stores: \(error)")
          }
       }
-      //container.viewContext.automaticallyMergesChangesFromParent = true
+      container.viewContext.automaticallyMergesChangesFromParent = true
       return container
    }()
 

@@ -21,6 +21,7 @@ class EventDetailViewController: UIViewController {
 
    // MARK: - Outlets
 
+   @IBOutlet private weak var titleLabel: UILabel!
    @IBOutlet private weak var dateLabel: UILabel!
    @IBOutlet private weak var tagsLabel: UILabel!
    @IBOutlet private weak var notesLabel: UILabel!
@@ -38,7 +39,10 @@ class EventDetailViewController: UIViewController {
    /// Populate views with event data
    private func updateViews() {
       guard let event = viewModel?.event else { return }
-      navigationItem.title = event.name
+
+//      titleLabel.font = UIFontMetrics(forTextStyle: .largeTitle)
+//         .scaledFont(for: UIFont.systemFont(ofSize: 34, weight: .bold))
+      titleLabel.text = event.name
       tagsLabel.text = event.tagsText
       notesLabel.text = event.note
 
