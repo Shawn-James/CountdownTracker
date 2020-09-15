@@ -10,6 +10,27 @@ import Foundation
 import CoreData
 
 
+protocol CountdownsViewModeling {
+   var displayedEvents: [Event] { get }
+
+   var isViewingArchive: Bool { get set }
+   var isFiltering: Bool { get }
+
+   var eventDidEnd: (Event) -> Void { get set }
+
+   var delegate: EventFetchDelegate? { get set }
+
+   func sortFilterViewModel() -> SortFilterViewModeling
+   func eventViewModel(_ event: Event) -> EventViewModeling
+   func addViewModel() -> AddEventViewModeling
+   func detailViewModel(for event: Event) -> EventDetailViewModeling
+   func editViewModel(for event: Event) -> EditEventViewModeling
+
+   func archive(_ event: Event) throws
+   func delete(_ event: Event) throws
+}
+
+
 class CountdownsViewModel: CountdownsViewModeling {
    var displayedEvents: [Event] { eventController.events }
 
@@ -83,6 +104,7 @@ class CountdownsViewModel: CountdownsViewModeling {
    }
 
    func delete(_ event: Event) throws {
+      eventVMs.removeValue(forKey: event)
       try eventController.deleteEvent(event)
    }
 }

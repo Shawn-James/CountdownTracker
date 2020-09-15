@@ -11,7 +11,7 @@ import Combine
 import CoreData
 
 
-protocol EventController {
+protocol EventController: AnyObject {
    var events: [Event] { get }
    var currentFilter: EventFilterDescriptor { get set }
    var currentSort: EventSortDescriptor { get set }

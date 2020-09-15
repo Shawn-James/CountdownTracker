@@ -9,48 +9,6 @@
 import UIKit
 
 
-// MARK: - View Models
-
-protocol AddOrEditEventViewModeling: AnyObject {
-   var allTags: [Tag] { get }
-
-   var newName: String { get set }
-   var newDateTime: Date { get set }
-   var hasCustomTime: Bool { get set }
-   var newNote: String { get set }
-   var newTagText: String { get set }
-
-   func saveEvent() throws
-}
-
-protocol AddEventViewModeling: AddOrEditEventViewModeling {}
-
-
-protocol EditEventViewModeling: AddOrEditEventViewModeling {
-   var event: Event { get }
-}
-
-
-extension Either where A == AddEventViewModeling, B == EditEventViewModeling {
-   var addOrEdit: AddOrEditEventViewModeling {
-      switch self {
-      case .a(let vm): return vm
-      case .b(let vm): return vm
-      }
-   }
-
-   var add: AddEventViewModeling? {
-      if case .a(let vm) = self { return vm } else { return nil }
-   }
-
-   var edit: EditEventViewModeling? {
-      if case .b(let vm) = self { return vm } else { return nil }
-   }
-
-   var isAdding: Bool { if case .a = self { return true } else { return false } }
-   var isEditing: Bool { !isAdding }
-}
-
 // MARK: - View Controller
 
 class AddEditEventViewController: UIViewController, UITextViewDelegate {

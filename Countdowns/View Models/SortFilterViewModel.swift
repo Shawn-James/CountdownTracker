@@ -9,6 +9,17 @@
 import Foundation
 
 
+protocol SortFilterViewModeling {
+   var tags: [Tag] { get }
+
+   var didChange: (() -> Void)? { get set }
+   var didFinish: (() -> Void)? { get set }
+
+   var currentSort: EventSortDescriptor { get set }
+   var currentFilter: EventFilterDescriptor { get set }
+}
+
+
 class SortFilterViewModel: SortFilterViewModeling {
    var tags: [Tag] { (try? controller.fetchTags(.all)) ?? [] }
 
