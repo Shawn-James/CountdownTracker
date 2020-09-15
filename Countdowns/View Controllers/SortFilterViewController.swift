@@ -11,11 +11,13 @@ import Combine
 
 
 class SortFilterViewController: UIViewController {
+   typealias PickerDelegate = UIPickerViewDelegate & UIPickerViewDataSource
+   
    @Atomic var viewModel: SortFilterViewModeling!
 
-   private lazy var sortDelegate = SortPickerDelegate(viewModel)
-   private lazy var filterDelegate = FilterPickerDelegate(viewModel)
-   private lazy var tagDelegate = TagFilterPickerDelegate(viewModel)
+   lazy var sortDelegate: PickerDelegate = SortPickerDelegate(viewModel)
+   lazy var filterDelegate: PickerDelegate = FilterPickerDelegate(viewModel)
+   lazy var tagDelegate: PickerDelegate = TagFilterPickerDelegate(viewModel)
 
    @IBOutlet private weak var sortPicker: UIPickerView!
    @IBOutlet private weak var filterPicker: UIPickerView!
