@@ -31,14 +31,16 @@ class CountdownsViewModel: CountdownsViewModeling {
       set { eventController.delegate = newValue }
    }
 
-   private let eventController = EventController()
+   private var eventController: EventController
 
    private var eventVMs: [Event: EventViewModel] = [:]
 
-   init(eventDidEnd: @escaping (Event) -> Void,
-        didEditEvent: @escaping (Event) -> Void,
-        didCreateEvent: @escaping (Event) -> Void
+   init(eventController: EventController = AppEventController(),
+      eventDidEnd: @escaping (Event) -> Void,
+      didEditEvent: @escaping (Event) -> Void,
+      didCreateEvent: @escaping (Event) -> Void
    ) {
+      self.eventController = eventController
       self.eventDidEnd = eventDidEnd
       self.didEditEvent = didEditEvent
       self.didCreateEvent = didCreateEvent

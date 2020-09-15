@@ -44,12 +44,13 @@ class EventViewModel: EventViewModeling, EditEventViewModeling, EventDetailViewM
    }
 
    func saveEvent() throws {
-      try controller.update(event,
-                            withName: newName,
-                            dateTime: newDateTime,
-                            tags: controller.parseTags(from: newTagText),
-                            note: newNote,
-                            hasTime: hasCustomTime)
+      try controller.updateEvent(
+         event,
+         withName: newName,
+         dateTime: newDateTime,
+         tags: controller.parseTags(from: newTagText),
+         note: newNote,
+         hasTime: hasCustomTime)
       didEditEvent(event)
    }
 
@@ -75,7 +76,7 @@ class EventViewModel: EventViewModeling, EditEventViewModeling, EventDetailViewM
    }
 }
 
-// MARK: - Add EVent
+// MARK: - Add Event
 
 class AddEventViewModel: AddEventViewModeling {
    var newName: String = ""
