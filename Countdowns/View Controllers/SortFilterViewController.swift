@@ -10,30 +10,14 @@ import UIKit
 import Combine
 
 
-protocol SortFilterViewModeling {
-   var tags: [Tag] { get }
-
-   var didChange: (() -> Void)? { get set }
-   var didFinish: (() -> Void)? { get set }
-
-   var currentSort: EventSortDescriptor { get set }
-   var currentFilter: EventFilterDescriptor { get set }
-}
-
-
 class SortFilterViewController: UIViewController {
-   var viewModel: SortFilterViewModeling! {
-      get { vmQueue.sync { _viewModel } }
-      set { vmQueue.sync { _viewModel = newValue } }
-   }
+   typealias PickerDelegate = UIPickerViewDelegate & UIPickerViewDataSource
+   
+   @Atomic var viewModel: SortFilterViewModeling!
 
-   private var _viewModel: SortFilterViewModeling!
-
-   private let vmQueue = DispatchQueue.global()
-
-   private lazy var sortDelegate = SortPickerDelegate(viewModel)
-   private lazy var filterDelegate = FilterPickerDelegate(viewModel)
-   private lazy var tagDelegate = TagFilterPickerDelegate(viewModel)
+   lazy var sortDelegate: PickerDelegate = SortPickerDelegate(viewModel)
+   lazy var filterDelegate: PickerDelegate = FilterPickerDelegate(viewModel)
+   lazy var tagDelegate: PickerDelegate = TagFilterPickerDelegate(viewModel)
 
    @IBOutlet private weak var sortPicker: UIPickerView!
    @IBOutlet private weak var filterPicker: UIPickerView!

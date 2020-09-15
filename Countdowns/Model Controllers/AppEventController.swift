@@ -11,14 +11,43 @@ import Combine
 import CoreData
 
 
-class EventController: NSObject {
+protocol EventController: AnyObject {
+   var events: [Event] { get }
+   var currentFilter: EventFilterDescriptor { get set }
+   var currentSort: EventSortDescriptor { get set }
+
+   var delegate: EventFetchDelegate? { get set }
+
+   @discardableResult
+   func createEvent(
+      withName name: String,
+      dateTime: Date,
+      tags: [Tag],
+      note: String,
+      hasTime: Bool) throws -> Event
+   func updateEvent(
+      _ event: Event,
+      withName: String,
+      dateTime: Date,
+      tags: [Tag],
+      note: String,
+      hasTime: Bool) throws
+   func archiveEvent(_ event: Event) throws
+   func deleteEvent(_ event: Event) throws
+
+   func fetchTags(_ fetch: TagFetchDescriptor) throws -> [Tag]
+   func parseTags(from tagText: String) throws -> [Tag]
+}
+
+
+class AppEventController: NSObject, EventController {
    var events: [Event] = [] {
       didSet {
          delegate?.eventsDidChange(with: events)
       }
    }
 
-   var currentSortStyle: EventSortDescriptor {
+   var currentSort: EventSortDescriptor {
       get { currentFetchDescriptor.sortDescriptor }
       set { currentFetchDescriptor.sortDescriptor = newValue }
    }
@@ -116,7 +145,7 @@ class EventController: NSObject {
    }
 
    /// Update the given event, save changes, and reset the event's user notification.
-   func update(
+   func updateEvent(
       _ event: Event,
       withName name: String,
       dateTime: Date,
@@ -184,13 +213,13 @@ class EventController: NSObject {
    }
 }
 
-extension EventController: NSFetchedResultsControllerDelegate {
+extension AppEventController: NSFetchedResultsControllerDelegate {
    func controller(
       _ controller: NSFetchedResultsController<NSFetchRequestResult>,
       didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
    ) {
-      if currentSortStyle.nsSortDescriptor() == nil {
-         events = activeEventFetcher.fetchedObjects?.sorted(by: currentSortStyle) ?? []
+      if currentSort.nsSortDescriptor() == nil {
+         events = activeEventFetcher.fetchedObjects?.sorted(by: currentSort) ?? []
       } else {
          events = activeEventFetcher.fetchedObjects ?? []
       }

@@ -9,6 +9,31 @@
 import Foundation
 
 
+// MARK: - Protocols
+
+protocol AddOrEditEventViewModeling: AnyObject {
+   var allTags: [Tag] { get }
+
+   var newName: String { get set }
+   var newDateTime: Date { get set }
+   var hasCustomTime: Bool { get set }
+   var newNote: String { get set }
+   var newTagText: String { get set }
+
+   func saveEvent() throws
+}
+
+
+protocol AddEventViewModeling: AddOrEditEventViewModeling {}
+
+
+protocol EditEventViewModeling: AddOrEditEventViewModeling {
+   var event: Event { get }
+}
+
+
+// MARK: - Event
+
 class EventViewModel: EventViewModeling, EditEventViewModeling, EventDetailViewModeling {
    private(set) var event: Event
 
@@ -44,12 +69,13 @@ class EventViewModel: EventViewModeling, EditEventViewModeling, EventDetailViewM
    }
 
    func saveEvent() throws {
-      try controller.update(event,
-                            withName: newName,
-                            dateTime: newDateTime,
-                            tags: controller.parseTags(from: newTagText),
-                            note: newNote,
-                            hasTime: hasCustomTime)
+      try controller.updateEvent(
+         event,
+         withName: newName,
+         dateTime: newDateTime,
+         tags: controller.parseTags(from: newTagText),
+         note: newNote,
+         hasTime: hasCustomTime)
       didEditEvent(event)
    }
 
@@ -75,7 +101,8 @@ class EventViewModel: EventViewModeling, EditEventViewModeling, EventDetailViewM
    }
 }
 
-// MARK: - Add EVent
+
+// MARK: - Add Event
 
 class AddEventViewModel: AddEventViewModeling {
    var newName: String = ""
@@ -106,4 +133,27 @@ class AddEventViewModel: AddEventViewModeling {
          hasTime: hasCustomTime)
       didCreateEvent(event)
    }
+}
+
+
+// MARK: - Either
+
+extension Either where A == AddEventViewModeling, B == EditEventViewModeling {
+   var addOrEdit: AddOrEditEventViewModeling {
+      switch self {
+      case .a(let vm): return vm
+      case .b(let vm): return vm
+      }
+   }
+
+   var add: AddEventViewModeling? {
+      if case .a(let vm) = self { return vm } else { return nil }
+   }
+
+   var edit: EditEventViewModeling? {
+      if case .b(let vm) = self { return vm } else { return nil }
+   }
+
+   var isAdding: Bool { if case .a = self { return true } else { return false } }
+   var isEditing: Bool { !isAdding }
 }

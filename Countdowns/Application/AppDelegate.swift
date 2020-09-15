@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
       withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
    ) {
       let failMsg = "Could not find ended countdown."
-      let controller = EventController()
+      let controller = AppEventController()
       
       guard let uuid = UUID(uuidString: notification.request.identifier)
          else { return NSLog(failMsg) }

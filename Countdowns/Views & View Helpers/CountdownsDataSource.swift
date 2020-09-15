@@ -17,16 +17,10 @@ class CountdownsDataSource: UITableViewDiffableDataSource<Int, Event> {
    /// If closure is nil, event will be deleted.
    var didConfirmDelete: ((Event) -> Bool)?
 
-   var viewModel: CountdownsViewModeling {
-      get { viewModelQueue.sync { _viewModel } }
-      set { viewModelQueue.sync { _viewModel = newValue } }
-   }
-   var _viewModel: CountdownsViewModeling
-
-   private let viewModelQueue = DispatchQueue.global()
+   @Atomic var viewModel: CountdownsViewModeling
 
    init(viewModel: CountdownsViewModeling, tableView: UITableView) {
-      self._viewModel = viewModel
+      self.viewModel = viewModel
 
       super.init(tableView: tableView) { tv, idx, event -> UITableViewCell? in
          let cell = tv.dequeueReusableCell(
@@ -50,7 +44,11 @@ class CountdownsDataSource: UITableViewDiffableDataSource<Int, Event> {
       true
    }
 
-   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+   override func tableView(
+      _ tableView: UITableView,
+      commit editingStyle: UITableViewCell.EditingStyle,
+      forRowAt indexPath: IndexPath
+   ) {
       switch editingStyle {
       case .delete:
          guard let event = itemIdentifier(for: indexPath) else {
@@ -64,6 +62,8 @@ class CountdownsDataSource: UITableViewDiffableDataSource<Int, Event> {
       default:
          break
       }
+
+      super.tableView(tableView, commit: editingStyle, forRowAt: indexPath)
    }
 }
 
