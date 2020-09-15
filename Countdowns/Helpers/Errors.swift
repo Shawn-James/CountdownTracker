@@ -9,11 +9,27 @@
 import Foundation
 
 
+enum CountdownError: Error {
+   case noManagedObjectContextForObject
+   case unknown
+   case other(Error)
+}
+
+
+enum CodingError: Error {
+   case noData
+   case decodeFailure(Error? = nil)
+   case encodeFailure(Error? = nil)
+}
+
+
 struct CustomError: LocalizedError {
     let errorDescription: String
     let recoverySuggestion: String
 }
 
+
+// MARK: - Error Message
 
 struct ErrorMessage: CustomStringConvertible {
     let title: String
@@ -60,10 +76,11 @@ struct ErrorMessage: CustomStringConvertible {
 }
 
 
-enum MockError: Error {
-    case shouldFail
-}
+// MARK: - Mock
 
+enum MockError: Error {
+   case shouldFail
+}
 
 extension Result where Failure == Error {
     static func mockFailure() -> Result<Success, Failure> {

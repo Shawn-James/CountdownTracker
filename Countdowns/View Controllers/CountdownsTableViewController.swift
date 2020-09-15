@@ -10,27 +10,6 @@ import UIKit
 import CoreData
 
 
-protocol CountdownsViewModeling {
-   var displayedEvents: [Event] { get }
-
-   var isViewingArchive: Bool { get set }
-   var isFiltering: Bool { get }
-
-   var eventDidEnd: (Event) -> Void { get set }
-
-   var delegate: EventFetchDelegate? { get set }
-
-   func sortFilterViewModel() -> SortFilterViewModeling
-   func eventViewModel(_ event: Event) -> EventViewModeling
-   func addViewModel() -> AddEventViewModeling
-   func detailViewModel(for event: Event) -> EventDetailViewModeling
-   func editViewModel(for event: Event) -> EditEventViewModeling
-
-   func archive(_ event: Event) throws
-   func delete(_ event: Event) throws
-}
-
-
 class CountdownsTableViewController: UITableViewController {
    typealias DataSource = UITableViewDiffableDataSource<Int, Event>
 
@@ -44,7 +23,8 @@ class CountdownsTableViewController: UITableViewController {
             self?.selectRow(for: newEvent)
          })
    })
-   lazy var dataSource = CountdownsDataSource(viewModel: viewModel, tableView: tableView)
+   lazy var dataSource: DataSource = CountdownsDataSource(viewModel: viewModel,
+                                                          tableView: tableView)
 
    @IBOutlet weak var sortButton: UIBarButtonItem!
    @IBOutlet weak var archiveButton: UIBarButtonItem!
@@ -70,6 +50,10 @@ class CountdownsTableViewController: UITableViewController {
       }
       alertAndArchiveFinishedCountdowns()
       tableView.reloadData()
+
+      navigationItem.title = viewModel.isViewingArchive
+         ? "Countdown Archive"
+         : "Active Countdowns"
 
       // mode label
       var text = ""
@@ -104,15 +88,6 @@ class CountdownsTableViewController: UITableViewController {
             else { return }
 
          addEventVC.viewModel = .a(viewModel.addViewModel())
-      case String.editEventSegue:
-         guard
-            let nav = segue.destination as? UINavigationController,
-            let editEventVC = nav.viewControllers.first as? AddEditEventViewController,
-            let idx = tableView.indexPathForSelectedRow,
-            let event = dataSource.itemIdentifier(for: idx)
-            else { return }
-
-         editEventVC.viewModel = .b(viewModel.editViewModel(for: event))
       case String.eventDetailSegue:
          guard
             let eventDetailVC = segue.destination as? EventDetailViewController,

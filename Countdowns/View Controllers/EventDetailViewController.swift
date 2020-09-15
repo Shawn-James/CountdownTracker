@@ -20,14 +20,15 @@ class EventDetailViewController: UIViewController {
    var viewModel: EventDetailViewModeling?
 
    // MARK: - Outlets
-   @IBOutlet weak var nameLabel: UILabel!
-   @IBOutlet weak var dateLabel: UILabel!
-   @IBOutlet weak var tagsLabel: UILabel!
-   @IBOutlet weak var noteView: UITextView!
+
+   @IBOutlet private weak var dateLabel: UILabel!
+   @IBOutlet private weak var tagsLabel: UILabel!
+   @IBOutlet private weak var notesLabel: UILabel!
 
    let formatter = DateFormatter.eventDateFormatter
 
    // MARK: - View Lifecyle
+   
    override func viewDidLoad() {
       super.viewDidLoad()
 
@@ -37,9 +38,9 @@ class EventDetailViewController: UIViewController {
    /// Populate views with event data
    private func updateViews() {
       guard let event = viewModel?.event else { return }
-      nameLabel.text = event.name
+      navigationItem.title = event.name
       tagsLabel.text = event.tagsText
-      noteView.text = event.note
+      notesLabel.text = event.note
 
       formatter.timeStyle = event.hasTime ? .short : .none
 
