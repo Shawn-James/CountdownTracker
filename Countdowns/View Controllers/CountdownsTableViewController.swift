@@ -50,6 +50,10 @@ class CountdownsTableViewController: UITableViewController {
       alertAndArchiveFinishedCountdowns()
       tableView.reloadData()
 
+      navigationItem.title = viewModel.isViewingArchive
+         ? "Countdown Archive"
+         : "Active Countdowns"
+
       // mode label
       var text = ""
       currentModeLabel.isHidden = false

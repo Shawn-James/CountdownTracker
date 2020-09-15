@@ -44,7 +44,11 @@ class CountdownsDataSource: UITableViewDiffableDataSource<Int, Event> {
       true
    }
 
-   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+   override func tableView(
+      _ tableView: UITableView,
+      commit editingStyle: UITableViewCell.EditingStyle,
+      forRowAt indexPath: IndexPath
+   ) {
       switch editingStyle {
       case .delete:
          guard let event = itemIdentifier(for: indexPath) else {
@@ -58,6 +62,8 @@ class CountdownsDataSource: UITableViewDiffableDataSource<Int, Event> {
       default:
          break
       }
+
+      super.tableView(tableView, commit: editingStyle, forRowAt: indexPath)
    }
 }
 

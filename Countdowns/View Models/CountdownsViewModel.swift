@@ -56,7 +56,8 @@ class CountdownsViewModel: CountdownsViewModeling {
 
    private var eventVMs: [Event: EventViewModel] = [:]
 
-   init(eventController: EventController = AppEventController(),
+   init(
+      eventController: EventController = AppEventController(),
       eventDidEnd: @escaping (Event) -> Void,
       didEditEvent: @escaping (Event) -> Void,
       didCreateEvent: @escaping (Event) -> Void

@@ -9,8 +9,6 @@
 import UIKit
 
 
-// MARK: - View Controller
-
 class AddEditEventViewController: UIViewController, UITextViewDelegate {
 
    var viewModel: Either<AddEventViewModeling, EditEventViewModeling>!
