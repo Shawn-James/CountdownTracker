@@ -157,6 +157,7 @@ class AppEventController: NSObject, EventController {
       moc.performAndWait {
          event.name = name
          event.dateTime = dateTime
+         event.nsmanagedTags.removeAllObjects()
          tags.forEach(event.addTag(_:))
          event.note = note
          event.hasTime = hasTime

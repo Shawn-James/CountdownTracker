@@ -39,8 +39,8 @@ class CountdownsTableViewController: UITableViewController {
       self.navigationItem.rightBarButtonItems?.append(self.editButtonItem)
    }
 
-   override func viewDidAppear(_ animated: Bool) {
-      super.viewDidAppear(animated)
+   override func viewWillAppear(_ animated: Bool) {
+      super.viewWillAppear(animated)
       updateViews()
    }
 
@@ -78,14 +78,7 @@ class CountdownsTableViewController: UITableViewController {
       archiveButton.tintColor = viewModel.isViewingArchive ? .systemRed : .systemBlue
       archiveButton.image = UIImage(systemName: viewModel.isViewingArchive ? .archiveImageActive : .archiveImageInactive)
 
-      tableView.indexPathsForVisibleRows?
-         .compactMap({ idx -> (indexPath: IndexPath, cell: CountdownTableViewCell)? in
-            if let cell = tableView.cellForRow(at: idx) as? CountdownTableViewCell {
-               return (indexPath: idx, cell: cell)
-            } else { return nil }
-         }).forEach({ (idx, cell) in
-            cell.configure(with: cell.viewModel!, indexPath: idx)
-         })
+      tableView.reloadData()
    }
 
    // MARK: - Navigation

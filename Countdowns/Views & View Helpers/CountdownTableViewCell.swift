@@ -25,6 +25,7 @@ class CountdownTableViewCell: UITableViewCell {
    @IBOutlet private weak var tagsLabel: UILabel!
 
    func configure(with viewModel: EventViewModeling, indexPath: IndexPath) {
+      self.viewModel = viewModel
       viewModel.updateViewsFromEvent = { [weak self] event in
          self?.timeRemainingLabel.text = DateFormatter.formattedTimeRemaining(for: event)
       }
