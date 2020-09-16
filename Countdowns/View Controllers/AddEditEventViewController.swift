@@ -9,7 +9,7 @@
 import UIKit
 
 
-class AddEditEventViewController: UIViewController, UITextViewDelegate {
+class AddEditEventViewController: ShiftableViewController {
 
    var viewModel: Either<AddEventViewModeling, EditEventViewModeling>!
 
