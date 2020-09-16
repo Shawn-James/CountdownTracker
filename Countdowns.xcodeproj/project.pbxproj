@@ -42,6 +42,7 @@
 		99EF7D0E235E14D90092F4AB /* AddEditEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D0D235E14D90092F4AB /* AddEditEventViewController.swift */; };
 		99EF7D12235E18DE0092F4AB /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D11235E18DE0092F4AB /* Event.swift */; };
 		99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99EF7D13235E18EA0092F4AB /* EventController.swift */; };
+		99F36C81251189EB0041F64B /* ShiftableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F36C80251189EB0041F64B /* ShiftableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +95,7 @@
 		99EF7D0D235E14D90092F4AB /* AddEditEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditEventViewController.swift; sourceTree = "<group>"; };
 		99EF7D11235E18DE0092F4AB /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		99EF7D13235E18EA0092F4AB /* EventController.swift */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; tabWidth = 3; };
+		99F36C80251189EB0041F64B /* ShiftableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +224,7 @@
 				990C3A34250D455C00ACDE78 /* Combine+Transmitter.swift */,
 				990C3A3F250E9D2100ACDE78 /* Errors.swift */,
 				990C3A3D250E9D0500ACDE78 /* UIViewController+ErrorAlert.swift */,
+				99F36C80251189EB0041F64B /* ShiftableViewController.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -240,6 +243,9 @@
 			isa = PBXGroup;
 			children = (
 				99EF7D13235E18EA0092F4AB /* EventController.swift */,
+				990C3A38250D861200ACDE78 /* Settings.swift */,
+				990EC94B24D34BD100E41409 /* SortFilter.swift */,
+				99CE3DE0250BC9390039E3FC /* Fetches.swift */,
 				990EC94D24D3526A00E41409 /* Core Data */,
 			);
 			path = "Model Controllers";
@@ -250,9 +256,6 @@
 			children = (
 				99EF7D11235E18DE0092F4AB /* Event.swift */,
 				99480ADC235F767700DC1D48 /* Tag.swift */,
-				990EC94B24D34BD100E41409 /* SortFilter.swift */,
-				99CE3DE0250BC9390039E3FC /* Fetches.swift */,
-				990C3A38250D861200ACDE78 /* Settings.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 				998EF06E25110C3400EDD19E /* Atomic.swift in Sources */,
 				99EF7D14235E18EA0092F4AB /* EventController.swift in Sources */,
 				990C3A35250D455C00ACDE78 /* Combine+Transmitter.swift in Sources */,
+				99F36C81251189EB0041F64B /* ShiftableViewController.swift in Sources */,
 				99251D42235E09400060D9FF /* AppDelegate.swift in Sources */,
 				99480ADB235F5DBD00DC1D48 /* DateFormatters.swift in Sources */,
 				990C3A40250E9D2100ACDE78 /* Errors.swift in Sources */,

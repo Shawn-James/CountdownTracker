@@ -22,6 +22,7 @@ class CountdownsTableViewController: UITableViewController {
          self?.dismiss(animated: true, completion: {
             self?.selectRow(for: newEvent)
          })
+         self?.updateViews()
    })
    lazy var dataSource: DataSource = CountdownsDataSource(viewModel: viewModel,
                                                           tableView: tableView)
@@ -76,6 +77,15 @@ class CountdownsTableViewController: UITableViewController {
       sortButton.image = UIImage(systemName: viewModel.isFiltering ? .sortImageActive : .sortImageInactive)
       archiveButton.tintColor = viewModel.isViewingArchive ? .systemRed : .systemBlue
       archiveButton.image = UIImage(systemName: viewModel.isViewingArchive ? .archiveImageActive : .archiveImageInactive)
+
+      tableView.indexPathsForVisibleRows?
+         .compactMap({ idx -> (indexPath: IndexPath, cell: CountdownTableViewCell)? in
+            if let cell = tableView.cellForRow(at: idx) as? CountdownTableViewCell {
+               return (indexPath: idx, cell: cell)
+            } else { return nil }
+         }).forEach({ (idx, cell) in
+            cell.configure(with: cell.viewModel!, indexPath: idx)
+         })
    }
 
    // MARK: - Navigation
