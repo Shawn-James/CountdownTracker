@@ -210,7 +210,7 @@ class AppEventController: NSObject, EventController {
       do {
          try activeEventFetcher.performFetch()
       } catch {
-         print(error) // todo: handle error
+         print(error) // TODO: handle error
       }
    }
 }

@@ -40,8 +40,6 @@ class EventDetailViewController: UIViewController {
    private func updateViews() {
       guard let event = viewModel?.event else { return }
 
-//      titleLabel.font = UIFontMetrics(forTextStyle: .largeTitle)
-//         .scaledFont(for: UIFont.systemFont(ofSize: 34, weight: .bold))
       titleLabel.text = event.name
       tagsLabel.text = event.tagsText
       notesLabel.text = event.note

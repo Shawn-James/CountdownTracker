@@ -11,8 +11,6 @@ import CoreData
 
 
 class CountdownsTableViewController: UITableViewController {
-   typealias DataSource = UITableViewDiffableDataSource<Int, Event>
-
    lazy var viewModel: CountdownsViewModeling = CountdownsViewModel(
       eventDidEnd: { [weak self] in self?.alertForCountdownEnd(for: $0) },
       didEditEvent: { [weak self] editedEvent in
@@ -24,8 +22,9 @@ class CountdownsTableViewController: UITableViewController {
          })
          self?.updateViews()
    })
-   lazy var dataSource: DataSource = CountdownsDataSource(viewModel: viewModel,
-                                                          tableView: tableView)
+   lazy var dataSource: UITableViewDataSource = environment.countdownsDataSource(
+      viewModel: viewModel,
+      tableView: tableView)
 
    @IBOutlet weak var sortButton: UIBarButtonItem!
    @IBOutlet weak var archiveButton: UIBarButtonItem!

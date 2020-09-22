@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="6ei-dR-4k4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n1k-bN-g4m">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,7 +22,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                            <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" systemColor="systemRedColor"/>
                             <nil key="highlightedColor"/>
                             <size key="shadowOffset" width="0.5" height="0.5"/>
                         </label>
@@ -109,7 +111,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9ah-XT-2RH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1050.7246376811595" y="164.73214285714286"/>
+            <point key="canvasLocation" x="1854" y="165"/>
         </scene>
         <!--Sort/Filter-->
         <scene sceneID="ZQc-St-Q6j">
@@ -159,6 +161,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="EfG-Lj-Hik"/>
                         <color key="backgroundColor" name="secondaryCellBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="EfG-Lj-Hik" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="sxJ-77-Ko0" secondAttribute="bottom" constant="20" id="PQq-vV-Qbz"/>
@@ -166,7 +169,6 @@
                             <constraint firstItem="EfG-Lj-Hik" firstAttribute="trailing" secondItem="sxJ-77-Ko0" secondAttribute="trailing" constant="20" id="vvD-x9-gPT"/>
                             <constraint firstItem="sxJ-77-Ko0" firstAttribute="leading" secondItem="EfG-Lj-Hik" secondAttribute="leading" constant="20" id="xvD-JD-H5O"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="EfG-Lj-Hik"/>
                     </view>
                     <connections>
                         <outlet property="datePicker" destination="PuT-v6-DgC" id="j2u-OZ-6wI"/>
@@ -192,6 +194,7 @@
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Event or countdown title" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2zz-bm-aG8">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="34"/>
+                                        <color key="backgroundColor" name="backgroundColor"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
@@ -211,7 +214,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <datePicker contentMode="scaleToFill" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="746" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="4JU-Dl-uhs">
+                                    <datePicker contentMode="scaleToFill" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="746" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="4JU-Dl-uhs">
                                         <rect key="frame" x="0.0" y="109.5" width="374" height="216"/>
                                         <constraints>
                                             <constraint firstAttribute="height" priority="999" constant="216" id="6Hu-Lb-cAW"/>
@@ -225,7 +228,7 @@
                                         <rect key="frame" x="0.0" y="333.5" width="374" height="31"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Custom Time?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.75" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7pv-T4-Vc1">
-                                                <rect key="frame" x="0.0" y="5.5" width="115" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="5.5" width="114.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -238,7 +241,7 @@
                                             </switch>
                                         </subviews>
                                     </stackView>
-                                    <datePicker hidden="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="747" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="OnF-aY-G3v">
+                                    <datePicker hidden="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="747" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="OnF-aY-G3v">
                                         <rect key="frame" x="0.0" y="368.5" width="374" height="0.0"/>
                                         <connections>
                                             <action selector="timePickerTouched:" destination="NEJ-Cn-Agq" eventType="valueChanged" id="Nw5-uH-iKK"/>
@@ -256,6 +259,7 @@
                                             </label>
                                             <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Tag1, tag2..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="thd-55-CFd">
                                                 <rect key="frame" x="0.0" y="0.0" width="0.0" height="34"/>
+                                                <color key="backgroundColor" name="backgroundColor"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
@@ -269,11 +273,11 @@
                                     </label>
                                     <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="TxV-fE-EeH">
                                         <rect key="frame" x="0.0" y="372.5" width="374" height="200"/>
-                                        <color key="backgroundColor" name="cellBackgroundColor"/>
+                                        <color key="backgroundColor" name="backgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="200" id="qso-wJ-QbW"/>
                                         </constraints>
-                                        <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
@@ -283,6 +287,7 @@
                                 </constraints>
                             </stackView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Xfo-JB-YNl"/>
                         <color key="backgroundColor" name="secondaryCellBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="SRJ-Bn-VCn" firstAttribute="leading" secondItem="Xfo-JB-YNl" secondAttribute="leading" constant="20" id="72S-xE-Ohw"/>
@@ -290,11 +295,10 @@
                             <constraint firstItem="SRJ-Bn-VCn" firstAttribute="top" secondItem="Xfo-JB-YNl" secondAttribute="top" constant="20" id="CWW-Tv-zD0"/>
                             <constraint firstItem="Xfo-JB-YNl" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="SRJ-Bn-VCn" secondAttribute="bottom" constant="20" id="Y8f-pI-MvH"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Xfo-JB-YNl"/>
                     </view>
                     <navigationItem key="navigationItem" title="Add new countdown" id="P37-Zt-7Gy">
                         <barButtonItem key="leftBarButtonItem" id="EFg-IW-gSH">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WEO-25-sRj">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="WEO-25-sRj">
                                 <rect key="frame" x="20" y="13" width="48" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Cancel"/>
@@ -304,7 +308,7 @@
                             </button>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" id="IEd-ub-M9n">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3tL-2B-i9w">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="3tL-2B-i9w">
                                 <rect key="frame" x="360" y="13" width="34" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Save"/>
@@ -331,7 +335,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2ZD-n4-1XG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2671" y="-546"/>
+            <point key="canvasLocation" x="2762" y="-546"/>
         </scene>
         <!--Event Detail-->
         <scene sceneID="ze6-9N-8kh">
@@ -384,6 +388,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="nYp-TB-onZ"/>
                         <color key="backgroundColor" name="cellBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Maa-7T-hZE" firstAttribute="top" secondItem="nYp-TB-onZ" secondAttribute="top" constant="20" id="1ky-c5-mCB"/>
@@ -410,7 +415,6 @@
                             <constraint firstItem="zPe-Gm-eDf" firstAttribute="width" secondItem="c2c-iG-Hgw" secondAttribute="width" id="w73-Yk-ilu"/>
                             <constraint firstItem="oZB-Lr-vrO" firstAttribute="leading" secondItem="c2c-iG-Hgw" secondAttribute="trailing" constant="8" id="zcU-gE-uEc"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="nYp-TB-onZ"/>
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="gwH-jk-wg1">
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="hUs-NX-fDd">
@@ -428,28 +432,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9QV-Xt-xKH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1854" y="165"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="8wJ-OE-6hS">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6ei-dR-4k4" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="aeB-k8-loC">
-                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <textAttributes key="titleTextAttributes">
-                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                        </textAttributes>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Oe1-rr-SLr" kind="relationship" relationship="rootViewController" id="IZ0-qG-J8E"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HE7-T3-Qvt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-135" y="165"/>
+            <point key="canvasLocation" x="2763.768115942029" y="164.73214285714286"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="inK-Xl-hTA">
@@ -468,6 +451,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jeO-A6-vsf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1854" y="-546"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="o9d-TR-JcO">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="n1k-bN-g4m" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="jwf-Zs-hYT">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Oe1-rr-SLr" kind="relationship" relationship="rootViewController" id="9NA-bi-MNn"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9y1-CL-dKB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="965" y="165"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
@@ -488,5 +489,11 @@
         <namedColor name="secondaryCellBackgroundColor">
             <color red="1" green="0.98500001430511475" blue="0.85100001096725464" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

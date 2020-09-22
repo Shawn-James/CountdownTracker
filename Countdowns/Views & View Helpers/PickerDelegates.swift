@@ -40,7 +40,7 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
       forComponent component: Int
    ) -> String? {
       if component == 0 {
-         return (row == 1) ? "↑" : "↓"
+         return (row == 0).ascendingSymbol
       } else {
          return EventSortDescriptor.Property(rawValue: UInt8(row))?.description
       }
@@ -52,7 +52,7 @@ class SortPickerDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate
       inComponent component: Int
    ) {
       if component == 0 {
-         let ascending = (row == 1)
+         let ascending = (row == 0)
          viewModel.currentSort.ascending = ascending
       } else if let property = EventSortDescriptor.Property(rawValue: UInt8(row)) {
          viewModel.currentSort.property = property

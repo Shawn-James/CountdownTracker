@@ -11,6 +11,10 @@ import Foundation
 
 // MARK: - Sort
 
+extension Bool {
+   var ascendingSymbol: String { (self == true) ? "↓" : "↑" }
+}
+
 struct EventSortDescriptor: Hashable, CustomStringConvertible, RawRepresentable {
    var property: Property
    var ascending: Bool
@@ -37,7 +41,7 @@ struct EventSortDescriptor: Hashable, CustomStringConvertible, RawRepresentable 
    }
 
    var description: String {
-      "\(property) \(ascending ? "↓" : "↑")"
+      "\(property) \(ascending.ascendingSymbol)"
    }
 
    var sort: (Event, Event) -> Bool {
@@ -62,8 +66,6 @@ struct EventSortDescriptor: Hashable, CustomStringConvertible, RawRepresentable 
       case .modifiedDate:
          return NSSortDescriptor(keyPath: \Event.modifiedDate, ascending: ascending)
       case .numberOfTags:
-//         return NSSortDescriptor(key: "nsmanagedTags.@count", ascending: ascending)
-//         return NSSortDescriptor(keyPath: \Event.nsmanagedTags.count, ascending: ascending)
          return nil // cannot be sorted with NSSortDescriptor; must be sorted after fetch
       }
    }

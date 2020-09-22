@@ -14,19 +14,22 @@ extension Event: CDFetchable {
 }
 
 struct EventFetchDescriptor: CDFetchDescriptor, Hashable {
+   internal init(sortDescriptor: EventSortDescriptor, filterDescriptor: EventFilterDescriptor) {
+      self.filterDescriptor = filterDescriptor
+      self._sortDescriptor = sortDescriptor
+   }
+
    typealias Object = Event
 
-   var sortDescriptor: EventSortDescriptor
+   var sortDescriptor: EventSortDescriptor {
+      get { _sortDescriptor }
+      set { _sortDescriptor = newValue }
+   }
    var filterDescriptor: EventFilterDescriptor
 
-   var sectionNameKeyPath: String? { nil }
+   var _sortDescriptor: EventSortDescriptor
 
-   static let unarchived: Self = EventFetchDescriptor(
-      sortDescriptor: EventSortDescriptor(),
-      filterDescriptor: EventFilterDescriptor())
-   static let archived: Self = EventFetchDescriptor(
-      sortDescriptor: EventSortDescriptor(),
-      filterDescriptor: EventFilterDescriptor(archived: true))
+   var sectionNameKeyPath: String? { nil }
 
    func request() -> NSFetchRequest<Event> {
       let request = Event.fetchRequest() as! NSFetchRequest<Event>
@@ -42,6 +45,13 @@ struct EventFetchDescriptor: CDFetchDescriptor, Hashable {
       hasher.combine(filterDescriptor.option.intValue)
       hasher.combine(filterDescriptor.archived)
    }
+
+   static let unarchived: Self = EventFetchDescriptor(
+      sortDescriptor: EventSortDescriptor(),
+      filterDescriptor: EventFilterDescriptor())
+   static let archived: Self = EventFetchDescriptor(
+      sortDescriptor: EventSortDescriptor(),
+      filterDescriptor: EventFilterDescriptor(archived: true))
 }
 
 extension Tag: CDFetchable {

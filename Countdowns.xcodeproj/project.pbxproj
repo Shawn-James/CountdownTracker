@@ -21,6 +21,7 @@
 		990EC94824D33A8600E41409 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94724D33A8600E41409 /* CoreDataStack.swift */; };
 		990EC94A24D33BE600E41409 /* Utilites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94924D33BE600E41409 /* Utilites.swift */; };
 		990EC94C24D34BD100E41409 /* SortFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990EC94B24D34BD100E41409 /* SortFilter.swift */; };
+		99148BBD251A3F9600A03EE3 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99148BBC251A3F9600A03EE3 /* Environment.swift */; };
 		99251D42235E09400060D9FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99251D41235E09400060D9FF /* AppDelegate.swift */; };
 		99251D44235E09400060D9FF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99251D43235E09400060D9FF /* SceneDelegate.swift */; };
 		99251D49235E09400060D9FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99251D47235E09400060D9FF /* Main.storyboard */; };
@@ -70,6 +71,7 @@
 		990EC94724D33A8600E41409 /* CoreDataStack.swift */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; tabWidth = 3; };
 		990EC94924D33BE600E41409 /* Utilites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilites.swift; sourceTree = "<group>"; };
 		990EC94B24D34BD100E41409 /* SortFilter.swift */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = SortFilter.swift; sourceTree = "<group>"; tabWidth = 3; };
+		99148BBC251A3F9600A03EE3 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		99251D3E235E09400060D9FF /* Countdowns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countdowns.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99251D41235E09400060D9FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		99251D43235E09400060D9FF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			children = (
 				99251D41235E09400060D9FF /* AppDelegate.swift */,
 				99251D43235E09400060D9FF /* SceneDelegate.swift */,
+				99148BBC251A3F9600A03EE3 /* Environment.swift */,
 				99251D4A235E09420060D9FF /* Assets.xcassets */,
 			);
 			path = Application;
@@ -362,6 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				99EF7D08235E13990092F4AB /* EventDetailViewController.swift in Sources */,
+				99148BBD251A3F9600A03EE3 /* Environment.swift in Sources */,
 				990EC94624D33A7D00E41409 /* CoreDataMigrationManager.swift in Sources */,
 				990C3A44250ECCF400ACDE78 /* CountdownsViewModel.swift in Sources */,
 				990C3A3E250E9D0600ACDE78 /* UIViewController+ErrorAlert.swift in Sources */,

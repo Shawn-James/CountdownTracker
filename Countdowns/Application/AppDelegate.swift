@@ -8,6 +8,10 @@
 
 import UIKit
 
+
+private(set) var environment: Environment!
+
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
@@ -15,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
       _ application: UIApplication,
       didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
    ) -> Bool {
+      environment = AppEnvironment()
+
       UNUserNotificationCenter.current()
          .requestAuthorization(options: [.alert, .sound]) { (didAllow, error) in
             NotificationsHelper.shared.notificationsAllowed = didAllow

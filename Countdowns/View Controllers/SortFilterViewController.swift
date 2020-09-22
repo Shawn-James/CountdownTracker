@@ -10,14 +10,16 @@ import UIKit
 import Combine
 
 
+typealias PickerDelegate = UIPickerViewDelegate & UIPickerViewDataSource
+
+
 class SortFilterViewController: UIViewController {
-   typealias PickerDelegate = UIPickerViewDelegate & UIPickerViewDataSource
    
    @Atomic var viewModel: SortFilterViewModeling!
 
-   lazy var sortDelegate: PickerDelegate = SortPickerDelegate(viewModel)
-   lazy var filterDelegate: PickerDelegate = FilterPickerDelegate(viewModel)
-   lazy var tagDelegate: PickerDelegate = TagFilterPickerDelegate(viewModel)
+   lazy var sortDelegate = environment.sortDelegate(viewModel: viewModel)
+   lazy var filterDelegate = environment.filterDelegate(viewModel: viewModel)
+   lazy var tagDelegate = environment.tagDelegate(viewModel: viewModel)
 
    @IBOutlet private weak var sortPicker: UIPickerView!
    @IBOutlet private weak var filterPicker: UIPickerView!
@@ -50,11 +52,6 @@ class SortFilterViewController: UIViewController {
       showHideFilterComponents(for: viewModel.currentFilter)
    }
 
-   override func viewWillDisappear(_ animated: Bool) {
-      super.viewWillDisappear(animated)
-      viewModel.didFinish?()
-   }
-
    // MARK: - Private
 
    @objc private func filterDateDidChange(_ sender: Any?) {
@@ -63,6 +60,7 @@ class SortFilterViewController: UIViewController {
 
    /// Set current picker selections from current saved setting.
    private func resetPickerSelections() {
+      sortPicker.selectRow(viewModel.currentSort.ascending ? 0 : 1, inComponent: 0, animated: false)
       if let sortStyleIndex = EventSortDescriptor.Property.allCases.firstIndex(of: viewModel.currentSort.property) {
          sortPicker.selectRow(sortStyleIndex, inComponent: 1, animated: false)
       }
