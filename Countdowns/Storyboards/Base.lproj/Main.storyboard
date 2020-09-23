@@ -216,6 +216,8 @@
                                     </label>
                                     <datePicker contentMode="scaleToFill" horizontalCompressionResistancePriority="748" verticalCompressionResistancePriority="746" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="wheels" translatesAutoresizingMaskIntoConstraints="NO" id="4JU-Dl-uhs">
                                         <rect key="frame" x="0.0" y="109.5" width="374" height="216"/>
+                                        <color key="backgroundColor" name="backgroundColor"/>
+                                        <color key="tintColor" name="backgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" priority="999" constant="216" id="6Hu-Lb-cAW"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="WLI-SE-fMm"/>
@@ -481,13 +483,13 @@
             <color red="0.98000001907348633" green="0.9779999852180481" blue="0.95099997520446777" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="cellBackgroundColor">
-            <color red="0.97500002384185791" green="0.96700000762939453" blue="0.88499999046325684" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.93566995859146118" green="0.92281675338745117" blue="0.79107135534286499" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="highlightColor">
             <color red="0.008999999612569809" green="0.34599998593330383" blue="0.35400000214576721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="secondaryCellBackgroundColor">
-            <color red="1" green="0.98500001430511475" blue="0.85100001096725464" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.89129388332366943" green="0.87445068359375" blue="0.72398495674133301" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

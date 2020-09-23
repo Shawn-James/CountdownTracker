@@ -33,6 +33,11 @@ class AddEditEventViewController: ShiftableViewController {
    override func viewDidLoad() {
       super.viewDidLoad()
 
+      datePicker.layer.cornerRadius = 5
+      datePicker.layer.backgroundColor = UIColor.jbBackground?.cgColor
+      timePicker.layer.cornerRadius = 5
+      timePicker.layer.backgroundColor = UIColor.jbBackground?.cgColor
+
       if viewModel.isEditing {
          resetViewsForEditingEvent()
       }

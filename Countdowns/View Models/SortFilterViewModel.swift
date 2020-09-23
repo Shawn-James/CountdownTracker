@@ -9,7 +9,7 @@
 import Foundation
 
 
-protocol SortFilterViewModeling {
+protocol SortFilterViewModeling: AnyObject {
    var tags: [Tag] { get }
 
    var didChange: (() -> Void)? { get set }
